@@ -35,10 +35,11 @@
             android:text="Сообщения" />
 
         <Button
-            android:id="@+id/button5"
+            android:id="@+id/profileButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:onClick="onClickProfileButton"
             android:text="Профиль" />
     </LinearLayout>
 

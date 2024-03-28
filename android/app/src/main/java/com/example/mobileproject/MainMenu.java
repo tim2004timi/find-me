@@ -35,4 +35,9 @@ public class MainMenu extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    public void onClickProfileButton(View view) {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
+    }
 }

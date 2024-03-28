@@ -5,8 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Registration"
-    android:background="@color/base_background">
+    android:background="@color/base_background"
+    tools:context=".Registration">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -84,8 +84,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="84dp"
-        android:text="Зарегистрироваться"
         android:onClick="onClickCreateAccount"
+        android:text="Зарегистрироваться"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

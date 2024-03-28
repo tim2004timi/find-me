@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, MainMenu.class);
             startActivity(intent);
             finish();
+
 //Вход в аккаунт пользователя для локального IP-адреса
 //        editTextLogin = findViewById(R.id.editTextText);
 //        editTextPassword = findViewById(R.id.editTextTextPassword);
