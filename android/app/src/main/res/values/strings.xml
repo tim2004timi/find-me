@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">MobileProject</string>
+    <string-array name="userStatusArray">
+        <item>Свободен</item>
+        <item>В активном поиске</item>
+        <item>В отношениях</item>
+        <item>Женат</item>
+        <item>Замужем</item>
+    </string-array>
 </resources>
