@@ -17,7 +17,8 @@
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:srcCompat="@drawable/_707303686169755743"
+        tools:srcCompat="@drawable/_707303686169755743" />
 
     <Button
         android:id="@+id/editProfileButton"
@@ -121,11 +122,14 @@
         android:layout_width="315dp"
         android:layout_height="63dp"
         android:layout_marginTop="4dp"
-        android:textColor="#BEACF1"
+        android:backgroundTint="@color/white"
+        android:foregroundTint="@color/white"
+        android:textColor="@color/white"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/editUsername"
+        android:background="@color/white"/>
 
     <LinearLayout
         android:layout_width="0dp"
@@ -147,7 +151,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Пол:" />
+                android:text="Пол:"
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/textView15"
@@ -155,7 +160,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Возраст:" />
+                android:text="Возраст:"
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/textView12"
@@ -163,7 +169,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Город:" />
+                android:text="Город:"
+                android:textColor="@color/white" />
         </LinearLayout>
 
         <LinearLayout
@@ -175,7 +182,9 @@
                 android:id="@+id/genderSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:background="@color/white" />
 
             <EditText
                 android:id="@+id/editTextNumber3"

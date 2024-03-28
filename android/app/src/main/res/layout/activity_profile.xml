@@ -17,7 +17,8 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:srcCompat="@drawable/_707303686169755743"
+        tools:srcCompat="@drawable/_707303686169755743" />
 
     <TextView
         android:id="@+id/textView6"
@@ -26,7 +27,7 @@
         android:layout_marginTop="12dp"
         android:gravity="center"
         android:text="UserName"
-        android:textColor="#DA8BF6"
+        android:textColor="#6750A3"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +41,7 @@
         android:layout_height="42dp"
         android:gravity="center"
         android:text="Статус: UserStatus"
-        android:textColor="#DA8BF6"
+        android:textColor="#6750A3"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
@@ -53,7 +54,6 @@
         android:layout_height="69dp"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="#DB38FF"
         android:gravity="center"
         android:onClick="onClickEditProfileButton"
         app:icon="@android:drawable/ic_menu_edit"
@@ -88,7 +88,7 @@
                 android:shadowDy="1"
                 android:shadowRadius="2"
                 android:text="Спорт"
-                android:textColor="#F85DB3"
+                android:textColor="#6750A3"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -103,7 +103,7 @@
                 android:shadowDy="1"
                 android:shadowRadius="2"
                 android:text="Рыбалка"
-                android:textColor="#F85DB3"
+                android:textColor="#6750A3"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -118,7 +118,8 @@
                 android:shadowDy="1"
                 android:shadowRadius="2"
                 android:text="Видеоигры"
-                android:textColor="#F85DB3"
+                android:textColor="#6750A3"
+                android:textColorLink="#6750A3"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -142,21 +143,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Пол:" />
+            android:text="Пол:"
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/UserAge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Возраст:" />
+            android:text="Возраст:"
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/UserCity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Город:" />
+            android:text="Город:"
+            android:textColor="@color/white" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

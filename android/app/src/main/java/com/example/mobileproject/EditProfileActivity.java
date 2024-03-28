@@ -7,7 +7,9 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultCallback;
@@ -18,7 +20,19 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.mobileproject.dto.UserData;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+import java.io.StringWriter;
+
 public class EditProfileActivity extends AppCompatActivity {
+
+    EditText editTextAge;
+    EditText editTextCity;
+    EditText editTextUsername;
+    Spinner spinnerStatus;
+    Spinner spinnerSex;
 
     private ActivityResultLauncher<String> galleryLauncher;
 
@@ -64,15 +78,45 @@ public class EditProfileActivity extends AppCompatActivity {
                 });
     }
 
-    public void onClickSaveProfileButton(View view){
+    public void onClickSaveProfileButton(View view) throws IOException {
+
+        editTextAge = findViewById(R.id.editTextNumber3);
+        editTextCity = findViewById(R.id.editTextTextPostalAddress);
+        spinnerSex = findViewById(R.id.genderSpinner);
+        spinnerStatus = findViewById(R.id.status_spinner);
+        editTextUsername = findViewById(R.id.editUsername);
+
+        UserData userData = new UserData();
+        userData.setUsername(editTextUsername.getText().toString());
+        userData.setAge(editTextAge.getText().toString());
+        userData.setSex(spinnerSex.getSelectedItem().toString());
+        userData.setCity(editTextCity.getText().toString());
+        userData.setStatus(spinnerStatus.getSelectedItem().toString());
+
+        //TODO ПРЕОБРАЗОВАНИЕ ОБЪЕКТА КЛАССА В JSON
+        //писать результат сериализации будем во Writer(StringWriter)
+        StringWriter writer = new StringWriter();
+
+        //это объект Jackson, который выполняет сериализацию
+        ObjectMapper mapper = new ObjectMapper();
+
+        // сама сериализация: 1-куда, 2-что
+        mapper.writeValue(writer, userData);
+
+        //преобразовываем все записанное во StringWriter в строку
+        String result = writer.toString();
+        //ВЫВОД JSON
+        Toast toast = Toast.makeText(getApplicationContext(),
+                result,
+                Toast.LENGTH_SHORT);
+        toast.show();
+
+
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
         finish();
     }
 
     public void onClickeditPhoto(View view){
-        Intent intent = new Intent(this, ProfileActivity.class);
-        startActivity(intent);
-        finish();
     }
 }
