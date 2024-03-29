@@ -40,4 +40,9 @@ public class MainMenu extends AppCompatActivity {
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
     }
+
+    public void onClickButtonFind(View view) {
+        Intent intent = new Intent(this, FindActivity.class);
+        startActivity(intent);
+    }
 }
