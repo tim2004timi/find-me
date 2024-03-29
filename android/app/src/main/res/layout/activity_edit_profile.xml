@@ -106,9 +106,9 @@
 
     <EditText
         android:id="@+id/editUsername"
-        android:layout_width="315dp"
-        android:layout_height="69dp"
-        android:layout_marginTop="44dp"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
         android:ems="10"
         android:inputType="text"
         android:text="Введите имя..."
@@ -119,8 +119,8 @@
 
     <Spinner
         android:id="@+id/status_spinner"
-        android:layout_width="315dp"
-        android:layout_height="63dp"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
         android:layout_marginTop="4dp"
         android:backgroundTint="@color/white"
         android:foregroundTint="@color/white"
@@ -128,17 +128,19 @@
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editUsername"
-        android:background="@color/white"/>
+        app:layout_constraintTop_toBottomOf="@+id/editUsername" />
 
     <LinearLayout
+        android:id="@+id/linearLayout7"
         android:layout_width="0dp"
         android:layout_height="80dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
+        app:layout_constraintBottom_toTopOf="@+id/editProfileButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/status_spinner">
+        app:layout_constraintTop_toBottomOf="@+id/status_spinner"
+        app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -183,8 +185,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textColor="@color/white"
-                android:background="@color/white" />
+                android:textColor="@color/white" />
 
             <EditText
                 android:id="@+id/editTextNumber3"
@@ -211,16 +212,17 @@
         android:id="@+id/Hobbys"
         android:layout_width="409dp"
         android:layout_height="37dp"
-        android:layout_marginBottom="4dp"
         android:background="#2C2C2C"
         android:gravity="center"
         android:text="Хобби"
         android:textColor="#D6A8FF"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
+        app:layout_constraintBottom_toTopOf="@+id/editProfileButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout7"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/select_photo_button"

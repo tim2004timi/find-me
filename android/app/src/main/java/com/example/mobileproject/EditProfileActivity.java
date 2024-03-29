@@ -3,9 +3,8 @@ package com.example.mobileproject;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -21,6 +20,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.mobileproject.dto.UserData;
+import com.example.mobileproject.spinners.CustomSpinnerAdapter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -33,6 +33,8 @@ public class EditProfileActivity extends AppCompatActivity {
     EditText editTextUsername;
     Spinner spinnerStatus;
     Spinner spinnerSex;
+    String selectedStatus;
+    String selectedGender;
 
     private ActivityResultLauncher<String> galleryLauncher;
 
@@ -48,17 +50,60 @@ public class EditProfileActivity extends AppCompatActivity {
         });
 
         Spinner statusSpinner = findViewById(R.id.status_spinner);
+
+        // Массив для адаптера
+        String[] itemsStatus = new String[]{"Свободен", "В активном поиске", "В отношениях", "Женат", "Замужем"};
+
+        // Кастомный адаптер
+        CustomSpinnerAdapter adapterStatus = new CustomSpinnerAdapter(this, android.R.layout.simple_spinner_item, itemsStatus);
+
+        // Установка адаптера
+        statusSpinner.setAdapter(adapterStatus);
+
+        // Обработка выбора элемента
+        statusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                adapterStatus.setSelectedPosition(position);
+                String selectedItemStatus = (String) parentView.getSelectedItem(); // Выбранный элемент к строке
+                selectedStatus = selectedItemStatus; // Передача полученного значения в строковую переменную для JSON
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+
+            }
+        });
+
         Spinner genderSpinner = findViewById(R.id.genderSpinner);
 
-        String[] statusOptions = {"Свободен", "В активном поиске", "В отношениях", "Женат", "Замужем"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, statusOptions);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        statusSpinner.setAdapter(adapter);
+        String[] itemsGender = new String[]{"Мужской", "Женский"};
 
-        String[] genderOptions = {"Мужской", "Женский"};
-        ArrayAdapter<String> genderAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, genderOptions);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        genderSpinner.setAdapter(genderAdapter);
+
+        CustomSpinnerAdapter adapterGender = new CustomSpinnerAdapter(this, android.R.layout.simple_spinner_item, itemsGender);
+
+
+        genderSpinner.setAdapter(adapterGender);
+
+
+        genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                adapterGender.setSelectedPosition(position);
+                String selectedItemGender = (String) parentView.getSelectedItem(); // Выбранный элемент к строке
+                selectedGender = selectedItemGender; // Передача полученного значения в строковую переменную для JSON
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+
+            }
+        });
+//        String[] genderOptions = {"Мужской", "Женский"};
+//        ArrayAdapter<String> genderAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, genderOptions);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        genderSpinner.setAdapter(genderAdapter);
+
 
         Button selectPhotoButton = findViewById(R.id.select_photo_button);
         selectPhotoButton.setOnClickListener(new View.OnClickListener() {
