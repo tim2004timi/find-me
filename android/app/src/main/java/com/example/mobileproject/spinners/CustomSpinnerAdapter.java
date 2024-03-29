@@ -42,7 +42,7 @@ public class CustomSpinnerAdapter extends ArrayAdapter<String> {
 
         // Устанавливаем цвет для выбранного элемента
         if (position == mSelectedPosition) {
-            label.setTextColor(Color.MAGENTA);
+            label.setTextColor(Color.parseColor("#D6A8FF"));
         } else {
             label.setTextColor(Color.BLACK);
         }
