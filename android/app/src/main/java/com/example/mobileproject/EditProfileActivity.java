@@ -33,8 +33,17 @@ public class EditProfileActivity extends AppCompatActivity {
     EditText editTextUsername;
     Spinner spinnerStatus;
     Spinner spinnerSex;
+    Spinner hobbySpinner1;
+    Spinner hobbySpinner2;
+    Spinner hobbySpinner3;
     String selectedStatus;
     String selectedGender;
+    String selectedHobby1;
+    String selectedHobby2;
+    String selectedHobby3;
+
+
+
 
     private ActivityResultLauncher<String> galleryLauncher;
 
@@ -79,12 +88,9 @@ public class EditProfileActivity extends AppCompatActivity {
 
         String[] itemsGender = new String[]{"Мужской", "Женский"};
 
-
         CustomSpinnerAdapter adapterGender = new CustomSpinnerAdapter(this, android.R.layout.simple_spinner_item, itemsGender);
 
-
         genderSpinner.setAdapter(adapterGender);
-
 
         genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -99,11 +105,66 @@ public class EditProfileActivity extends AppCompatActivity {
 
             }
         });
+
 //        String[] genderOptions = {"Мужской", "Женский"};
 //        ArrayAdapter<String> genderAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, genderOptions);
 //        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        genderSpinner.setAdapter(genderAdapter);
 
+        Spinner hobby1Spinner = findViewById(R.id.hobby1_spinner);
+        Spinner hobby2Spinner = findViewById(R.id.hobby2_spinner);
+        Spinner hobby3Spinner = findViewById(R.id.hobby3_spinner);
+
+        String[] itemsHobbys = new String[]{"Спорт", "Видеоигры", "Рыбалка", "Кулинария", "Чтение", "Рисование", "Музыка", ""};
+
+        CustomSpinnerAdapter adapterHobby1 = new CustomSpinnerAdapter(this, android.R.layout.simple_spinner_item, itemsHobbys);
+        CustomSpinnerAdapter adapterHobby2 = new CustomSpinnerAdapter(this, android.R.layout.simple_spinner_item, itemsHobbys);
+        CustomSpinnerAdapter adapterHobby3 = new CustomSpinnerAdapter(this, android.R.layout.simple_spinner_item, itemsHobbys);
+
+        hobby1Spinner.setAdapter(adapterHobby1);
+        hobby2Spinner.setAdapter(adapterHobby2);
+        hobby3Spinner.setAdapter(adapterHobby3);
+        hobby1Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                adapterHobby1.setSelectedPosition(position);
+                String selectedItemHobby1 = (String) parentView.getSelectedItem();
+                selectedHobby1 = selectedItemHobby1;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+
+            }
+        });
+
+        hobby2Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                adapterHobby2.setSelectedPosition(position);
+                String selectedItemHobby2 = (String) parentView.getSelectedItem();
+                selectedHobby2 = selectedItemHobby2;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+
+            }
+        });
+
+        hobby3Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                adapterHobby3.setSelectedPosition(position);
+                String selectedItemHobby3 = (String) parentView.getSelectedItem();
+                selectedHobby3 = selectedItemHobby3;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+
+            }
+        });
 
         Button selectPhotoButton = findViewById(R.id.select_photo_button);
         selectPhotoButton.setOnClickListener(new View.OnClickListener() {
@@ -130,6 +191,9 @@ public class EditProfileActivity extends AppCompatActivity {
         spinnerSex = findViewById(R.id.genderSpinner);
         spinnerStatus = findViewById(R.id.status_spinner);
         editTextUsername = findViewById(R.id.editUsername);
+        hobbySpinner1 = findViewById(R.id.hobby1_spinner);
+        hobbySpinner2 = findViewById(R.id.hobby2_spinner);
+        hobbySpinner3 = findViewById(R.id.hobby3_spinner);
 
         UserData userData = new UserData();
         userData.setUsername(editTextUsername.getText().toString());
@@ -137,6 +201,9 @@ public class EditProfileActivity extends AppCompatActivity {
         userData.setSex(spinnerSex.getSelectedItem().toString());
         userData.setCity(editTextCity.getText().toString());
         userData.setStatus(spinnerStatus.getSelectedItem().toString());
+        userData.setHobby1(hobbySpinner1.getSelectedItem().toString());
+        userData.setHobby2(hobbySpinner2.getSelectedItem().toString());
+        userData.setHobby3(hobbySpinner3.getSelectedItem().toString());
 
         //TODO ПРЕОБРАЗОВАНИЕ ОБЪЕКТА КЛАССА В JSON
         //писать результат сериализации будем во Writer(StringWriter)
@@ -160,8 +227,5 @@ public class EditProfileActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    public void onClickeditPhoto(View view){
     }
 }
