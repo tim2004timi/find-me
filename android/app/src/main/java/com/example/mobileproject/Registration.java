@@ -3,6 +3,8 @@ package com.example.mobileproject;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,7 +12,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import okhttp3.ResponseBody;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class Registration extends AppCompatActivity {
+    EditText editTextLogin;
+    EditText editTextPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,9 +35,46 @@ public class Registration extends AppCompatActivity {
     }
 
     public void onClickCreateAccount(View view) {
+        editTextLogin = findViewById(R.id.editTextLogin);
+        editTextPassword = findViewById(R.id.editTextPassword);
+        String login = editTextLogin.getText().toString();
+        String password = editTextPassword.getText().toString();
 
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
+        User user = new User(login, password);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://176.109.111.92:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        ApiService apiService = retrofit.create(ApiService.class);
+
+        apiService.registerUser(user).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Вы успешно зарегистрированы",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                    Intent intent = new Intent(Registration.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Пользователь уже существует",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Ошибка соединения",
+                        Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
     }
 }

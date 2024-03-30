@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,49 +46,53 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickAuthentication(View view) {
 
-        editTextLogin = findViewById(R.id.editTextText);
-        editTextPassword = findViewById(R.id.editTextTextPassword);
-        String test_login = editTextLogin.getText().toString();
-        String test_password = editTextPassword.getText().toString();
-
-        if (test_login.equals("offline") && test_password.equals("offline")) {
-            Intent intent = new Intent(this, MainMenu.class);
-            startActivity(intent);
-            finish();
-
-//Вход в аккаунт пользователя для локального IP-адреса
 //        editTextLogin = findViewById(R.id.editTextText);
 //        editTextPassword = findViewById(R.id.editTextTextPassword);
-//        String login = editTextLogin.getText().toString();
-//        String password = editTextPassword.getText().toString();
-//        User user = new User(login, password);
-//
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("http://10.0.2.2:8000/login/")
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
-//
-//        ApiService apiService = retrofit.create(ApiService.class);
-//
-//        apiService.loginUser(user).enqueue(new Callback<ResponseBody>() {
-//            @Override
-//            public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-//                if (response.isSuccessful()) {
-//                    textView = findViewById(R.id.textView5);
-//                    textView.setText("Успешный вход");
-//                } else {
-//                    textView = findViewById(R.id.textView5);
-//                    textView.setText("ELSE");
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
-//                textView = findViewById(R.id.textView5);
-//                textView.setText(t.toString());
-//
-//            }
-        };
+//        String test_login = editTextLogin.getText().toString();
+//        String test_password = editTextPassword.getText().toString();
 
+//        if (test_login.equals("offline") && test_password.equals("offline")) {
+//            Intent intent = new Intent(this, MainMenu.class);
+//            startActivity(intent);
+//            finish();
+
+        editTextLogin = findViewById(R.id.editTextText);
+        editTextPassword = findViewById(R.id.editTextTextPassword);
+        String login = editTextLogin.getText().toString();
+        String password = editTextPassword.getText().toString();
+        User user = new User(login, password);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://176.109.111.92:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        ApiService apiService = retrofit.create(ApiService.class);
+
+        apiService.loginUser(user).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    textView = findViewById(R.id.textView5);
+                    textView.setText("Успешный вход");
+                    Intent intent = new Intent(MainActivity.this, MainMenu.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Неверные данные",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Ошибка соединения",
+                        Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
     }
 }
