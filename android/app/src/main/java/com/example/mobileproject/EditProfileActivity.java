@@ -28,17 +28,25 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.squareup.picasso.Picasso;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.request.RequestOptions;
+
+import okhttp3.ResponseBody;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class EditProfileActivity extends AppCompatActivity {
 
     EditText editTextAge;
     EditText editTextCity;
-    EditText editTextUsername;
+    EditText editTextName;
     Spinner spinnerStatus;
     Spinner spinnerSex;
     Spinner hobbySpinner1;
@@ -49,6 +57,7 @@ public class EditProfileActivity extends AppCompatActivity {
     String selectedHobby1;
     String selectedHobby2;
     String selectedHobby3;
+    User userContext = UserContext.getInstance().getUser();
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private Uri mImageUri;
@@ -64,6 +73,11 @@ public class EditProfileActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        Intent intent = getIntent();
+        editTextName = findViewById(R.id.editUsername);
+        editTextName.setText(intent.getStringExtra("name"));
+
 
         Spinner statusSpinner = findViewById(R.id.status_spinner);
 
@@ -206,38 +220,60 @@ public class EditProfileActivity extends AppCompatActivity {
         editTextCity = findViewById(R.id.editTextTextPostalAddress);
         spinnerSex = findViewById(R.id.genderSpinner);
         spinnerStatus = findViewById(R.id.status_spinner);
-        editTextUsername = findViewById(R.id.editUsername);
+        editTextName = findViewById(R.id.editUsername);
         hobbySpinner1 = findViewById(R.id.hobby1_spinner);
         hobbySpinner2 = findViewById(R.id.hobby2_spinner);
         hobbySpinner3 = findViewById(R.id.hobby3_spinner);
 
-        UserData userData = new UserData();
-        userData.setUsername(editTextUsername.getText().toString());
-        userData.setAge(editTextAge.getText().toString());
-        userData.setSex(spinnerSex.getSelectedItem().toString());
-        userData.setCity(editTextCity.getText().toString());
-        userData.setStatus(spinnerStatus.getSelectedItem().toString());
-        userData.setHobby1(hobbySpinner1.getSelectedItem().toString());
-        userData.setHobby2(hobbySpinner2.getSelectedItem().toString());
-        userData.setHobby3(hobbySpinner3.getSelectedItem().toString());
+        Profile profile = new Profile();
+        profile.setUsername(userContext.getUsername());
+        profile.setPassword(userContext.getPassword());
+        profile.setName(editTextName.getText().toString());
+        profile.setAge(Integer.parseInt(editTextAge.getText().toString()));
+        profile.setSex(spinnerSex.getSelectedItem().toString());
+        profile.setCity(editTextCity.getText().toString());
+        profile.setStatus(spinnerStatus.getSelectedItem().toString());
+        List<String> hobbies = new ArrayList<>();
+        hobbies.add(hobbySpinner1.getSelectedItem().toString());
+        hobbies.add(hobbySpinner2.getSelectedItem().toString());
+        hobbies.add(hobbySpinner3.getSelectedItem().toString());
+        profile.setHobbies(hobbies);
 
-        //TODO ПРЕОБРАЗОВАНИЕ ОБЪЕКТА КЛАССА В JSON
-        //писать результат сериализации будем во Writer(StringWriter)
-        StringWriter writer = new StringWriter();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://176.109.111.92:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        //это объект Jackson, который выполняет сериализацию
-        ObjectMapper mapper = new ObjectMapper();
+        ApiService apiService = retrofit.create(ApiService.class);
 
-        // сама сериализация: 1-куда, 2-что
-        mapper.writeValue(writer, userData);
 
-        //преобразовываем все записанное во StringWriter в строку
-        String result = writer.toString();
-        //ВЫВОД JSON
-        Toast toast = Toast.makeText(getApplicationContext(),
-                result,
-                Toast.LENGTH_SHORT);
-        toast.show();
+        apiService.postProfile(profile).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Intent intent = new Intent(EditProfileActivity.this, ProfileActivity.class);
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Успешно",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Неверные данные",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Ошибка соединения",
+                        Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
 
 
         Intent intent = new Intent(this, ProfileActivity.class);
