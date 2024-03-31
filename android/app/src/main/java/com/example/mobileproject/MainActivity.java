@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     TextView textView;
     EditText editTextLogin;
     EditText editTextPassword;
+    TextView test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
 
         editTextLogin = findViewById(R.id.editTextText);
         editTextPassword = findViewById(R.id.editTextTextPassword);
+
+        test = findViewById(R.id.textView5);
+
         String login = editTextLogin.getText().toString();
         String password = editTextPassword.getText().toString();
         User user = new User(login, password);
@@ -88,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
                             "Неверные данные",
                             Toast.LENGTH_SHORT);
                     toast.show();
+                    test.setText(response.toString());
                 }
             }
 
