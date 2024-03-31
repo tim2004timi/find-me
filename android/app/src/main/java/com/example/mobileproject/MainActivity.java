@@ -69,10 +69,15 @@ public class MainActivity extends AppCompatActivity {
 
         ApiService apiService = retrofit.create(ApiService.class);
 
+
         apiService.loginUser(user).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
+
+                    UserContext userContext = UserContext.getInstance();
+                    userContext.setUser(user);
+
                     textView = findViewById(R.id.textView5);
                     textView.setText("Успешный вход");
                     Intent intent = new Intent(MainActivity.this, MainMenu.class);

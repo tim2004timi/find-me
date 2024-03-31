@@ -1,9 +1,12 @@
 package com.example.mobileproject;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +15,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class ProfileActivity extends AppCompatActivity {
+
+    User userContext = UserContext.getInstance().getUser();
+
+    TextView userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +30,9 @@ public class ProfileActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        userName = findViewById(R.id.textView6);
+        userName.setText(userContext.getUsername());
     }
 
     public void onClickEditProfileButton(View view){
