@@ -44,7 +44,8 @@ public class CustomSpinnerAdapter extends ArrayAdapter<String> {
         if (position == mSelectedPosition) {
             label.setTextColor(Color.parseColor("#D6A8FF"));
         } else {
-            label.setTextColor(Color.BLACK);
+            label.setTextColor(Color.WHITE);
+            row.setBackgroundColor(Color.parseColor("#212121"));
         }
 
         return row;
