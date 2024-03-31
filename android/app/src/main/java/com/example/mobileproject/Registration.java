@@ -20,7 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Registration extends AppCompatActivity {
     EditText editTextLogin;
     EditText editTextPassword;
-
+    EditText editTextPasswordRepeat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,44 +37,54 @@ public class Registration extends AppCompatActivity {
     public void onClickCreateAccount(View view) {
         editTextLogin = findViewById(R.id.editTextLogin);
         editTextPassword = findViewById(R.id.editTextPassword);
+        editTextPasswordRepeat = findViewById(R.id.editTextPassword2);
+
         String login = editTextLogin.getText().toString();
         String password = editTextPassword.getText().toString();
-
-        User user = new User(login, password);
+        String passwordRepeat = editTextPasswordRepeat.getText().toString();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://176.109.111.92:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        ApiService apiService = retrofit.create(ApiService.class);
+        User user = new User(login, password);
 
-        apiService.registerUser(user).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
+        if (passwordRepeat.equals(password)) {
+            ApiService apiService = retrofit.create(ApiService.class);
+
+            apiService.registerUser(user).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Вы успешно зарегистрированы",
+                                Toast.LENGTH_SHORT);
+                        toast.show();
+                        Intent intent = new Intent(Registration.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Пользователь уже существует",
+                                Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                }
+
+                @Override
+                public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            "Вы успешно зарегистрированы",
-                            Toast.LENGTH_SHORT);
-                    toast.show();
-                    Intent intent = new Intent(Registration.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            "Пользователь уже существует",
+                            "Ошибка соединения",
                             Toast.LENGTH_SHORT);
                     toast.show();
                 }
-            }
-
-            @Override
-            public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        "Ошибка соединения",
-                        Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
+            });
+        } else {
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Пароли не совпадают",
+                    Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 }

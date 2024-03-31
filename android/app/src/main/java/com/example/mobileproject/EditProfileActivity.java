@@ -1,19 +1,21 @@
 package com.example.mobileproject;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -22,9 +24,15 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.mobileproject.dto.UserData;
 import com.example.mobileproject.spinners.CustomSpinnerAdapter;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.request.RequestOptions;
+
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -42,10 +50,9 @@ public class EditProfileActivity extends AppCompatActivity {
     String selectedHobby2;
     String selectedHobby3;
 
-
-
-
-    private ActivityResultLauncher<String> galleryLauncher;
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private Uri mImageUri;
+    ImageView avatar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,11 +113,6 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
-//        String[] genderOptions = {"Мужской", "Женский"};
-//        ArrayAdapter<String> genderAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, genderOptions);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        genderSpinner.setAdapter(genderAdapter);
-
         Spinner hobby1Spinner = findViewById(R.id.hobby1_spinner);
         Spinner hobby2Spinner = findViewById(R.id.hobby2_spinner);
         Spinner hobby3Spinner = findViewById(R.id.hobby3_spinner);
@@ -166,22 +168,36 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
+        avatar = findViewById(R.id.imageView3);
         Button selectPhotoButton = findViewById(R.id.select_photo_button);
         selectPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                galleryLauncher.launch("image/*");
+                openFileChooser();
             }
         });
+    }
+    private void openFileChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-        galleryLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(),
-                new ActivityResultCallback<Uri>() {
-                    @Override
-                    public void onActivityResult(Uri result) {
-                        // поле обработки выбранного изображение из галереи
-                        // result содержит URI выбранного изображения
-                    }
-                });
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
+            mImageUri = data.getData();
+
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions = requestOptions.transforms(new CenterCrop());
+            Glide.with(this)
+                    .load(mImageUri)
+                    .apply(requestOptions)
+                    .into(avatar);
+        }
     }
 
     public void onClickSaveProfileButton(View view) throws IOException {
