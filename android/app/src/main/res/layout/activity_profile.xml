@@ -58,7 +58,7 @@
         android:onClick="onClickEditProfileButton"
         app:icon="@android:drawable/ic_menu_edit"
         app:iconPadding="22dp"
-        app:iconTint="#FFFFFF"
+        app:iconTint="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:strokeColor="#C887F6" />

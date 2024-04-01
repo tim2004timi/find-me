@@ -78,11 +78,33 @@ public class EditProfileActivity extends AppCompatActivity {
         editTextName = findViewById(R.id.editUsername);
         editTextName.setText(intent.getStringExtra("name"));
 
+        spinnerStatus = findViewById(R.id.status_spinner);
+        //spinnerStatus.(intent.getStringExtra("status"));
+
+        editTextAge = findViewById(R.id.editTextNumber3);
+        editTextAge.setText(intent.getStringExtra("age"));
+
+        editTextCity = findViewById(R.id.editTextTextPostalAddress);
+        editTextCity.setText(intent.getStringExtra("city"));
+
+        spinnerSex = findViewById(R.id.genderSpinner);
+        //spinnerSex.setText(intent.getStringExtra("sex"));
+
+
+        hobbySpinner1 = findViewById(R.id.hobby1_spinner);
+        //hobbySpinner1.setText(intent.getStringExtra(hobbies[0]));
+
+        hobbySpinner2 = findViewById(R.id.hobby2_spinner);
+        //hobbySpinner2.setText(intent.getStringExtra(hobbies[1]));
+
+        hobbySpinner3 = findViewById(R.id.hobby3_spinner);
+        //hobbySpinner3.setText(intent.getStringExtra(hobbies[2]));
+
 
         Spinner statusSpinner = findViewById(R.id.status_spinner);
 
         // Массив для адаптера
-        String[] itemsStatus = new String[]{"Свободен", "В активном поиске", "В отношениях", "Женат", "Замужем"};
+        String[] itemsStatus = new String[]{"Свободен", "В поиске", "В отношениях", "Женат", "Замужем"};
 
         // Кастомный адаптер
         CustomSpinnerAdapter adapterStatus = new CustomSpinnerAdapter(this, android.R.layout.simple_spinner_item, itemsStatus);
@@ -97,6 +119,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 adapterStatus.setSelectedPosition(position);
                 String selectedItemStatus = (String) parentView.getSelectedItem(); // Выбранный элемент к строке
                 selectedStatus = selectedItemStatus; // Передача полученного значения в строковую переменную для JSON
+
             }
 
             @Override
@@ -131,7 +154,7 @@ public class EditProfileActivity extends AppCompatActivity {
         Spinner hobby2Spinner = findViewById(R.id.hobby2_spinner);
         Spinner hobby3Spinner = findViewById(R.id.hobby3_spinner);
 
-        String[] itemsHobbys = new String[]{"Спорт", "Видеоигры", "Рыбалка", "Кулинария", "Чтение", "Рисование", "Музыка", ""};
+        String[] itemsHobbys = new String[]{"", "Спорт", "Видеоигры", "Рыбалка", "Кулинария", "Чтение", "Рисование", "Музыка"};
 
         CustomSpinnerAdapter adapterHobby1 = new CustomSpinnerAdapter(this, android.R.layout.simple_spinner_item, itemsHobbys);
         CustomSpinnerAdapter adapterHobby2 = new CustomSpinnerAdapter(this, android.R.layout.simple_spinner_item, itemsHobbys);
