@@ -116,8 +116,8 @@ public class ProfileActivity extends AppCompatActivity {
         intent.putExtra("name", userName.getText().toString());
         intent.putExtra("status", status.getText().toString());
         intent.putExtra("gender", gender.getText().toString());
-        intent.putExtra("age", age.getText().toString());
-        intent.putExtra("city", city.getText().toString());
+        intent.putExtra("age", age.getText().toString().split(" ")[1]);
+        intent.putExtra("city", city.getText().toString().replace("Город: ", ""));
         intent.putExtra("tag1", tag1.getText().toString());
         intent.putExtra("tag2", tag2.getText().toString());
         intent.putExtra("tag3", tag3.getText().toString());
