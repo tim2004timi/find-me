@@ -248,59 +248,69 @@ public class EditProfileActivity extends AppCompatActivity {
         hobbySpinner2 = findViewById(R.id.hobby2_spinner);
         hobbySpinner3 = findViewById(R.id.hobby3_spinner);
 
-        Profile profile = new Profile();
-        profile.setUsername(userContext.getUsername());
-        profile.setPassword(userContext.getPassword());
-        profile.setName(editTextName.getText().toString());
-        profile.setAge(Integer.parseInt(editTextAge.getText().toString()));
-        profile.setSex(spinnerSex.getSelectedItem().toString());
-        profile.setCity(editTextCity.getText().toString());
-        profile.setStatus(spinnerStatus.getSelectedItem().toString());
-        List<String> hobbies = new ArrayList<>();
-        hobbies.add(hobbySpinner1.getSelectedItem().toString());
-        hobbies.add(hobbySpinner2.getSelectedItem().toString());
-        hobbies.add(hobbySpinner3.getSelectedItem().toString());
-        profile.setHobbies(hobbies);
+        int valid_age = Integer.parseInt(editTextAge.getText().toString());
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://176.109.111.92:8080/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        if (valid_age >= 16) {
+            Profile profile = new Profile();
+            profile.setUsername(userContext.getUsername());
+            profile.setPassword(userContext.getPassword());
+            profile.setName(editTextName.getText().toString());
+            profile.setAge(Integer.parseInt(editTextAge.getText().toString()));
+            profile.setSex(spinnerSex.getSelectedItem().toString());
+            profile.setCity(editTextCity.getText().toString());
+            profile.setStatus(spinnerStatus.getSelectedItem().toString());
+            List<String> hobbies = new ArrayList<>();
+            hobbies.add(hobbySpinner1.getSelectedItem().toString());
+            hobbies.add(hobbySpinner2.getSelectedItem().toString());
+            hobbies.add(hobbySpinner3.getSelectedItem().toString());
+            profile.setHobbies(hobbies);
 
-        ApiService apiService = retrofit.create(ApiService.class);
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://176.109.111.92:8080/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            ApiService apiService = retrofit.create(ApiService.class);
 
 
-        apiService.postProfile(profile).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    Intent intent = new Intent(EditProfileActivity.this, ProfileActivity.class);
+            apiService.postProfile(profile).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        Intent intent = new Intent(EditProfileActivity.this, ProfileActivity.class);
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Успешно",
+                                Toast.LENGTH_SHORT);
+                        toast.show();
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Неверные данные",
+                                Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                }
+
+                @Override
+                public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            "Успешно",
-                            Toast.LENGTH_SHORT);
-                    toast.show();
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            "Неверные данные",
+                            "Ошибка соединения",
                             Toast.LENGTH_SHORT);
                     toast.show();
                 }
-            }
-
-            @Override
-            public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        "Ошибка соединения",
-                        Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
+            });
 
 
-        Intent intent = new Intent(this, ProfileActivity.class);
-        startActivity(intent);
-        finish();
+            Intent intent = new Intent(this, ProfileActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        else{
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Возраст не может быть ниже 16",
+                    Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 }
