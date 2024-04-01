@@ -21,6 +21,7 @@ public class Registration extends AppCompatActivity {
     EditText editTextLogin;
     EditText editTextPassword;
     EditText editTextPasswordRepeat;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,42 +50,57 @@ public class Registration extends AppCompatActivity {
                 .build();
 
         User user = new User(login, password);
+        boolean loginWarn = login.contains(" ");
 
-        if (passwordRepeat.equals(password)) {
-            ApiService apiService = retrofit.create(ApiService.class);
+        if (loginWarn == false) {
+            if (password.length() >= 7) {
+                if (passwordRepeat.equals(password)) {
+                    ApiService apiService = retrofit.create(ApiService.class);
 
-            apiService.registerUser(user).enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-                    if (response.isSuccessful()) {
-                        Toast toast = Toast.makeText(getApplicationContext(),
-                                "Вы успешно зарегистрированы",
-                                Toast.LENGTH_SHORT);
-                        toast.show();
-                        Intent intent = new Intent(Registration.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Toast toast = Toast.makeText(getApplicationContext(),
-                                "Пользователь уже существует",
-                                Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
-                }
+                    apiService.registerUser(user).enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                            if (response.isSuccessful()) {
+                                Toast toast = Toast.makeText(getApplicationContext(),
+                                        "Вы успешно зарегистрированы",
+                                        Toast.LENGTH_SHORT);
+                                toast.show();
+                                Intent intent = new Intent(Registration.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                Toast toast = Toast.makeText(getApplicationContext(),
+                                        "Пользователь уже существует",
+                                        Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        }
 
-                @Override
-                public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
+                        @Override
+                        public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
+                            Toast toast = Toast.makeText(getApplicationContext(),
+                                    "Ошибка соединения",
+                                    Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    });
+                } else {
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            "Ошибка соединения",
+                            "Пароли не совпадают",
                             Toast.LENGTH_SHORT);
                     toast.show();
                 }
-            });
+            } else {
+                Toast shortPasswordtoast = Toast.makeText(getApplicationContext(),
+                        "Пароль короче 7 символов",
+                        Toast.LENGTH_SHORT);
+                shortPasswordtoast.show();
+            }
         } else {
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "Пароли не совпадают",
+            Toast shortPasswordtoast = Toast.makeText(getApplicationContext(),
+                    "Логин не может содержать пробелы",
                     Toast.LENGTH_SHORT);
-            toast.show();
+            shortPasswordtoast.show();
         }
     }
 }
