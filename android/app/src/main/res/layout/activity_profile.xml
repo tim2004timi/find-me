@@ -37,14 +37,15 @@
 
     <TextView
         android:id="@+id/UserStatus"
-        android:layout_width="253dp"
-        android:layout_height="42dp"
+        android:layout_width="290dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="36dp"
         android:gravity="center"
-        android:text="Статус:"
+        android:text=""
         android:textColor="#6750A3"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
@@ -67,25 +68,71 @@
         android:id="@+id/Hobbys"
         android:layout_width="match_parent"
         android:layout_height="41dp"
+        android:layout_marginTop="50dp"
         android:gravity="center"
         android:text="Хобби"
         android:textColor="#D6A8FF"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="382dp"
+        android:layout_height="25dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.482"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.701">
+
+        <TextView
+            android:id="@+id/UserGender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/white"
+            android:width="20dp" />
+
+        <TextView
+            android:id="@+id/UserAge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/white"
+            android:width="20dp" />
+
+        <TextView
+            android:id="@+id/UserCity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/white"
+            android:width="20dp" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout6"
         android:layout_width="0dp"
         android:layout_height="84dp"
+        android:layout_marginBottom="60dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
-        android:layout_marginBottom="50dp">
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:id="@+id/linearLayout4"
@@ -109,21 +156,6 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tag3"
-                android:layout_width="107dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:shadowColor="@color/text_shadow"
-                android:shadowDx="1"
-                android:shadowDy="1"
-                android:shadowRadius="2"
-                android:text="Рыбалка"
-                android:textColor="#6750A3"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <TextView
                 android:id="@+id/tag2"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -139,45 +171,78 @@
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/tag3"
+                android:layout_width="107dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:shadowColor="@color/text_shadow"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="2"
+                android:text="Рыбалка"
+                android:textColor="#6750A3"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
         </LinearLayout>
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="253dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="36dp"
+        android:gravity="center"
+        android:text="Статус:"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/UserStatus"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView6" />
+
     <LinearLayout
-        android:id="@+id/linearLayout5"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="382dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="48dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.482"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/UserStatus"
-        android:layout_margin="15dp">
+        app:layout_constraintTop_toTopOf="@+id/UserStatus">
 
         <TextView
-            android:id="@+id/UserGender"
+            android:id="@+id/textView16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Пол:"
-            android:textColor="@color/white" />
+            android:gravity="center"
+            android:text="Пол"
+            android:textColor="@color/white"
+            android:width="20dp"/>
 
         <TextView
-            android:id="@+id/UserAge"
+            android:id="@+id/textView17"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Возраст:"
-            android:textColor="@color/white" />
+            android:gravity="center"
+            android:text="Возраст"
+            android:textColor="@color/white"
+            android:width="20dp" />
 
         <TextView
-            android:id="@+id/UserCity"
+            android:id="@+id/textView18"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Город:"
-            android:textColor="@color/white" />
+            android:gravity="center"
+            android:text="Город"
+            android:textColor="@color/white"
+            android:width="20dp"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

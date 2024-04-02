@@ -13,6 +13,16 @@ public class Profile {
     private List<String> hobbies;
     private String status;
 
+    private String photo_base64;
+
+    public String getPhoto() {
+        return photo_base64;
+    }
+
+    public void setPhoto(String photo_base64) {
+        this.photo_base64 = photo_base64;
+    }
+
     public String getUsername() {
         return username;
     }
