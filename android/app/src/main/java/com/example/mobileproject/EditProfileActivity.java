@@ -281,8 +281,8 @@ public class EditProfileActivity extends AppCompatActivity {
         hobbies.add(hobbySpinner1.getSelectedItem().toString());
         hobbies.add(hobbySpinner2.getSelectedItem().toString());
         hobbies.add(hobbySpinner3.getSelectedItem().toString());
-        profile.setHobbies(hobbies);
 
+        profile.setHobbies(hobbies);
         profile.setPhoto("photo");
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -297,7 +297,7 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    Intent intent = new Intent(EditProfileActivity.this, ProfileActivity.class);
+                    Intent intent = new Intent(EditProfileActivity.this, MainMenu.class);
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "Успешно",
                             Toast.LENGTH_SHORT);
