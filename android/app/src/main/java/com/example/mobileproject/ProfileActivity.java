@@ -47,9 +47,14 @@ public class ProfileActivity extends AppCompatActivity {
             return insets;
         });
 
-//        TextView name;
-//        userName = findViewById(R.id.textView6);
-//        userName.setText(userContext.getUsername());
+        userName = findViewById(R.id.textView6);
+        status = findViewById(R.id.UserStatus);
+        gender = findViewById(R.id.UserGender);
+        age = findViewById(R.id.UserAge);
+        city = findViewById(R.id.UserCity);
+        tag1 = findViewById(R.id.tag1);
+        tag2 = findViewById(R.id.tag2);
+        tag3 = findViewById(R.id.tag3);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://176.109.111.92:8080/")
@@ -75,21 +80,21 @@ public class ProfileActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT);
                         toast.show();
                         // ЗАПОЛНИТЬ ПОЛЯ ГЕТТЕРАМИ profile
-                        userName = findViewById(R.id.textView6);
+                        //userName = findViewById(R.id.textView6);
                         userName.setText(profile.getName());
-                        status = findViewById(R.id.UserStatus);
-                        status.setText("Статус: " + profile.getStatus());
-                        gender = findViewById(R.id.UserGender);
-                        gender.setText("Пол: " + profile.getSex());
-                        age = findViewById(R.id.UserAge);
-                        age.setText("Возраст: " + Integer.toString(profile.getAge()));
-                        city = findViewById(R.id.UserCity);
-                        city.setText("Город: " + profile.getCity());
-                        tag1 = findViewById(R.id.tag1);
+                        //status = findViewById(R.id.UserStatus);
+                        status.setText(profile.getStatus());
+//                        gender = findViewById(R.id.UserGender);
+                        gender.setText(profile.getSex());
+//                        age = findViewById(R.id.UserAge);
+                        age.setText(Integer.toString(profile.getAge()));
+//                        city = findViewById(R.id.UserCity);
+                        city.setText(profile.getCity());
+//                        tag1 = findViewById(R.id.tag1);
                         tag1.setText(profile.getHobbies().get(0));
-                        tag2 = findViewById(R.id.tag2);
+//                        tag2 = findViewById(R.id.tag2);
                         tag2.setText(profile.getHobbies().get(1));
-                        tag3 = findViewById(R.id.tag3);
+//                        tag3 = findViewById(R.id.tag3);
                         tag3.setText(profile.getHobbies().get(2));
 
                     }
@@ -116,8 +121,8 @@ public class ProfileActivity extends AppCompatActivity {
         intent.putExtra("name", userName.getText().toString());
         intent.putExtra("status", status.getText().toString());
         intent.putExtra("gender", gender.getText().toString());
-        intent.putExtra("age", age.getText().toString().split(" ")[1]);
-        intent.putExtra("city", city.getText().toString().replace("Город: ", ""));
+        intent.putExtra("age", age.getText().toString());
+        intent.putExtra("city", city.getText().toString());
         intent.putExtra("tag1", tag1.getText().toString());
         intent.putExtra("tag2", tag2.getText().toString());
         intent.putExtra("tag3", tag3.getText().toString());
