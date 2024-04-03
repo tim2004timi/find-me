@@ -143,8 +143,8 @@ public class ProfileActivity extends AppCompatActivity {
         intent.putExtra("tag2", tag2.getText().toString());
         intent.putExtra("tag3", tag3.getText().toString());
 
-        Bitmap bitmap = ((BitmapDrawable)avatar.getDrawable()).getBitmap();
-        intent.putExtra("avatar", bitmap);
+//        Bitmap bitmap = ((BitmapDrawable)avatar.getDrawable()).getBitmap();
+//        intent.putExtra("avatar", bitmap);
         startActivity(intent);
     }
 }

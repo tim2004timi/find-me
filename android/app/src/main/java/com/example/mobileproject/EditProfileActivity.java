@@ -2,6 +2,7 @@ package com.example.mobileproject;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -40,7 +41,9 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.request.RequestOptions;
 
 import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -77,6 +80,7 @@ public class EditProfileActivity extends AppCompatActivity {
             return insets;
         });
 
+
         Intent intent = getIntent();
         editTextName = findViewById(R.id.editUsername);
         editTextName.setText(intent.getStringExtra("name"));
@@ -84,9 +88,8 @@ public class EditProfileActivity extends AppCompatActivity {
         editTextAge.setText(intent.getStringExtra("age"));
         editTextCity = findViewById(R.id.editTextTextPostalAddress);
         editTextCity.setText(intent.getStringExtra("city"));
-        avatar = findViewById(R.id.imageView3);
 
-        Bitmap bitmap = intent.getParcelableExtra("avatar");
+//        Bitmap bitmap = intent.getParcelableExtra("avatar");
         //avatar.setImageBitmap(bitmap);
 //        Bundle bundle = getIntent().getExtras();
 //        Bitmap bitmap = bundle.getParcelable("avatar");
@@ -235,6 +238,56 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 openFileChooser();
+            }
+        });
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://176.109.111.92:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        // Получение аватарки от сервера
+        ApiService apiService = retrofit.create(ApiService.class);
+        Call<Profile> call = apiService.getProfile(userContext.getUsername(), userContext.getPassword());
+
+        call.enqueue(new Callback<Profile>() {
+            @Override
+            public void onResponse(Call<Profile> call, Response<Profile> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() == null) {
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Данные не были получены",
+                                Toast.LENGTH_SHORT);
+                        toast.show();
+                    } else {
+                        Profile profile = response.body();
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "УСПЕШНО",
+                                Toast.LENGTH_SHORT);
+                        toast.show();
+                        // ЗАПОЛНИТЬ ПОЛЯ ГЕТТЕРАМИ profile
+                        // Обработка изображения
+                        String codedAvatar = profile.getPhoto();
+                        byte[] decodedString = Base64.decode(codedAvatar, Base64.DEFAULT);
+                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        //avatar = findViewById(R.id.imageView3);
+                        avatar.setImageBitmap(decodedByte);
+
+                    }
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "ОШИБКА",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Profile> call, Throwable t) {
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "ОШИБКА",
+                        Toast.LENGTH_SHORT);
+                toast.show();
             }
         });
     }
