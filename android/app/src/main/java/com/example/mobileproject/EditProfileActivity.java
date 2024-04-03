@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -27,6 +28,7 @@ import com.example.mobileproject.spinners.CustomSpinnerAdapter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -82,7 +84,16 @@ public class EditProfileActivity extends AppCompatActivity {
         editTextAge.setText(intent.getStringExtra("age"));
         editTextCity = findViewById(R.id.editTextTextPostalAddress);
         editTextCity.setText(intent.getStringExtra("city"));
+        avatar = findViewById(R.id.imageView3);
 
+        Bitmap bitmap = intent.getParcelableExtra("avatar");
+        //avatar.setImageBitmap(bitmap);
+//        Bundle bundle = getIntent().getExtras();
+//        Bitmap bitmap = bundle.getParcelable("avatar");
+//        if (bitmap != null) {avatar.setImageBitmap(bitmap);
+
+
+        //avatar.setImageBitmap(intent.getStringExtra("avatar"));
         //spinnerSex = findViewById(R.id.genderSpinner);
         //spinnerSex.setText(intent.getStringExtra("sex"));
         //hobbySpinner1 = findViewById(R.id.hobby1_spinner);
@@ -262,8 +273,12 @@ public class EditProfileActivity extends AppCompatActivity {
         hobbySpinner3 = findViewById(R.id.hobby3_spinner);
 
         // Получение аватарки в виде BitArray
-//        avatar = (ImageView) findViewById(R.id.imageView3);
-//        Bitmap bitmapAvatar = ((BitmapDrawable)avatar.getDrawable()).getBitmap();
+        avatar = (ImageView) findViewById(R.id.imageView3);
+        Bitmap bitmapAvatar = ((BitmapDrawable)avatar.getDrawable()).getBitmap();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmapAvatar.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        String encodedAvatar = Base64.encodeToString(byteArray, Base64.DEFAULT);
 
 
         //int valid_age = Integer.parseInt(editTextAge.getText().toString());
@@ -283,7 +298,8 @@ public class EditProfileActivity extends AppCompatActivity {
         hobbies.add(hobbySpinner3.getSelectedItem().toString());
         profile.setHobbies(hobbies);
 
-        profile.setPhoto("photo");
+        profile.setPhoto(encodedAvatar);
+
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://176.109.111.92:8080/")

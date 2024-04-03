@@ -2,10 +2,16 @@ package com.example.mobileproject;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
@@ -35,6 +41,9 @@ public class ProfileActivity extends AppCompatActivity {
     TextView tag1;
     TextView tag2;
     TextView tag3;
+    String codedAvatar;
+    ImageView avatar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +106,13 @@ public class ProfileActivity extends AppCompatActivity {
 //                        tag3 = findViewById(R.id.tag3);
                         tag3.setText(profile.getHobbies().get(2));
 
+                        // Обработка изображения
+                        codedAvatar = profile.getPhoto();
+                        byte[] decodedString = Base64.decode(codedAvatar, Base64.DEFAULT);
+                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        avatar = findViewById(R.id.imageView3);
+                        avatar.setImageBitmap(decodedByte);
+
                     }
                 } else {
                     Toast toast = Toast.makeText(getApplicationContext(),
@@ -126,6 +142,9 @@ public class ProfileActivity extends AppCompatActivity {
         intent.putExtra("tag1", tag1.getText().toString());
         intent.putExtra("tag2", tag2.getText().toString());
         intent.putExtra("tag3", tag3.getText().toString());
+
+        Bitmap bitmap = ((BitmapDrawable)avatar.getDrawable()).getBitmap();
+        intent.putExtra("avatar", bitmap);
         startActivity(intent);
     }
 }
