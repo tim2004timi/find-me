@@ -313,7 +313,7 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    Intent intent = new Intent(EditProfileActivity.this, ProfileActivity.class);
+                    Intent intent = new Intent(EditProfileActivity.this, MainMenu.class);
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "Успешно",
                             Toast.LENGTH_SHORT);
