@@ -23,14 +23,14 @@
         android:id="@+id/avatar"
         android:layout_width="280dp"
         android:layout_height="420dp"
+        android:layout_marginBottom="110dp"
+        android:scaleType="fitStart"
         app:layout_constraintBottom_toBottomOf="@+id/rectangle"
         app:layout_constraintEnd_toEndOf="@+id/rectangle"
         app:layout_constraintStart_toStartOf="@+id/rectangle"
         app:layout_constraintTop_toTopOf="@+id/rectangle"
-        app:srcCompat="@drawable/_707303686169755743"
-        tools:srcCompat="@drawable/_707303686169755743"
-        android:scaleType="fitStart"
-        android:layout_marginBottom="110dp"/>
+        app:srcCompat="@drawable/icons8_person_96___"
+        tools:srcCompat="@drawable/icons8_person_96___" />
 
     <LinearLayout
         android:id="@+id/linearLayout8"
@@ -117,11 +117,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rectangle">
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/icon_back" />
 
         <ImageButton
             android:id="@+id/imageButtonOk"
@@ -136,8 +144,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/icons8_x_100"
-            android:background="@android:color/transparent"/>
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/icons8_x_100" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:paddingHorizontal="0dp"
+            app:srcCompat="@drawable/icon_next" />
 
     </LinearLayout>
 
