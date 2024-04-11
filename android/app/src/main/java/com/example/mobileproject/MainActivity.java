@@ -1,6 +1,7 @@
 package com.example.mobileproject;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -22,7 +23,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView textView;
     EditText editTextLogin;
     EditText editTextPassword;
     TextView test;
@@ -37,6 +37,45 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        SharedPreferences sharedPreferences = getSharedPreferences("SavedUserPare", MODE_PRIVATE);
+        String saved_username = sharedPreferences.getString("username", "");
+        String saved_password = sharedPreferences.getString("password", "");
+
+        if (!saved_username.isEmpty() && !saved_password.isEmpty()) {
+            String login = saved_username;
+            String password = saved_password;
+            User user = new User(login, password);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://176.109.111.92:8080/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            ApiService apiService = retrofit.create(ApiService.class);
+            apiService.loginUser(user).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+
+                        UserContext userContext = UserContext.getInstance();
+                        userContext.setUser(user);
+
+                        Intent intent = new Intent(MainActivity.this, MainMenu.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+
+                @Override
+                public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Ошибка соединения",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+        }
     }
 
     public void onClickRegistration(View view) {
@@ -60,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
         editTextLogin = findViewById(R.id.editTextText);
         editTextPassword = findViewById(R.id.editTextTextPassword);
 
-        test = findViewById(R.id.textView5);
 
         String login = editTextLogin.getText().toString();
         String password = editTextPassword.getText().toString();
@@ -82,8 +120,14 @@ public class MainActivity extends AppCompatActivity {
                     UserContext userContext = UserContext.getInstance();
                     userContext.setUser(user);
 
-                    textView = findViewById(R.id.textView5);
-                    textView.setText("Успешный вход");
+                    SharedPreferences sharedPreferences = getSharedPreferences("SavedUserPare", MODE_PRIVATE);
+                    SharedPreferences.Editor myEdit = sharedPreferences.edit();
+
+
+                    myEdit.putString("username", user.getUsername());
+                    myEdit.putString("password", user.getPassword());
+                    myEdit.apply();
+
                     Intent intent = new Intent(MainActivity.this, MainMenu.class);
                     startActivity(intent);
                     finish();
