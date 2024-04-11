@@ -1,4 +1,6 @@
 package com.example.mobileproject;
+import java.util.List;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -18,4 +20,7 @@ public interface ApiService {
 
     @GET("profile/")
     Call<Profile> getProfile(@Query("username") String username, @Query("password") String password);
+
+    @GET("profiles/")
+    Call<List<Profile>> getUsers(@Query("username") String username);
 }
