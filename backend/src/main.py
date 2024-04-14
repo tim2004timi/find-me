@@ -1,13 +1,9 @@
-import time
-
 from fastapi import FastAPI
 
 from contextlib import asynccontextmanager
 
-from typing import AsyncContextManager
-
-from database import db_manager
-from base import Base
+from .database import db_manager, Base
+from .users.router import router as router_users
 
 
 @asynccontextmanager
@@ -21,3 +17,9 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="FindMe", lifespan=lifespan)
+app.include_router(router_users)
+
+
+@app.get('/')
+def index():
+    return "Hello, world"
