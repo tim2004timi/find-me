@@ -16,7 +16,7 @@ async def get_users(session: AsyncSession) -> List[User]:
     return list(users)
 
 
-async def det_user_by_id(session: AsyncSession, user_id: int) -> User | None:
+async def get_user_by_id(session: AsyncSession, user_id: int) -> User | None:
     return await session.get(User, user_id)
 
 
