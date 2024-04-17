@@ -44,6 +44,11 @@ public class MainMenu extends AppCompatActivity {
         finish();
     }
 
+    public void onClickMessenger(View view) {
+        Intent intent = new Intent(this, ChatActivity.class);
+        startActivity(intent);
+    }
+
     public void onClickProfileButton(View view) {
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);

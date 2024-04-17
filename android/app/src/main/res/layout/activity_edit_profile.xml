@@ -72,8 +72,8 @@
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icons8_person_96___"
-        tools:srcCompat="@drawable/icons8_person_96___" />
+        app:srcCompat="@drawable/newbasephoto"
+        tools:srcCompat="@drawable/newbasephoto" />
 
     <Button
         android:id="@+id/editProfileButton"

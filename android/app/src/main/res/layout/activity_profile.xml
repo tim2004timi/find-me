@@ -17,8 +17,8 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icons8_person_96___"
-        tools:srcCompat="@drawable/icons8_person_96___" />
+        app:srcCompat="@drawable/newbasephoto"
+        tools:srcCompat="@drawable/newbasephoto" />
 
     <TextView
         android:id="@+id/textView6"
@@ -116,6 +116,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
+
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
@@ -244,5 +245,18 @@
             android:textColor="#D6A8FF"
             android:textSize="16dp" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Пройти верификацию"
+        android:onClick="onClickVerification"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.934"
+        app:layout_constraintStart_toEndOf="@+id/editProfileButton"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout6"
+        app:layout_constraintVertical_bias="0.693" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
