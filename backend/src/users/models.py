@@ -1,5 +1,4 @@
-from sqlalchemy import Column, String
-from sqlalchemy.orm import Mapped
+from sqlalchemy.orm import Mapped, mapped_column, relationship, declared_attr
 
 from ..database import Base
 
@@ -7,7 +6,9 @@ from ..database import Base
 class User(Base):
     __tablename__ = "users"
 
-    username: Mapped[str] = Column(
-        String, primary_key=True, index=True, nullable=False
-    )
-    hashed_password: Mapped[str] = Column(String, nullable=False)
+    username: Mapped[str] = mapped_column(index=True, nullable=False)
+    hashed_password: Mapped[str] = mapped_column(nullable=False)
+
+    @declared_attr
+    def profile(cls):
+        return relationship("Profile", back_populates="user", uselist=False)
