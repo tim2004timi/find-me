@@ -1,4 +1,8 @@
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+from sqlalchemy.ext.asyncio import (
+    create_async_engine,
+    async_sessionmaker,
+    AsyncSession,
+)
 
 from src.config import settings
 from sqlalchemy.orm import (
@@ -32,6 +36,11 @@ class DatabaseManager:
             autocommit=False,
             expire_on_commit=False,
         )
+
+    async def session_dependency(self) -> AsyncSession:
+        async with self.session_maker() as session:
+            yield session
+            await session.close()
 
 
 db_manager = DatabaseManager()
