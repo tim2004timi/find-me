@@ -5,8 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from passlib.context import CryptContext
 
-from .models import User as UserORMModel
-from .schemas import UserCreate, User
+from .models import User
+from .schemas import UserCreate
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -35,7 +35,7 @@ async def create_user(
     session: AsyncSession, user_in: UserCreate
 ) -> User | None:
     hash_password = get_password_hash(user_in.password)
-    user = UserORMModel(
+    user = User(
         username=user_in.username,
         hashed_password=hash_password,
     )

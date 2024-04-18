@@ -3,8 +3,8 @@ from typing import List
 from sqlalchemy import select, Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from .models import Profile as ProfileORMModel
-from .schemas import ProfileCreate, Profile
+from .models import Profile
+from .schemas import ProfileCreate
 
 
 async def get_profiles(session: AsyncSession) -> List[Profile]:
@@ -23,7 +23,7 @@ async def get_profile_by_id(
 async def create_profile(
     session: AsyncSession, profile_in: ProfileCreate
 ) -> Profile | None:
-    profile = ProfileORMModel(**profile_in.model_dump())
+    profile = Profile(**profile_in.model_dump())
     session.add(profile)
     await session.commit()
     # await session.refresh()
