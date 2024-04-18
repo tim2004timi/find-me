@@ -14,7 +14,9 @@ async def get_profiles(session: AsyncSession) -> List[Profile]:
     return list(profiles)
 
 
-async def get_profile_by_id(session: AsyncSession, profile_id: int) -> Profile | None:
+async def get_profile_by_id(
+    session: AsyncSession, profile_id: int
+) -> Profile | None:
     return await session.get(Profile, profile_id)
 
 
