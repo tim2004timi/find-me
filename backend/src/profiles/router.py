@@ -32,6 +32,13 @@ async def get_profile_by_id(
     return profile
 
 
+@router.get("/{profile_id}", response_model=Profile)
+async def get_profile_by_id(
+    profile: Profile = Depends(profile_by_id_dependency),
+):
+    return profile
+
+
 @router.post("/", response_model=Profile, status_code=status.HTTP_201_CREATED)
 async def create_profile(
     profile_in: ProfileCreate,

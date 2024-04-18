@@ -24,3 +24,19 @@ async def profile_by_id_dependency(
             detail=f"Профиль с ID: {profile_id} не найден",
         )
     return profile
+
+
+async def profile_by_id_username(
+    username: Annotated[str, Path],
+    session: AsyncSession = Depends(db_manager.session_dependency),
+) -> Profile:
+    profile = await service.get_profile_by_username(
+        session=session, username=username
+    )
+
+    if profile is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Профиль с username: {username} не найден",
+        )
+    return profile
