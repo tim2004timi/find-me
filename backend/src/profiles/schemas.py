@@ -11,7 +11,7 @@ class ProfileBase(BaseModel):
 
 
 class ProfileCreate(ProfileBase):
-    pass
+    user_id: int
 
 
 class Profile(ProfileBase):
