@@ -33,7 +33,7 @@ async def create_profile(
 async def update_profile(
     session: AsyncSession,
     profile: Profile,
-    profile_update: ProfileUpdate,
+    profile_update: ProfileUpdate | ProfileUpdatePartial,
     partial: bool = False,
 ) -> Profile | None:
     for name, value in profile_update.model_dump(

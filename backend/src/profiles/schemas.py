@@ -18,17 +18,17 @@ class ProfileDelete(ProfileBase):
     pass
 
 
-class ProfileUpdate(ProfileCreate):
+class ProfileUpdate(ProfileBase):
     pass
 
 
 class ProfileUpdatePartial(ProfileBase):
-    name: str | None
-    sex: str | None
-    age: int | None
-    city: str | None
-    hobbies: list[str] | None
-    status: str | None
+    name: str | None = None
+    sex: str | None = None
+    age: int | None = None
+    city: str | None = None
+    hobbies: list[str] | None = None
+    status: str | None = None
 
 
 class Profile(ProfileBase):
