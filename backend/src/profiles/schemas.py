@@ -14,6 +14,23 @@ class ProfileCreate(ProfileBase):
     user_id: int
 
 
+class ProfileDelete(ProfileBase):
+    pass
+
+
+class ProfileUpdate(ProfileCreate):
+    pass
+
+
+class ProfileUpdatePartial(ProfileBase):
+    name: str | None
+    sex: str | None
+    age: int | None
+    city: str | None
+    hobbies: list[str] | None
+    status: str | None
+
+
 class Profile(ProfileBase):
     model_config = ConfigDict(from_attributes=True)
 

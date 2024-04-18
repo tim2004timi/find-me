@@ -4,7 +4,7 @@ from sqlalchemy import select, Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from .models import Profile
-from .schemas import ProfileCreate
+from .schemas import ProfileCreate, ProfileUpdate, ProfileUpdatePartial
 
 
 async def get_profiles(session: AsyncSession) -> List[Profile]:
@@ -28,3 +28,22 @@ async def create_profile(
     await session.commit()
     # await session.refresh()
     return profile
+
+
+async def update_profile(
+    session: AsyncSession,
+    profile: Profile,
+    profile_update: ProfileUpdate,
+    partial: bool = False,
+) -> Profile | None:
+    for name, value in profile_update.model_dump(
+        exclude_unset=partial
+    ).items():
+        setattr(profile, name, value)
+    await session.commit()
+    return profile
+
+
+async def delete_profile(session: AsyncSession, profile: Profile) -> None:
+    await session.delete(profile)
+    await session.commit()
