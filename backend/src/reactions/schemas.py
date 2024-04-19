@@ -1,6 +1,6 @@
 from enum import Enum
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class ReactionsEnum(Enum):
@@ -16,3 +16,9 @@ class ReactionBase(BaseModel):
 
 class ReactionCreate(ReactionBase):
     pass
+
+
+class Reaction(ReactionBase):
+    id: int
+
+    model_config = ConfigDict(from_attributes=True)

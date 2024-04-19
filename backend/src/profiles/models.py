@@ -19,4 +19,6 @@ class Profile(Base):
 
     @declared_attr
     def user(cls):
-        return relationship("User", back_populates="profile")
+        return relationship(
+            "User", back_populates="profile", single_parent=True
+        )
