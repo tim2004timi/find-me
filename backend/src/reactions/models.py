@@ -15,4 +15,4 @@ class Reaction(Base):
 
     @declared_attr
     def to_user(cls):
-        return relationship("User", back_populates="got_reactions")
+        return relationship("User", back_populates="gotten_reactions")
