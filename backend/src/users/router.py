@@ -3,6 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from ..auth import authenticate_dependency
 from . import service
 from .schemas import User, UserCreate
 from ..database import db_manager
@@ -36,6 +37,14 @@ async def get_users(
 @router.post("/register", response_model=User)
 async def create_user(
     user_in: UserCreate,
+    session: AsyncSession = Depends(db_manager.session_dependency),
+):
+    return await service.create_user(session=session, user_in=user_in)
+
+
+@router.post("/login", response_model=User)
+async def login_user(
+    auth_user: User = Depends(authenticate_dependency),
     session: AsyncSession = Depends(db_manager.session_dependency),
 ):
     return await service.create_user(session=session, user_in=user_in)

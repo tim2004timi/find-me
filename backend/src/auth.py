@@ -34,10 +34,6 @@ async def authenticate_dependency(
     result: Result = await session.execute(query)
     user = result.scalars().first()
 
-    print(
-        f"Auth user: {get_password_hash(password)}, User in back: {user.hashed_password}"
-    )
-
     if user is not None and verify_password(
         plain_password=password, hashed_password=user.hashed_password
     ):
@@ -45,5 +41,5 @@ async def authenticate_dependency(
 
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
-        detail=f"Неправильный логин или пароль",
+        detail=f"Неверный логин или пароль",
     )
