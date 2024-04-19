@@ -1,13 +1,17 @@
-from sqlalchemy import ForeignKey
+from datetime import datetime
+
+from sqlalchemy import ForeignKey, DateTime
 from sqlalchemy.orm import declared_attr, relationship, mapped_column, Mapped
 
 from ..database import Base
 
 
 class Reaction(Base):
+    type: Mapped[str] = mapped_column(nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
     from_user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     to_user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
-    type: Mapped[str] = mapped_column(nullable=False)
 
     @declared_attr
     def from_user(cls):
