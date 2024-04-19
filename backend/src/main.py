@@ -22,8 +22,3 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="FindMe", lifespan=lifespan)
 app.include_router(router_users, prefix="/users")
 app.include_router(router_profiles, prefix="/profiles")
-
-
-@app.get("/")
-def index():
-    return "Hello, world"

@@ -9,10 +9,6 @@ class UserCreate(UserBase):
     password: str
 
 
-class UserAuth(UserBase):
-    password: str
-
-
 class User(UserBase):
     model_config = ConfigDict(from_attributes=True)
 

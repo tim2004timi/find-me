@@ -4,7 +4,7 @@ from sqlalchemy import select, Result
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
 
-from users import User
+from ..users import User
 from .models import Profile
 from .schemas import ProfileCreate, ProfileUpdate, ProfileUpdatePartial
 

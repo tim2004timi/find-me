@@ -26,7 +26,7 @@ async def profile_by_id_dependency(
     return profile
 
 
-async def profile_by_id_username(
+async def profile_by_username_dependency(
     username: Annotated[str, Path],
     session: AsyncSession = Depends(db_manager.session_dependency),
 ) -> Profile:

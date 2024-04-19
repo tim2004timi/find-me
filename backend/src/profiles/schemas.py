@@ -10,6 +10,10 @@ class ProfileBase(BaseModel):
     status: str
 
 
+class ProfileIn(ProfileBase):
+    pass
+
+
 class ProfileCreate(ProfileBase):
     user_id: int
 
@@ -35,3 +39,4 @@ class Profile(ProfileBase):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
+    user_id: int
