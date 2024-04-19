@@ -45,6 +45,5 @@ async def create_user(
 @router.post("/login", response_model=User)
 async def login_user(
     auth_user: User = Depends(authenticate_dependency),
-    session: AsyncSession = Depends(db_manager.session_dependency),
 ):
-    return await service.create_user(session=session, user_in=user_in)
+    return auth_user
