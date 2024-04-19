@@ -23,7 +23,7 @@ from .dependencies import (
 router = APIRouter(tags=["Profiles"])
 
 
-@router.get("/", response_model=List[Profile])
+@router.post("/", response_model=List[Profile])
 async def get_profiles(
     session: AsyncSession = Depends(db_manager.session_dependency),
     auth_user: User = Depends(authenticate_dependency),

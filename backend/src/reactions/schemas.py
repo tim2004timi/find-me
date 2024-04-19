@@ -16,5 +16,3 @@ class ReactionBase(BaseModel):
 
 class ReactionCreate(ReactionBase):
     pass
-
-
