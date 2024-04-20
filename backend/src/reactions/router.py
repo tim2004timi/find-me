@@ -7,7 +7,7 @@ from . import service
 from ..auth import authenticate_dependency
 from ..users import User
 from ..database import db_manager
-from .schemas import Reaction, ReactionCreate
+from .schemas import Reaction, ReactionCreate, ReactionIn
 
 router = APIRouter(tags=["Reactions"])
 
@@ -23,9 +23,12 @@ async def get_gotten_reactions(
 
 @router.post("/", response_model=Reaction)
 async def create_reaction(
-    reaction: ReactionCreate,
+    reaction: ReactionIn,
     session: AsyncSession = Depends(db_manager.session_dependency),
     auth_user: User = Depends(authenticate_dependency),
 ):
-
+    from_user_id = auth_user.id
+    reaction = ReactionCreate(
+        **reaction.model_dump(), from_user_id=from_user_id
+    )
     return await service.create_reactions(session=session, reaction=reaction)

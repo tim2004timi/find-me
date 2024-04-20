@@ -10,17 +10,21 @@ class ReactionsEnum(str, Enum):
 
 
 class ReactionBase(BaseModel):
-    from_user_id: int
     to_user_id: int
     type: ReactionsEnum
 
 
-class ReactionCreate(ReactionBase):
+class ReactionIn(ReactionBase):
     pass
+
+
+class ReactionCreate(ReactionBase):
+    from_user_id: int
 
 
 class Reaction(ReactionBase):
     id: int
+    from_user_id: int
     created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
