@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel, ConfigDict
 
 
@@ -8,6 +10,7 @@ class ProfileBase(BaseModel):
     city: str
     hobbies: list[str]
     status: str
+    photo_base64: Optional[str] = None
 
 
 class ProfileIn(ProfileBase):
@@ -39,4 +42,9 @@ class Profile(ProfileBase):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
+    is_verified: bool
     user_id: int
+
+
+class ProfilePhotoVerification(BaseModel):
+    photo_base64: str
