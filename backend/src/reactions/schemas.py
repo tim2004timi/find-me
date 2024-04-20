@@ -1,9 +1,10 @@
+from datetime import datetime
 from enum import Enum
 
 from pydantic import BaseModel, ConfigDict
 
 
-class ReactionsEnum(Enum):
+class ReactionsEnum(str, Enum):
     like = "like"
     dislike = "dislike"
 
@@ -20,5 +21,6 @@ class ReactionCreate(ReactionBase):
 
 class Reaction(ReactionBase):
     id: int
+    created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
