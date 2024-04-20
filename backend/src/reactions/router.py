@@ -21,6 +21,15 @@ async def get_gotten_reactions(
     return await service.get_gotten_reactions(session=session, user=auth_user)
 
 
+@router.post("/posted/", response_model=List[Reaction])
+async def get_posted_reactions(
+    session: AsyncSession = Depends(db_manager.session_dependency),
+    auth_user: User = Depends(authenticate_dependency),
+):
+
+    return await service.get_posted_reactions(session=session, user=auth_user)
+
+
 @router.post("/", response_model=Reaction)
 async def create_reaction(
     reaction: ReactionIn,
