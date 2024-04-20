@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.util import await_only
 from starlette import status
 
+from ..ml.photo_verification import photo_verification
 from ..users import User
 from ..auth import authenticate_dependency
 from . import service
@@ -14,6 +15,7 @@ from .schemas import (
     ProfileUpdate,
     ProfileUpdatePartial,
     ProfileIn,
+    ProfilePhotoVerification,
 )
 from ..database import db_manager
 from .dependencies import (
@@ -62,6 +64,19 @@ async def update_partial_profile(
         profile=profile,
         profile_update=profile_update,
         partial=True,
+    )
+
+
+@router.post(
+    "/verify_photo/", response_model=bool, status_code=status.HTTP_200_OK
+)
+async def verify_photo(
+    photo: ProfilePhotoVerification,
+    session: AsyncSession = Depends(db_manager.session_dependency),
+    auth_user: User = Depends(authenticate_dependency),
+):
+    return await service.verify_profile(
+        photo=photo, session=session, auth_user=auth_user
     )
 
 

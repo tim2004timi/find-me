@@ -3,10 +3,19 @@ from typing import List
 from sqlalchemy import select, Result
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
+from starlette import status
+from starlette.exceptions import HTTPException
 
+from ..auth import UserAuth
+from ..ml.photo_verification import photo_verification
 from ..users import User
 from .models import Profile
-from .schemas import ProfileCreate, ProfileUpdate, ProfileUpdatePartial
+from .schemas import (
+    ProfileCreate,
+    ProfileUpdate,
+    ProfileUpdatePartial,
+    ProfilePhotoVerification,
+)
 
 
 async def get_profiles(session: AsyncSession) -> List[Profile]:
@@ -62,3 +71,23 @@ async def update_profile(
 async def delete_profile(session: AsyncSession, profile: Profile) -> None:
     await session.delete(profile)
     await session.commit()
+
+
+async def verify_profile(
+    session: AsyncSession, auth_user: User, photo: ProfilePhotoVerification
+) -> bool:
+    profile = await get_profile_by_username(
+        username=auth_user.username, session=session
+    )
+    if profile is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Профиль не найден"
+        )
+    is_verified = await photo_verification(
+        profile_photo_base64=profile.photo_base64,
+        photo_in_base64=photo.photo_base64,
+    )
+    profile.is_verified = is_verified
+    await session.commit()
+
+    return is_verified

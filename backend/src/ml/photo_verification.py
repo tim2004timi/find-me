@@ -1,4 +1,4 @@
-def photo_verification(
+async def photo_verification(
     profile_photo_base64: str, photo_in_base64: str
 ) -> bool:
-    pass
+    return False
