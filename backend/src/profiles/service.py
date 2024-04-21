@@ -32,7 +32,7 @@ async def get_profile_by_id(
 
 async def get_profile_by_username(
     session: AsyncSession, username: str
-) -> Profile | None:
+) -> Profile:
     query = (
         select(User)
         .options(joinedload(User.profile))
@@ -40,12 +40,15 @@ async def get_profile_by_username(
     )
     result = await session.execute(query)
     user = result.scalars().first()
-    return user.profile if user else None
+    profile = user.profile
+    if profile is None:
+        raise HTTPException(detail="Профиль не найден", status=status.HTTP_404_NOT_FOUND)
+    return profile
 
 
 async def create_profile(
     session: AsyncSession, profile_in: ProfileCreate
-) -> Profile | None:
+) -> Profile:
     profile = Profile(**profile_in.model_dump())
     session.add(profile)
     await session.commit()
