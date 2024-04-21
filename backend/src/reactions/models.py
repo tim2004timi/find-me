@@ -1,10 +1,8 @@
 from datetime import datetime
 
-from sqlalchemy import ForeignKey, DateTime, Column
+from sqlalchemy import ForeignKey, DateTime
 from sqlalchemy.orm import declared_attr, relationship, mapped_column, Mapped
-from sqlalchemy.dialects.postgresql import ENUM
 
-from .schemas import ReactionsEnum
 from ..database import Base
 
 
