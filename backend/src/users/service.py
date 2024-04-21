@@ -2,22 +2,13 @@ from typing import List
 
 from sqlalchemy import select, Result
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.exc import IntegrityError
+from starlette import status
+from starlette.exceptions import HTTPException
 
-from passlib.context import CryptContext
-
-from .models import User as UserORMModel
-from .schemas import UserCreate, User
-
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
-def get_password_hash(password: str) -> str:
-    return pwd_context.hash(password)
-
-
-def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
+from ..auth import get_password_hash
+from .models import User
+from .schemas import UserCreate
 
 
 async def get_users(session: AsyncSession) -> List[User]:
@@ -35,11 +26,17 @@ async def create_user(
     session: AsyncSession, user_in: UserCreate
 ) -> User | None:
     hash_password = get_password_hash(user_in.password)
-    user = UserORMModel(
+    user = User(
         username=user_in.username,
         hashed_password=hash_password,
     )
     session.add(user)
-    await session.commit()
-    # await session.refresh()
+    try:
+        await session.commit()
+        # await session.refresh()
+    except IntegrityError:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Пользователь с данным username уже существует",
+        )
     return user

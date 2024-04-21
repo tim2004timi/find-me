@@ -5,8 +5,9 @@ from contextlib import asynccontextmanager
 from .database import db_manager, Base
 
 # from .users.models import Base
-from .users import router as router_users
-from .profiles import router as router_profiles
+from .users.router import router as router_users
+from .profiles.router import router as router_profiles
+from .reactions.router import router as router_reactions
 
 
 @asynccontextmanager
@@ -22,8 +23,4 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="FindMe", lifespan=lifespan)
 app.include_router(router_users, prefix="/users")
 app.include_router(router_profiles, prefix="/profiles")
-
-
-@app.get("/")
-def index():
-    return "Hello, world"
+app.include_router(router_reactions, prefix="/reactions")

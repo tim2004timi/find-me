@@ -16,7 +16,10 @@ class Profile(Base):
     status: Mapped[str] = mapped_column(nullable=True)
     photo_base64: Mapped[str] = mapped_column(nullable=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    is_verified: Mapped[bool] = mapped_column(nullable=False, default=False)
 
     @declared_attr
     def user(cls):
-        return relationship("User", back_populates="profile")
+        return relationship(
+            "User", back_populates="profile", single_parent=True
+        )
