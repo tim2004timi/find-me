@@ -31,7 +31,12 @@ async def get_all_profiles(
     return await service.get_profiles(session=session)
 
 
-@router.post("/", response_model=Profile, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/",
+    response_model=Profile,
+    status_code=status.HTTP_201_CREATED,
+    description="Create new profile",
+)
 async def create_profile(
     profile: ProfileIn,
     session: AsyncSession = Depends(db_manager.session_dependency),
@@ -41,7 +46,7 @@ async def create_profile(
     return await service.create_profile(session=session, profile_in=profile)
 
 
-@router.post("/own/", response_model=Profile)
+@router.post("/own/", response_model=Profile, description="Get own profile")
 async def get_own_profile(
     session: AsyncSession = Depends(db_manager.session_dependency),
     auth_user: User = Depends(authenticate_dependency),
@@ -51,7 +56,11 @@ async def get_own_profile(
     )
 
 
-@router.post("/selection/", response_model=List[Profile])
+@router.post(
+    "/selection/",
+    response_model=List[Profile],
+    description="Get a list of recommended profiles",
+)
 async def get_profiles(
     session: AsyncSession = Depends(db_manager.session_dependency),
     auth_user: User = Depends(authenticate_dependency),
@@ -60,7 +69,7 @@ async def get_profiles(
 
 
 @router.post(
-    "/verify_photo/", response_model=bool, status_code=status.HTTP_200_OK
+    "/verify_photo/", response_model=bool, description="Verify profile photo"
 )
 async def verify_photo(
     photo: ProfilePhotoVerification,
@@ -72,7 +81,11 @@ async def verify_photo(
     )
 
 
-@router.patch("/")
+@router.patch(
+    "/",
+    response_model=Profile,
+    description="Update profile information. Don't require all profile attributes",
+)
 async def update_partial_profile(
     profile_update: ProfileUpdatePartial,
     session: AsyncSession = Depends(db_manager.session_dependency),

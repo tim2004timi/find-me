@@ -58,7 +58,7 @@ async def update_profile(
     profile: Profile,
     profile_update: ProfileUpdate | ProfileUpdatePartial,
     partial: bool = False,
-) -> Profile | None:
+) -> Profile:
     for name, value in profile_update.model_dump(
         exclude_unset=partial
     ).items():
