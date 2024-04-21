@@ -4,23 +4,12 @@ from contextlib import asynccontextmanager
 
 from .database import db_manager, Base
 
-# from .users.models import Base
 from .users.router import router as router_users
 from .profiles.router import router as router_profiles
 from .reactions.router import router as router_reactions
 
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    async with db_manager.engine.begin() as conn:
-        # await conn.run_sync(Base.metadata.drop_all)
-        # await conn.run_sync(Base.metadata.create_all)
-        for table in Base.metadata.tables:
-            print(f"table - {table}")
-    yield
-
-
-app = FastAPI(title="FindMe", lifespan=lifespan)
+app = FastAPI(title="FindMe")
 app.include_router(router_users, prefix="/users")
 app.include_router(router_profiles, prefix="/profiles")
 app.include_router(router_reactions, prefix="/reactions")

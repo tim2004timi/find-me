@@ -6,7 +6,6 @@ from sqlalchemy.orm import joinedload
 from starlette import status
 from starlette.exceptions import HTTPException
 
-from ..auth import UserAuth
 from ..ml.photo_verification import photo_verification
 from ..users import User
 from .models import Profile
