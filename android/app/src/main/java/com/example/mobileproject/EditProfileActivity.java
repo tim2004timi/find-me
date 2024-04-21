@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -25,6 +27,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.mobileproject.dto.UserData;
+import com.example.mobileproject.requests.CreateProfile;
 import com.example.mobileproject.spinners.CustomSpinnerAdapter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.picasso.Picasso;
@@ -65,6 +68,7 @@ public class EditProfileActivity extends AppCompatActivity {
     String selectedHobby3;
     User userContext = UserContext.getInstance().getUser();
     ImageView avatar;
+    TextView test;
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private Uri mImageUri;
@@ -88,23 +92,6 @@ public class EditProfileActivity extends AppCompatActivity {
         editTextAge.setText(intent.getStringExtra("age"));
         editTextCity = findViewById(R.id.editTextTextPostalAddress);
         editTextCity.setText(intent.getStringExtra("city"));
-
-//        Bitmap bitmap = intent.getParcelableExtra("avatar");
-        //avatar.setImageBitmap(bitmap);
-//        Bundle bundle = getIntent().getExtras();
-//        Bitmap bitmap = bundle.getParcelable("avatar");
-//        if (bitmap != null) {avatar.setImageBitmap(bitmap);
-
-
-        //avatar.setImageBitmap(intent.getStringExtra("avatar"));
-        //spinnerSex = findViewById(R.id.genderSpinner);
-        //spinnerSex.setText(intent.getStringExtra("sex"));
-        //hobbySpinner1 = findViewById(R.id.hobby1_spinner);
-        //hobbySpinner1.setText(intent.getStringExtra(hobbies[0]));
-        //hobbySpinner2 = findViewById(R.id.hobby2_spinner);
-        //hobbySpinner2.setText(intent.getStringExtra(hobbies[1]));
-        //hobbySpinner3 = findViewById(R.id.hobby3_spinner);
-        //hobbySpinner3.setText(intent.getStringExtra(hobbies[2]));
 
         // SPINNER STATUS
 
@@ -248,35 +235,27 @@ public class EditProfileActivity extends AppCompatActivity {
 
         // Получение аватарки от сервера
         ApiService apiService = retrofit.create(ApiService.class);
-        Call<Profile> call = apiService.getProfile(userContext.getUsername(), userContext.getPassword());
+        Call<Profile> call = apiService.getProfile(userContext);
 
         call.enqueue(new Callback<Profile>() {
             @Override
             public void onResponse(Call<Profile> call, Response<Profile> response) {
                 if (response.isSuccessful()) {
-                    if (response.body() == null) {
-                        Toast toast = Toast.makeText(getApplicationContext(),
-                                "Данные не были получены",
-                                Toast.LENGTH_SHORT);
-                        toast.show();
-                    } else {
-                        Profile profile = response.body();
-                        Toast toast = Toast.makeText(getApplicationContext(),
-                                "УСПЕШНО",
-                                Toast.LENGTH_SHORT);
-                        toast.show();
-                        // ЗАПОЛНИТЬ ПОЛЯ ГЕТТЕРАМИ profile
-                        // Обработка изображения
-                        String codedAvatar = profile.getPhoto();
-                        byte[] decodedString = Base64.decode(codedAvatar, Base64.DEFAULT);
-                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                        //avatar = findViewById(R.id.imageView3);
-                        avatar.setImageBitmap(decodedByte);
+                    Profile profile = response.body();
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "УСПЕШНО",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                    // Обработка изображения
+                    String codedAvatar = profile.getPhoto();
+                    byte[] decodedString = Base64.decode(codedAvatar, Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    //avatar = findViewById(R.id.imageView3);
+                    avatar.setImageBitmap(decodedByte);
 
-                    }
                 } else {
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            "ОШИБКА",
+                            "Данные не были получены",
                             Toast.LENGTH_SHORT);
                     toast.show();
                 }
@@ -338,8 +317,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
         //if (valid_age >= 16) {
         Profile profile = new Profile();
-        profile.setUsername(userContext.getUsername());
-        profile.setPassword(userContext.getPassword());
+//        profile.setUsername(userContext.getUsername());
+//        profile.setPassword(userContext.getPassword());
         profile.setName(editTextName.getText().toString());
         profile.setAge(Integer.parseInt(editTextAge.getText().toString()));
         profile.setSex(spinnerSex.getSelectedItem().toString());
@@ -354,6 +333,8 @@ public class EditProfileActivity extends AppCompatActivity {
         profile.setPhoto(encodedAvatar);
 
 
+        CreateProfile createProfile = new CreateProfile(profile, userContext);
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://176.109.111.92:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -362,7 +343,7 @@ public class EditProfileActivity extends AppCompatActivity {
         ApiService apiService = retrofit.create(ApiService.class);
 
 
-        apiService.postProfile(profile).enqueue(new Callback<ResponseBody>() {
+        apiService.postProfile(createProfile).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
@@ -375,9 +356,11 @@ public class EditProfileActivity extends AppCompatActivity {
                     finish();
                 } else {
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            "Неверные данные",
+                            response.toString(),
                             Toast.LENGTH_SHORT);
                     toast.show();
+                    test = findViewById(R.id.textViewTest1);
+                    test.setText(response.toString());
                 }
             }
 

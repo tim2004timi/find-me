@@ -1,4 +1,6 @@
 package com.example.mobileproject;
+import com.example.mobileproject.requests.CreateProfile;
+
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -9,17 +11,17 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ApiService {
-    @POST("register/")
+    @POST("users/register/")
     Call<ResponseBody> registerUser(@Body User user);
 
-    @POST("login/")
+    @POST("users/login/")
     Call<ResponseBody> loginUser(@Body User user);
 
-    @POST("profile/")
-    Call<ResponseBody> postProfile(@Body Profile profile);
+    @POST("profiles/")
+    Call<ResponseBody> postProfile(@Body CreateProfile createProfile);
 
-    @GET("profile/")
-    Call<Profile> getProfile(@Query("username") String username, @Query("password") String password);
+    @POST("profiles/own/")
+    Call<Profile> getProfile(@Body User user);
 
     @GET("profiles/")
     Call<List<Profile>> getUsers(@Query("username") String username);

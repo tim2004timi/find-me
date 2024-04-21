@@ -54,6 +54,7 @@ public class ProfileActivity extends AppCompatActivity {
     TextView tag3;
     String codedAvatar;
     ImageView avatar;
+    TextView test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,60 +76,48 @@ public class ProfileActivity extends AppCompatActivity {
         tag2 = findViewById(R.id.tag2);
         tag3 = findViewById(R.id.tag3);
 
+        test = findViewById(R.id.textViewTest);
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://176.109.111.92:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         ApiService apiService = retrofit.create(ApiService.class);
-        Call<Profile> call = apiService.getProfile(userContext.getUsername(), userContext.getPassword());
+        Call<Profile> call = apiService.getProfile(userContext);
 
         call.enqueue(new Callback<Profile>() {
             @Override
             public void onResponse(Call<Profile> call, Response<Profile> response) {
                 if (response.isSuccessful()) {
-                    if (response.body() == null) {
-                        Toast toast = Toast.makeText(getApplicationContext(),
-                                "Заполните поля в редакторе профиля!",
-                                Toast.LENGTH_SHORT);
-                        toast.show();
-                    } else {
-                        Profile profile = response.body();
-                        Toast toast = Toast.makeText(getApplicationContext(),
-                                "УСПЕШНО",
-                                Toast.LENGTH_SHORT);
-                        toast.show();
-                        // ЗАПОЛНИТЬ ПОЛЯ ГЕТТЕРАМИ profile
-                        //userName = findViewById(R.id.textView6);
-                        userName.setText(profile.getName());
-                        //status = findViewById(R.id.UserStatus);
-                        status.setText(profile.getStatus());
-//                        gender = findViewById(R.id.UserGender);
-                        gender.setText(profile.getSex());
-//                        age = findViewById(R.id.UserAge);
-                        age.setText(Integer.toString(profile.getAge()));
-//                        city = findViewById(R.id.UserCity);
-                        city.setText(profile.getCity());
-//                        tag1 = findViewById(R.id.tag1);
-                        tag1.setText(profile.getHobbies().get(0));
-//                        tag2 = findViewById(R.id.tag2);
-                        tag2.setText(profile.getHobbies().get(1));
-//                        tag3 = findViewById(R.id.tag3);
-                        tag3.setText(profile.getHobbies().get(2));
-
-                        // Обработка изображения
-                        codedAvatar = profile.getPhoto();
-                        byte[] decodedString = Base64.decode(codedAvatar, Base64.DEFAULT);
-                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                        avatar = findViewById(R.id.imageView3);
-                        avatar.setImageBitmap(decodedByte);
-
-                    }
-                } else {
+                    Profile profile = response.body();
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            "ОШИБКА",
+                            "УСПЕШНО",
                             Toast.LENGTH_SHORT);
                     toast.show();
+                    // ЗАПОЛНИТЬ ПОЛЯ ГЕТТЕРАМИ profile
+                    userName.setText(profile.getName());
+                    status.setText(profile.getStatus());
+                    gender.setText(profile.getSex());
+                    age.setText(Integer.toString(profile.getAge()));
+                    city.setText(profile.getCity());
+                    tag1.setText(profile.getHobbies().get(0));
+                    tag2.setText(profile.getHobbies().get(1));
+                    tag3.setText(profile.getHobbies().get(2));
+
+                    // Обработка изображения
+                    codedAvatar = profile.getPhoto();
+                    byte[] decodedString = Base64.decode(codedAvatar, Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    avatar = findViewById(R.id.imageView3);
+                    avatar.setImageBitmap(decodedByte);
+
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Заполните поля в редакторе профиля!",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+
                 }
             }
 
