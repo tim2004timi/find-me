@@ -21,7 +21,7 @@ async def get_users(
     return await service.get_users(session=session)
 
 
-@router.post("/register", response_model=User, description="Create a new user")
+@router.post("/register/", response_model=User, description="Create a new user")
 async def create_user(
     user_in: UserCreate,
     session: AsyncSession = Depends(db_manager.session_dependency),
@@ -29,7 +29,7 @@ async def create_user(
     return await service.create_user(session=session, user_in=user_in)
 
 
-@router.post("/login", response_model=User, description="Login user")
+@router.post("/login/", response_model=User, description="Login user")
 async def login_user(
     auth_user: User = Depends(authenticate_dependency),
 ):
