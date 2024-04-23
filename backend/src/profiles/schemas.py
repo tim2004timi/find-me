@@ -42,6 +42,7 @@ class Profile(ProfileBase):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
+    photo_base64: Optional[str]
     is_verified: bool
     user_id: int
 
