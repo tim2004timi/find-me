@@ -42,7 +42,7 @@ async def get_profile_by_username(
     user = result.scalars().first()
     profile = user.profile
     if profile is None:
-        raise HTTPException(detail="Профиль не найден", status=status.HTTP_404_NOT_FOUND)
+        raise HTTPException(detail="Профиль не найден", status_code=status.HTTP_404_NOT_FOUND)
     return profile
 
 

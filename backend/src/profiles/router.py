@@ -44,10 +44,12 @@ async def create_profile(
 ):
     profile = ProfileCreate(user_id=auth_user.id, **profile.model_dump())
     if auth_user.profile is not None:
-        await service.update_profile(
+        profile_in_db = await service.get_profile_by_username(username=auth_user.username, session=session)
+        return await service.update_profile(
             session=session,
-            profile=auth_user.profile,
+            profile=profile_in_db,
             profile_update=ProfileUpdatePartial(profile.dict()),
+            partial=True
         )
     return await service.create_profile(session=session, profile_in=profile)
 
