@@ -37,7 +37,6 @@ public class ProfileActivity extends AppCompatActivity {
     TextView tag3;
     String codedAvatar;
     ImageView avatar;
-    TextView test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +57,6 @@ public class ProfileActivity extends AppCompatActivity {
         tag1 = findViewById(R.id.tag1);
         tag2 = findViewById(R.id.tag2);
         tag3 = findViewById(R.id.tag3);
-
-        test = findViewById(R.id.textViewTest);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://176.109.111.92:8080/")

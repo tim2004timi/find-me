@@ -60,7 +60,6 @@ public class EditProfileActivity extends AppCompatActivity {
     String selectedHobby3;
     User userContext = UserContext.getInstance().getUser();
     ImageView avatar;
-    TextView test;
     boolean profileIsReceived = false;
 
     private static final int PICK_IMAGE_REQUEST = 1;
@@ -355,8 +354,6 @@ public class EditProfileActivity extends AppCompatActivity {
                                 response.toString(),
                                 Toast.LENGTH_SHORT);
                         toast.show();
-                        test = findViewById(R.id.textViewTest1);
-                        test.setText("patch");
                     }
                 }
 
@@ -385,8 +382,6 @@ public class EditProfileActivity extends AppCompatActivity {
                                 response.toString(),
                                 Toast.LENGTH_SHORT);
                         toast.show();
-                        test = findViewById(R.id.textViewTest1);
-                        test.setText(response.toString());
                     }
                 }
 
