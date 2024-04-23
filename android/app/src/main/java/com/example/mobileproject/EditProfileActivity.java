@@ -22,7 +22,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.mobileproject.profiles.ProfileIn;
+import com.example.mobileproject.profiles.Profile;
 import com.example.mobileproject.requests.CreateProfile;
 import com.example.mobileproject.spinners.CustomSpinnerAdapter;
 
@@ -228,20 +228,20 @@ public class EditProfileActivity extends AppCompatActivity {
 
         // Получение аватарки от сервера
         ApiService apiService = retrofit.create(ApiService.class);
-        Call<ProfileIn> call = apiService.getProfile(userContext);
+        Call<Profile> call = apiService.getProfile(userContext);
 
-        call.enqueue(new Callback<ProfileIn>() {
+        call.enqueue(new Callback<Profile>() {
             @Override
-            public void onResponse(Call<ProfileIn> call, Response<ProfileIn> response) {
+            public void onResponse(Call<Profile> call, Response<Profile> response) {
                 if (response.isSuccessful()) {
                     profileIsReceived = true;
-                    ProfileIn profileIn = response.body();
+                    Profile profile = response.body();
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "УСПЕШНО",
                             Toast.LENGTH_SHORT);
                     toast.show();
                     // Обработка изображения
-                    String codedAvatar = profileIn.getPhoto();
+                    String codedAvatar = profile.getPhoto();
                     byte[] decodedString = Base64.decode(codedAvatar, Base64.DEFAULT);
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                     //avatar = findViewById(R.id.imageView3);
@@ -257,7 +257,7 @@ public class EditProfileActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ProfileIn> call, Throwable t) {
+            public void onFailure(Call<Profile> call, Throwable t) {
                 profileIsReceived = false;
                 Toast toast = Toast.makeText(getApplicationContext(),
                         "ОШИБКА",
@@ -312,23 +312,23 @@ public class EditProfileActivity extends AppCompatActivity {
         //int valid_age = Integer.parseInt(editTextAge.getText().toString());
 
         //if (valid_age >= 16) {
-        ProfileIn profileIn = new ProfileIn();
+        Profile profile = new Profile();
 //        profile.setUsername(userContext.getUsername());
 //        profile.setPassword(userContext.getPassword());
-        profileIn.setName(editTextName.getText().toString());
-        profileIn.setAge(Integer.parseInt(editTextAge.getText().toString()));
-        profileIn.setSex(spinnerSex.getSelectedItem().toString());
-        profileIn.setCity(editTextCity.getText().toString());
-        profileIn.setStatus(spinnerStatus.getSelectedItem().toString());
+        profile.setName(editTextName.getText().toString());
+        profile.setAge(Integer.parseInt(editTextAge.getText().toString()));
+        profile.setSex(spinnerSex.getSelectedItem().toString());
+        profile.setCity(editTextCity.getText().toString());
+        profile.setStatus(spinnerStatus.getSelectedItem().toString());
         List<String> hobbies = new ArrayList<>();
         hobbies.add(hobbySpinner1.getSelectedItem().toString());
         hobbies.add(hobbySpinner2.getSelectedItem().toString());
         hobbies.add(hobbySpinner3.getSelectedItem().toString());
-        profileIn.setHobbies(hobbies);
+        profile.setHobbies(hobbies);
 
-        profileIn.setPhoto(encodedAvatar);
+        profile.setPhoto(encodedAvatar);
 
-        CreateProfile createProfile = new CreateProfile(profileIn, userContext);
+        CreateProfile createProfile = new CreateProfile(profile, userContext);
 
 
         Retrofit retrofit = new Retrofit.Builder()

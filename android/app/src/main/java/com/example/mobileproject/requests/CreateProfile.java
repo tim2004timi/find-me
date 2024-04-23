@@ -1,14 +1,14 @@
 package com.example.mobileproject.requests;
 
-import com.example.mobileproject.profiles.ProfileIn;
+import com.example.mobileproject.profiles.Profile;
 import com.example.mobileproject.User;
 
 public class CreateProfile {
-    public ProfileIn profileIn;
+    public Profile profile;
     public User auth_user;
 
-    public CreateProfile(ProfileIn profileIn, User user) {
-        this.profileIn = profileIn;
+    public CreateProfile(Profile profile, User user) {
+        this.profile = profile;
         this.auth_user = user;
     }
 }

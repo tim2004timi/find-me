@@ -1,5 +1,5 @@
 package com.example.mobileproject;
-import com.example.mobileproject.profiles.ProfileIn;
+import com.example.mobileproject.profiles.Profile;
 import com.example.mobileproject.requests.CreateProfile;
 
 import java.util.List;
@@ -26,8 +26,8 @@ public interface ApiService {
     Call<ResponseBody> patchProfile(@Body CreateProfile createProfile);
 
     @POST("profiles/own/")
-    Call<ProfileIn> getProfile(@Body User user);
+    Call<Profile> getProfile(@Body User user);
 
     @GET("profiles/")
-    Call<List<ProfileIn>> getUsers(@Query("username") String username);
+    Call<List<Profile>> getUsers(@Query("username") String username);
 }

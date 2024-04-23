@@ -15,7 +15,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.mobileproject.profiles.ProfileIn;
+import com.example.mobileproject.profiles.Profile;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -67,29 +67,29 @@ public class ProfileActivity extends AppCompatActivity {
                 .build();
 
         ApiService apiService = retrofit.create(ApiService.class);
-        Call<ProfileIn> call = apiService.getProfile(userContext);
+        Call<Profile> call = apiService.getProfile(userContext);
 
-        call.enqueue(new Callback<ProfileIn>() {
+        call.enqueue(new Callback<Profile>() {
             @Override
-            public void onResponse(Call<ProfileIn> call, Response<ProfileIn> response) {
+            public void onResponse(Call<Profile> call, Response<Profile> response) {
                 if (response.isSuccessful()) {
-                    ProfileIn profileIn = response.body();
+                    Profile profile = response.body();
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "УСПЕШНО",
                             Toast.LENGTH_SHORT);
                     toast.show();
                     // ЗАПОЛНИТЬ ПОЛЯ ГЕТТЕРАМИ profile
-                    userName.setText(profileIn.getName());
-                    status.setText(profileIn.getStatus());
-                    gender.setText(profileIn.getSex());
-                    age.setText(Integer.toString(profileIn.getAge()));
-                    city.setText(profileIn.getCity());
-                    tag1.setText(profileIn.getHobbies().get(0));
-                    tag2.setText(profileIn.getHobbies().get(1));
-                    tag3.setText(profileIn.getHobbies().get(2));
+                    userName.setText(profile.getName());
+                    status.setText(profile.getStatus());
+                    gender.setText(profile.getSex());
+                    age.setText(Integer.toString(profile.getAge()));
+                    city.setText(profile.getCity());
+                    tag1.setText(profile.getHobbies().get(0));
+                    tag2.setText(profile.getHobbies().get(1));
+                    tag3.setText(profile.getHobbies().get(2));
 
                     // Обработка изображения
-                    codedAvatar = profileIn.getPhoto();
+                    codedAvatar = profile.getPhoto();
                     byte[] decodedString = Base64.decode(codedAvatar, Base64.DEFAULT);
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                     avatar = findViewById(R.id.imageView3);
@@ -105,7 +105,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ProfileIn> call, Throwable t) {
+            public void onFailure(Call<Profile> call, Throwable t) {
                 Toast toast = Toast.makeText(getApplicationContext(),
                         "ОШИБКА",
                         Toast.LENGTH_SHORT);

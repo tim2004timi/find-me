@@ -2,7 +2,7 @@ package com.example.mobileproject.profiles;
 
 import java.util.List;
 
-public class ProfileOut {
+public class Profile {
 
     private String name;
     private String sex;
@@ -11,6 +11,34 @@ public class ProfileOut {
     private List<String> hobbies;
     private String status;
     private String photo_base64;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public boolean isVerified() {
+        return isVerified;
+    }
+
+    public void setVerified(boolean verified) {
+        isVerified = verified;
+    }
+
+    private int id;
+    private int userId;
+    private boolean isVerified;
 
     public String getName() {
         return name;
@@ -60,11 +88,11 @@ public class ProfileOut {
         this.status = status;
     }
 
-    public String getPhoto_base64() {
+    public String getPhoto() {
         return photo_base64;
     }
 
-    public void setPhoto_base64(String photo_base64) {
+    public void setPhoto(String photo_base64) {
         this.photo_base64 = photo_base64;
     }
 }

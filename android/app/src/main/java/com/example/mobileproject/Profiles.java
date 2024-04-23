@@ -1,12 +1,12 @@
 package com.example.mobileproject;
 
-import com.example.mobileproject.profiles.ProfileIn;
+import com.example.mobileproject.profiles.Profile;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Profiles {
-    public List<ProfileIn> profileInList = new ArrayList<>();
+    public List<Profile> profileList = new ArrayList<>();
     public int currentUserIndex = 0;
     public FindActivity findActivity;
 
@@ -14,28 +14,28 @@ public class Profiles {
 //        this.findActivity = findActivity;
 //    }
 
-    public ProfileIn next() {
+    public Profile next() {
 //        checkIsEmpty();
-        if (currentUserIndex >= profileInList.size()) {
+        if (currentUserIndex >= profileList.size()) {
             currentUserIndex = 0;
         }
 
-        ProfileIn profileIn = profileInList.get(currentUserIndex);
+        Profile profile = profileList.get(currentUserIndex);
         currentUserIndex += 1;
-        return profileIn;
+        return profile;
     }
 
-    public List<ProfileIn> getProfileList() {
-        return profileInList;
+    public List<Profile> getProfileList() {
+        return profileList;
     }
 
-    public void setProfileList(List<ProfileIn> profileInList) {
-        this.profileInList = profileInList;
+    public void setProfileList(List<Profile> profileList) {
+        this.profileList = profileList;
     }
 
-    public void deleteProfile(ProfileIn profileIn) {
-        if (profileInList.size() != 1) {
-            profileInList.remove(profileIn);
+    public void deleteProfile(Profile profile) {
+        if (profileList.size() != 1) {
+            profileList.remove(profile);
         }
     }
 }
