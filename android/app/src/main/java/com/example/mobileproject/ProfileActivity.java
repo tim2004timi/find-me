@@ -1,39 +1,22 @@
 package com.example.mobileproject;
 
-import android.annotation.SuppressLint;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-import com.bumptech.glide.request.RequestOptions;
+import com.example.mobileproject.profiles.ProfileIn;
 
-import org.w3c.dom.Text;
-
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -84,29 +67,29 @@ public class ProfileActivity extends AppCompatActivity {
                 .build();
 
         ApiService apiService = retrofit.create(ApiService.class);
-        Call<Profile> call = apiService.getProfile(userContext);
+        Call<ProfileIn> call = apiService.getProfile(userContext);
 
-        call.enqueue(new Callback<Profile>() {
+        call.enqueue(new Callback<ProfileIn>() {
             @Override
-            public void onResponse(Call<Profile> call, Response<Profile> response) {
+            public void onResponse(Call<ProfileIn> call, Response<ProfileIn> response) {
                 if (response.isSuccessful()) {
-                    Profile profile = response.body();
+                    ProfileIn profileIn = response.body();
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "УСПЕШНО",
                             Toast.LENGTH_SHORT);
                     toast.show();
                     // ЗАПОЛНИТЬ ПОЛЯ ГЕТТЕРАМИ profile
-                    userName.setText(profile.getName());
-                    status.setText(profile.getStatus());
-                    gender.setText(profile.getSex());
-                    age.setText(Integer.toString(profile.getAge()));
-                    city.setText(profile.getCity());
-                    tag1.setText(profile.getHobbies().get(0));
-                    tag2.setText(profile.getHobbies().get(1));
-                    tag3.setText(profile.getHobbies().get(2));
+                    userName.setText(profileIn.getName());
+                    status.setText(profileIn.getStatus());
+                    gender.setText(profileIn.getSex());
+                    age.setText(Integer.toString(profileIn.getAge()));
+                    city.setText(profileIn.getCity());
+                    tag1.setText(profileIn.getHobbies().get(0));
+                    tag2.setText(profileIn.getHobbies().get(1));
+                    tag3.setText(profileIn.getHobbies().get(2));
 
                     // Обработка изображения
-                    codedAvatar = profile.getPhoto();
+                    codedAvatar = profileIn.getPhoto();
                     byte[] decodedString = Base64.decode(codedAvatar, Base64.DEFAULT);
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                     avatar = findViewById(R.id.imageView3);
@@ -122,7 +105,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Profile> call, Throwable t) {
+            public void onFailure(Call<ProfileIn> call, Throwable t) {
                 Toast toast = Toast.makeText(getApplicationContext(),
                         "ОШИБКА",
                         Toast.LENGTH_SHORT);

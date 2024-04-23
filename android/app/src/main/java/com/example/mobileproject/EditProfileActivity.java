@@ -3,11 +3,9 @@ package com.example.mobileproject;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,26 +17,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.mobileproject.dto.UserData;
+import com.example.mobileproject.profiles.ProfileIn;
 import com.example.mobileproject.requests.CreateProfile;
 import com.example.mobileproject.spinners.CustomSpinnerAdapter;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.squareup.picasso.Picasso;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.request.RequestOptions;
@@ -69,6 +61,7 @@ public class EditProfileActivity extends AppCompatActivity {
     User userContext = UserContext.getInstance().getUser();
     ImageView avatar;
     TextView test;
+    boolean profileIsReceived = false;
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private Uri mImageUri;
@@ -235,25 +228,27 @@ public class EditProfileActivity extends AppCompatActivity {
 
         // Получение аватарки от сервера
         ApiService apiService = retrofit.create(ApiService.class);
-        Call<Profile> call = apiService.getProfile(userContext);
+        Call<ProfileIn> call = apiService.getProfile(userContext);
 
-        call.enqueue(new Callback<Profile>() {
+        call.enqueue(new Callback<ProfileIn>() {
             @Override
-            public void onResponse(Call<Profile> call, Response<Profile> response) {
+            public void onResponse(Call<ProfileIn> call, Response<ProfileIn> response) {
                 if (response.isSuccessful()) {
-                    Profile profile = response.body();
+                    profileIsReceived = true;
+                    ProfileIn profileIn = response.body();
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "УСПЕШНО",
                             Toast.LENGTH_SHORT);
                     toast.show();
                     // Обработка изображения
-                    String codedAvatar = profile.getPhoto();
+                    String codedAvatar = profileIn.getPhoto();
                     byte[] decodedString = Base64.decode(codedAvatar, Base64.DEFAULT);
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                     //avatar = findViewById(R.id.imageView3);
                     avatar.setImageBitmap(decodedByte);
 
                 } else {
+                    profileIsReceived = false;
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "Данные не были получены",
                             Toast.LENGTH_SHORT);
@@ -262,7 +257,8 @@ public class EditProfileActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Profile> call, Throwable t) {
+            public void onFailure(Call<ProfileIn> call, Throwable t) {
+                profileIsReceived = false;
                 Toast toast = Toast.makeText(getApplicationContext(),
                         "ОШИБКА",
                         Toast.LENGTH_SHORT);
@@ -316,24 +312,24 @@ public class EditProfileActivity extends AppCompatActivity {
         //int valid_age = Integer.parseInt(editTextAge.getText().toString());
 
         //if (valid_age >= 16) {
-        Profile profile = new Profile();
+        ProfileIn profileIn = new ProfileIn();
 //        profile.setUsername(userContext.getUsername());
 //        profile.setPassword(userContext.getPassword());
-        profile.setName(editTextName.getText().toString());
-        profile.setAge(Integer.parseInt(editTextAge.getText().toString()));
-        profile.setSex(spinnerSex.getSelectedItem().toString());
-        profile.setCity(editTextCity.getText().toString());
-        profile.setStatus(spinnerStatus.getSelectedItem().toString());
+        profileIn.setName(editTextName.getText().toString());
+        profileIn.setAge(Integer.parseInt(editTextAge.getText().toString()));
+        profileIn.setSex(spinnerSex.getSelectedItem().toString());
+        profileIn.setCity(editTextCity.getText().toString());
+        profileIn.setStatus(spinnerStatus.getSelectedItem().toString());
         List<String> hobbies = new ArrayList<>();
         hobbies.add(hobbySpinner1.getSelectedItem().toString());
         hobbies.add(hobbySpinner2.getSelectedItem().toString());
         hobbies.add(hobbySpinner3.getSelectedItem().toString());
-        profile.setHobbies(hobbies);
+        profileIn.setHobbies(hobbies);
 
-        profile.setPhoto(encodedAvatar);
+        profileIn.setPhoto(encodedAvatar);
 
+        CreateProfile createProfile = new CreateProfile(profileIn, userContext);
 
-        CreateProfile createProfile = new CreateProfile(profile, userContext);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://176.109.111.92:8080/")
@@ -342,36 +338,67 @@ public class EditProfileActivity extends AppCompatActivity {
 
         ApiService apiService = retrofit.create(ApiService.class);
 
-
-        apiService.postProfile(createProfile).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    Intent intent = new Intent(EditProfileActivity.this, MainMenu.class);
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            "Успешно",
-                            Toast.LENGTH_SHORT);
-                    toast.show();
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            response.toString(),
-                            Toast.LENGTH_SHORT);
-                    toast.show();
-                    test = findViewById(R.id.textViewTest1);
-                    test.setText(response.toString());
+        if (profileIsReceived) {
+            apiService.patchProfile(createProfile).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        Intent intent = new Intent(EditProfileActivity.this, MainMenu.class);
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Успешно",
+                                Toast.LENGTH_SHORT);
+                        toast.show();
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                response.toString(),
+                                Toast.LENGTH_SHORT);
+                        toast.show();
+                        test = findViewById(R.id.textViewTest1);
+                        test.setText("patch");
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        "Ошибка соединения",
-                        Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
+                @Override
+                public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Ошибка соединения",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+        } else {
+            apiService.postProfile(createProfile).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        Intent intent = new Intent(EditProfileActivity.this, MainMenu.class);
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Успешно",
+                                Toast.LENGTH_SHORT);
+                        toast.show();
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                response.toString(),
+                                Toast.LENGTH_SHORT);
+                        toast.show();
+                        test = findViewById(R.id.textViewTest1);
+                        test.setText(response.toString());
+                    }
+                }
+
+                @Override
+                public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Ошибка соединения",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+        }
 
 
 //            Intent intent = new Intent(this, ProfileActivity.class);
