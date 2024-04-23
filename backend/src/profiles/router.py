@@ -52,8 +52,7 @@ async def create_profile(
             partial=True
         )
     except Exception:
-        pass
-    return await service.create_profile(session=session, profile_in=profile)
+        return await service.create_profile(session=session, profile_in=profile)
 
 
 @router.post("/own/", response_model=Profile, description="Get own profile")
