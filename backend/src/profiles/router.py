@@ -51,7 +51,7 @@ async def create_profile(
             profile_update=ProfileUpdatePartial(profile.dict()),
             partial=True
         )
-    except HTTPException:
+    except Exception:
         pass
     return await service.create_profile(session=session, profile_in=profile)
 
