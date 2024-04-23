@@ -1,4 +1,4 @@
-package Chat;
+package com.example.mobileproject.Chat;
 
 import java.util.Date;
 

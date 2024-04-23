@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -53,7 +54,7 @@ public class Registration extends AppCompatActivity {
         boolean loginWarn = login.contains(" ");
 
         if (loginWarn == false) {
-            if (password.length() >= 7) {
+            if (password.length() >= 6) {
                 if (passwordRepeat.equals(password)) {
                     ApiService apiService = retrofit.create(ApiService.class);
 
@@ -92,7 +93,7 @@ public class Registration extends AppCompatActivity {
                 }
             } else {
                 Toast shortPasswordtoast = Toast.makeText(getApplicationContext(),
-                        "Пароль короче 7 символов",
+                        "Пароль короче 6 символов",
                         Toast.LENGTH_SHORT);
                 shortPasswordtoast.show();
             }

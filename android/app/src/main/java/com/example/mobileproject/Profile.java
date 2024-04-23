@@ -4,16 +4,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Profile {
-    private String username;
-    private String password;
     private String name;
     private String sex;
     private int age;
     private String city;
     private List<String> hobbies;
     private String status;
-
     private String photo_base64;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    private int userId;
 
     public String getPhoto() {
         return photo_base64;
@@ -21,22 +37,6 @@ public class Profile {
 
     public void setPhoto(String photo_base64) {
         this.photo_base64 = photo_base64;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getName() {
