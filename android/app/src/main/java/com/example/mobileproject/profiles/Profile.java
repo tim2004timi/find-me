@@ -11,6 +11,9 @@ public class Profile {
     private List<String> hobbies;
     private String status;
     private String photo_base64;
+    private int id;
+    private int userId;
+    private boolean isVerified;
 
     public int getId() {
         return id;
@@ -35,10 +38,6 @@ public class Profile {
     public void setVerified(boolean verified) {
         isVerified = verified;
     }
-
-    private int id;
-    private int userId;
-    private boolean isVerified;
 
     public String getName() {
         return name;

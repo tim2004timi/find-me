@@ -1,6 +1,7 @@
 package com.example.mobileproject;
 import com.example.mobileproject.profiles.Profile;
 import com.example.mobileproject.requests.CreateProfile;
+import com.example.mobileproject.requests.CreateReaction;
 
 import java.util.List;
 
@@ -28,6 +29,9 @@ public interface ApiService {
     @POST("profiles/own/")
     Call<Profile> getProfile(@Body User user);
 
-    @GET("profiles/")
-    Call<List<Profile>> getUsers(@Query("username") String username);
+    @POST("profiles/selection/")
+    Call<List<Profile>> getProfiles(@Body User user);
+
+    @POST("reactions/")
+    Call<ResponseBody> postReaction(@Body CreateReaction createReaction);
 }

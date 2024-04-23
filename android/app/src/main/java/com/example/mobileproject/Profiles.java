@@ -13,7 +13,9 @@ public class Profiles {
 //    public Profiles(FindActivity findActivity) {
 //        this.findActivity = findActivity;
 //    }
-
+    public int getCurrentUserId() {
+        return profileList.get(currentUserIndex).getUserId();
+    }
     public Profile next() {
 //        checkIsEmpty();
         if (currentUserIndex >= profileList.size()) {
@@ -27,6 +29,17 @@ public class Profiles {
 
     public List<Profile> getProfileList() {
         return profileList;
+    }
+    public String getProfilesInfo() {
+        String ids = "";
+        for (int i=0; i<profileList.size(); i++) {
+            ids += profileList.get(i).getName();
+            ids += ": ";
+            ids += Integer.toString(profileList.get(i).getUserId());
+            ids += " ";
+
+        }
+        return ids;
     }
 
     public void setProfileList(List<Profile> profileList) {
