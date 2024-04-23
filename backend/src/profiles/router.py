@@ -43,12 +43,6 @@ async def create_profile(
     auth_user: User = Depends(authenticate_dependency),
 ):
     profile = ProfileCreate(user_id=auth_user.id, **profile.model_dump())
-    if auth_user.profile is not None:
-        await service.update_profile(
-            session=session,
-            profile=auth_user.profile,
-            profile_update=ProfileUpdatePartial(profile.dict()),
-        )
     return await service.create_profile(session=session, profile_in=profile)
 
 
@@ -93,21 +87,17 @@ async def verify_photo(
     description="Update profile information. Don't require all profile attributes",
 )
 async def update_partial_profile(
-    profile_update: ProfileUpdatePartial,
+    profile: ProfileUpdatePartial,
     session: AsyncSession = Depends(db_manager.session_dependency),
     auth_user: User = Depends(authenticate_dependency),
 ):
-    profile = await service.get_profile_by_username(
+    profile_bd = await service.get_profile_by_username(
         username=auth_user.username, session=session
     )
-    if profile is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Профиль не найден"
-        )
     return await service.update_profile(
         session=session,
-        profile=profile,
-        profile_update=profile_update,
+        profile=profile_bd,
+        profile_update=profile,
         partial=True,
     )
 
