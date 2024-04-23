@@ -43,8 +43,8 @@ async def create_profile(
     auth_user: User = Depends(authenticate_dependency),
 ):
     profile = ProfileCreate(user_id=auth_user.id, **profile.model_dump())
-    if auth_user.profile is not None:
-        profile_in_db = await service.get_profile_by_username(username=auth_user.username, session=session)
+    profile_in_db = await service.get_profile_by_username(username=auth_user.username, session=session)
+    if profile_in_db is not None:
         return await service.update_profile(
             session=session,
             profile=profile_in_db,
