@@ -1,6 +1,6 @@
 package com.example.mobileproject;
 
-import android.content.Intent;
+import com.example.mobileproject.profiles.Profile;
 
 import java.util.ArrayList;
 import java.util.List;

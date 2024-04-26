@@ -1,9 +1,9 @@
-package com.example.mobileproject;
+package com.example.mobileproject.profiles;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Profile {
+
     private String name;
     private String sex;
     private int age;
@@ -11,7 +11,6 @@ public class Profile {
     private List<String> hobbies;
     private String status;
     private String photo_base64;
-    private int id;
 
     public int getId() {
         return id;
@@ -29,15 +28,17 @@ public class Profile {
         this.userId = userId;
     }
 
+    public boolean isVerified() {
+        return isVerified;
+    }
+
+    public void setVerified(boolean verified) {
+        isVerified = verified;
+    }
+
+    private int id;
     private int userId;
-
-    public String getPhoto() {
-        return photo_base64;
-    }
-
-    public void setPhoto(String photo_base64) {
-        this.photo_base64 = photo_base64;
-    }
+    private boolean isVerified;
 
     public String getName() {
         return name;
@@ -87,4 +88,11 @@ public class Profile {
         this.status = status;
     }
 
+    public String getPhoto() {
+        return photo_base64;
+    }
+
+    public void setPhoto(String photo_base64) {
+        this.photo_base64 = photo_base64;
+    }
 }

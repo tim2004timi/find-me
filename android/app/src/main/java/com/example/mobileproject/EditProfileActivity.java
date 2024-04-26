@@ -3,11 +3,9 @@ package com.example.mobileproject;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,26 +17,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.mobileproject.dto.UserData;
+import com.example.mobileproject.profiles.Profile;
 import com.example.mobileproject.requests.CreateProfile;
 import com.example.mobileproject.spinners.CustomSpinnerAdapter;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.squareup.picasso.Picasso;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.request.RequestOptions;
@@ -68,7 +60,7 @@ public class EditProfileActivity extends AppCompatActivity {
     String selectedHobby3;
     User userContext = UserContext.getInstance().getUser();
     ImageView avatar;
-    TextView test;
+    boolean profileIsReceived = false;
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private Uri mImageUri;
@@ -241,6 +233,7 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Profile> call, Response<Profile> response) {
                 if (response.isSuccessful()) {
+                    profileIsReceived = true;
                     Profile profile = response.body();
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "УСПЕШНО",
@@ -254,6 +247,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     avatar.setImageBitmap(decodedByte);
 
                 } else {
+                    profileIsReceived = false;
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "Данные не были получены",
                             Toast.LENGTH_SHORT);
@@ -263,6 +257,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Profile> call, Throwable t) {
+                profileIsReceived = false;
                 Toast toast = Toast.makeText(getApplicationContext(),
                         "ОШИБКА",
                         Toast.LENGTH_SHORT);
@@ -332,8 +327,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
         profile.setPhoto(encodedAvatar);
 
-
         CreateProfile createProfile = new CreateProfile(profile, userContext);
+
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://176.109.111.92:8080/")
@@ -342,36 +337,63 @@ public class EditProfileActivity extends AppCompatActivity {
 
         ApiService apiService = retrofit.create(ApiService.class);
 
-
-        apiService.postProfile(createProfile).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    Intent intent = new Intent(EditProfileActivity.this, MainMenu.class);
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            "Успешно",
-                            Toast.LENGTH_SHORT);
-                    toast.show();
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            response.toString(),
-                            Toast.LENGTH_SHORT);
-                    toast.show();
-                    test = findViewById(R.id.textViewTest1);
-                    test.setText(response.toString());
+        if (profileIsReceived) {
+            apiService.patchProfile(createProfile).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        Intent intent = new Intent(EditProfileActivity.this, MainMenu.class);
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Успешно",
+                                Toast.LENGTH_SHORT);
+                        toast.show();
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                response.toString(),
+                                Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        "Ошибка соединения",
-                        Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
+                @Override
+                public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Ошибка соединения",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+        } else {
+            apiService.postProfile(createProfile).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        Intent intent = new Intent(EditProfileActivity.this, MainMenu.class);
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Успешно",
+                                Toast.LENGTH_SHORT);
+                        toast.show();
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                response.toString(),
+                                Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                }
+
+                @Override
+                public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Ошибка соединения",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+        }
 
 
 //            Intent intent = new Intent(this, ProfileActivity.class);

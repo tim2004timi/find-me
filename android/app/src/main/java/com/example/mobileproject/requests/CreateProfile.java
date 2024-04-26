@@ -1,6 +1,6 @@
 package com.example.mobileproject.requests;
 
-import com.example.mobileproject.Profile;
+import com.example.mobileproject.profiles.Profile;
 import com.example.mobileproject.User;
 
 public class CreateProfile {

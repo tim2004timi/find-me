@@ -1,39 +1,22 @@
 package com.example.mobileproject;
 
-import android.annotation.SuppressLint;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-import com.bumptech.glide.request.RequestOptions;
+import com.example.mobileproject.profiles.Profile;
 
-import org.w3c.dom.Text;
-
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -54,7 +37,6 @@ public class ProfileActivity extends AppCompatActivity {
     TextView tag3;
     String codedAvatar;
     ImageView avatar;
-    TextView test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +57,6 @@ public class ProfileActivity extends AppCompatActivity {
         tag1 = findViewById(R.id.tag1);
         tag2 = findViewById(R.id.tag2);
         tag3 = findViewById(R.id.tag3);
-
-        test = findViewById(R.id.textViewTest);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://176.109.111.92:8080/")
