@@ -221,7 +221,7 @@ public class EditProfileActivity extends AppCompatActivity {
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://176.109.111.92:8080/")
+                .baseUrl("http://176.123.167.173:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -331,7 +331,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://176.109.111.92:8080/")
+                .baseUrl("http://176.123.167.173:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

@@ -66,7 +66,7 @@ public class FindActivity extends AppCompatActivity {
         avatar = findViewById(R.id.avatar);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://176.109.111.92:8080/")
+                .baseUrl("http://176.123.167.173:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -110,7 +110,7 @@ public class FindActivity extends AppCompatActivity {
         Reaction reaction = new Reaction(profiles.getCurrentUserId(), "like");
         CreateReaction createReaction = new CreateReaction(reaction, userContext);
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://176.109.111.92:8080/")
+                .baseUrl("http://176.123.167.173:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -150,7 +150,7 @@ public class FindActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT);
                 toast.show();
 //        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("http://176.109.111.92:8080/")
+//                .baseUrl("http://176.123.167.173:8080/")
 //                .addConverterFactory(GsonConverterFactory.create())
 //                .build();
 //
