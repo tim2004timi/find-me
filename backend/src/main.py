@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from .users.router import router as router_users
 from .profiles.router import router as router_profiles
 from .reactions.router import router as router_reactions
+from .database import Base
 
 
 app = FastAPI(title="FindMe")
