@@ -149,39 +149,39 @@ public class FindActivity extends AppCompatActivity {
                         Integer.toString(createReaction.reaction.to_user_id),
                         Toast.LENGTH_SHORT);
                 toast.show();
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("http://176.123.167.173:8080/")
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
-//
-//        ApiService apiService = retrofit.create(ApiService.class);
-//
-//        Call<ResponseBody> call = apiService.postReaction(createReaction);
-//        call.enqueue(new Callback<ResponseBody>() {
-//            @Override
-//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//                if(response.isSuccessful()) {
-//                    profile = profiles.next();
-//                    setInfo(profile);
-//                } else {
-//                    Toast toast = Toast.makeText(getApplicationContext(),
-//                            response.toString(),
-//                            Toast.LENGTH_SHORT);
-//                    toast.show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                Toast toast = Toast.makeText(getApplicationContext(),
-//                        "Дизлайк не поставлен",
-//                        Toast.LENGTH_SHORT);
-//                toast.show();
-//            }
-//        });
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://176.123.167.173:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        profile = profiles.next();
-        setInfo(profile);
+        ApiService apiService = retrofit.create(ApiService.class);
+
+        Call<ResponseBody> call = apiService.postReaction(createReaction);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()) {
+                    profile = profiles.next();
+                    setInfo(profile);
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            response.toString(),
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Дизлайк не поставлен",
+                        Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+
+//        profile = profiles.next();
+//        setInfo(profile);
     }
 
     public void setInfo (Profile profile) {

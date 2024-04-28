@@ -1,5 +1,7 @@
 package com.example.mobileproject.profiles;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class Profile {
@@ -12,6 +14,7 @@ public class Profile {
     private String status;
     private String photo_base64;
     private int id;
+    @SerializedName("user_id")
     private int userId;
     private boolean isVerified;
 

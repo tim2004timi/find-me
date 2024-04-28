@@ -24,6 +24,9 @@
         android:theme="@style/Theme.MobileProject"
         tools:targetApi="31">
         <activity
+            android:name=".dialogs.DialogsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ChatActivity"
             android:exported="false" />
         <activity
@@ -58,4 +61,5 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
+
 </manifest>

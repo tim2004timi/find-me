@@ -12,6 +12,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.mobileproject.dialogs.DialogsActivity;
+
 public class MainMenu extends AppCompatActivity {
 
     @Override
@@ -45,7 +47,7 @@ public class MainMenu extends AppCompatActivity {
     }
 
     public void onClickMessenger(View view) {
-        Intent intent = new Intent(this, ChatActivity.class);
+        Intent intent = new Intent(this, DialogsActivity.class);
         startActivity(intent);
     }
 
