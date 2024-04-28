@@ -11,8 +11,8 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="409dp"
+        android:layout_height="307dp"
         android:orientation="vertical"
         android:padding="15dp"
         app:layout_constraintBottom_toTopOf="@+id/button6"
@@ -25,8 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Найти собеседника"
-            android:onClick="onClickButtonFind" />
+            android:onClick="onClickButtonFind"
+            android:text="Найти собеседника" />
 
         <Button
             android:id="@+id/Messenger"
@@ -43,6 +43,15 @@
             android:layout_marginTop="20dp"
             android:onClick="onClickProfileButton"
             android:text="Профиль" />
+
+        <Button
+            android:id="@+id/DialogTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:onClick="onClickTestDialog"
+            android:text="Тест Диалога" />
+
     </LinearLayout>
 
     <Button

@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#C9ACEC"
+        android:background="@color/base_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
@@ -18,8 +18,9 @@
 
         <LinearLayout
             android:id="@+id/linearLayout13"
-            android:layout_width="0dp"
-            android:layout_height="83dp"
+            android:layout_width="412dp"
+            android:layout_height="70dp"
+            android:background="#3A3A3A"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -27,20 +28,24 @@
 
             <EditText
                 android:id="@+id/inputMessageBlock"
-                android:layout_width="339dp"
-                android:layout_height="match_parent"
+                android:layout_width="345dp"
+                android:layout_height="55dp"
                 android:ems="10"
-                android:gravity="top"
-                android:inputType="text" />
+                android:gravity="left"
+                android:hint="Введите сообщение..."
+                android:inputType="text"
+                android:textAlignment="viewStart"
+                android:textColorHint="#E0BFF8" />
 
             <Button
                 android:id="@+id/SendButton"
-                android:layout_width="78dp"
-                android:layout_height="72dp"
+                android:layout_width="72dp"
+                android:layout_height="match_parent"
                 android:layout_marginEnd="6dp"
                 android:layout_marginBottom="6dp"
                 android:layout_weight="1"
                 android:gravity="center|top"
+                android:onClick="onClickSend"
                 app:icon="@android:drawable/ic_menu_send"
                 app:iconGravity="textEnd"
                 app:iconPadding="12dp"
@@ -74,6 +79,7 @@
             android:id="@+id/MessagesList"
             android:layout_width="0dp"
             android:layout_height="589dp"
+            android:background="@color/base_background"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout13"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
