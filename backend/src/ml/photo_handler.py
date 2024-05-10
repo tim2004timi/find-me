@@ -26,7 +26,5 @@ class ImageHandler:
 
         dist = cosine_similarity(image_true_embed.detach(), image_now_embed.detach())
         if dist > 0.7:
-            print("Авторизация успешно пройдена!")
             return True
-        print("Авторизация не пройдена")
         return False
