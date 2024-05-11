@@ -7,6 +7,7 @@ from starlette import status
 from starlette.exceptions import HTTPException
 
 from ..ml.photo_verification import photo_verification
+from ..ml.vectorize import vectorize
 from ..users import User
 from .models import Profile
 from .schemas import (
@@ -42,14 +43,17 @@ async def get_profile_by_username(
     user = result.scalars().first()
     profile = user.profile
     if profile is None:
-        raise HTTPException(detail="Профиль не найден", status_code=status.HTTP_404_NOT_FOUND)
+        raise HTTPException(
+            detail="Профиль не найден", status_code=status.HTTP_404_NOT_FOUND
+        )
     return profile
 
 
 async def create_profile(
     session: AsyncSession, profile_in: ProfileCreate
 ) -> Profile:
-    profile = Profile(**profile_in.model_dump())
+    vector = vectorize(**profile_in.model_dump())
+    profile = Profile(vector=vector, **profile_in.model_dump())
     session.add(profile)
     await session.commit()
     # await session.refresh()
@@ -66,6 +70,8 @@ async def update_profile(
         exclude_unset=partial
     ).items():
         setattr(profile, name, value)
+
+    profile.vector = vectorize(**profile.__dict__)
     await session.commit()
     return profile
 

@@ -1,4 +1,4 @@
-from sqlalchemy import String, ForeignKey
+from sqlalchemy import String, ForeignKey, Float
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.orm import Mapped, mapped_column, relationship, declared_attr
 
@@ -14,9 +14,13 @@ class Profile(Base):
     city: Mapped[str] = mapped_column(nullable=False)
     hobbies: Mapped[list[str]] = mapped_column(ARRAY(String), nullable=True)
     status: Mapped[str] = mapped_column(nullable=True)
+    about: Mapped[str] = mapped_column(nullable=True)
     photo_base64: Mapped[str] = mapped_column(nullable=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+
     is_verified: Mapped[bool] = mapped_column(nullable=False, default=False)
+    vector: Mapped[list[float]] = mapped_column(ARRAY(Float), nullable=False)
+
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
 
     @declared_attr
     def user(cls):

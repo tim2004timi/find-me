@@ -28,3 +28,6 @@ class ImageHandler:
         if dist > 0.7:
             return True
         return False
+
+
+handler = ImageHandler()

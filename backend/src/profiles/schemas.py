@@ -10,6 +10,7 @@ class ProfileBase(BaseModel):
     city: str
     hobbies: list[str]
     status: str
+    about: str
     photo_base64: Optional[str] = None
 
 
