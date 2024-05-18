@@ -107,6 +107,14 @@ public class ProfileActivity extends AppCompatActivity {
                         "ОШИБКА",
                         Toast.LENGTH_SHORT);
                 toast.show();
+                userName.setText("Имя_Тест");
+                status.setText("Статус_Тест");
+                gender.setText("Пол_Тест");
+                age.setText(Integer.toString(99));
+                city.setText("Город_Тест");
+                tag1.setText("Хобби1");
+                tag2.setText("Хобби2");
+                tag3.setText("Хобби3");
             }
         });
     }

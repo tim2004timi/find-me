@@ -85,68 +85,69 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onClickAuthentication(View view) {
-
-//        editTextLogin = findViewById(R.id.editTextText);
-//        editTextPassword = findViewById(R.id.editTextTextPassword);
-//        String test_login = editTextLogin.getText().toString();
-//        String test_password = editTextPassword.getText().toString();
-
-//        if (test_login.equals("offline") && test_password.equals("offline")) {
-//            Intent intent = new Intent(this, MainMenu.class);
-//            startActivity(intent);
-//            finish();
-
+        // оффлайн аутентификация, так как бэкэнд разработчик ничего не делает уже месяц
         editTextLogin = findViewById(R.id.editTextText);
         editTextPassword = findViewById(R.id.editTextTextPassword);
+        String test_login = editTextLogin.getText().toString();
+        String test_password = editTextPassword.getText().toString();
+
+        if (test_login.equals("offline") && test_password.equals("offline")) {
+            Intent intent = new Intent(this, MainMenu.class);
+            startActivity(intent);
+            finish();
+        // конец
+            editTextLogin = findViewById(R.id.editTextText);
+            editTextPassword = findViewById(R.id.editTextTextPassword);
 
 
-        String login = editTextLogin.getText().toString();
-        String password = editTextPassword.getText().toString();
-        User user = new User(login, password);
+            String login = editTextLogin.getText().toString();
+            String password = editTextPassword.getText().toString();
+            User user = new User(login, password);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://176.123.167.173:8080/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://176.123.167.173:8080/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
 
-        ApiService apiService = retrofit.create(ApiService.class);
-
-
-        apiService.loginUser(user).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-
-                    UserContext userContext = UserContext.getInstance();
-                    userContext.setUser(user);
-
-                    SharedPreferences sharedPreferences = getSharedPreferences("SavedUserPare", MODE_PRIVATE);
-                    SharedPreferences.Editor myEdit = sharedPreferences.edit();
+            ApiService apiService = retrofit.create(ApiService.class);
 
 
-                    myEdit.putString("username", user.getUsername());
-                    myEdit.putString("password", user.getPassword());
-                    myEdit.apply();
+            apiService.loginUser(user).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
 
-                    Intent intent = new Intent(MainActivity.this, MainMenu.class);
-                    startActivity(intent);
-                    finish();
-                } else {
+                        UserContext userContext = UserContext.getInstance();
+                        userContext.setUser(user);
+
+                        SharedPreferences sharedPreferences = getSharedPreferences("SavedUserPare", MODE_PRIVATE);
+                        SharedPreferences.Editor myEdit = sharedPreferences.edit();
+
+
+                        myEdit.putString("username", user.getUsername());
+                        myEdit.putString("password", user.getPassword());
+                        myEdit.apply();
+
+                        Intent intent = new Intent(MainActivity.this, MainMenu.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Неверные данные",
+                                Toast.LENGTH_SHORT);
+                        toast.show();
+                        test.setText(response.toString());
+                    }
+                }
+
+                @Override
+                public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            "Неверные данные",
+                            "Ошибка соединения",
                             Toast.LENGTH_SHORT);
                     toast.show();
-                    test.setText(response.toString());
                 }
-            }
-
-            @Override
-            public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        "Ошибка соединения",
-                        Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
+            });
+        }
     }
 }

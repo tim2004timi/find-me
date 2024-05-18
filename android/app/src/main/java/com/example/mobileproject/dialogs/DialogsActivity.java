@@ -1,12 +1,13 @@
 package com.example.mobileproject.dialogs;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -18,11 +19,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobileproject.ApiService;
+import com.example.mobileproject.Chat.ChatActivity;
 import com.example.mobileproject.Profiles;
 import com.example.mobileproject.R;
 import com.example.mobileproject.User;
 import com.example.mobileproject.UserContext;
-import com.example.mobileproject.dialogs.DialogAdapter;
 import com.example.mobileproject.profiles.Profile;
 
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ public class DialogsActivity extends AppCompatActivity {
 
         ArrayList<String> profilesNames = new ArrayList<String>();
         ArrayList<Bitmap> profilesAvatars = new ArrayList<Bitmap>();
-
+        // получение аватарок и имен с севрера, но бэкэндер ничего не делает
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://176.123.167.173:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -84,7 +85,16 @@ public class DialogsActivity extends AppCompatActivity {
                         profilesAvatars.add(decodedBitmap);
                     }
 
-                    dialogAdapter = new DialogAdapter(profilesNames.size(), profilesNames, profilesAvatars);
+                    dialogAdapter = new DialogAdapter(profilesNames.size(), profilesNames, profilesAvatars, new DialogAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(int position, View view) {
+                            TextView textViewName = view.findViewById(R.id.dialog_name);
+                            String text = textViewName.getText().toString();
+                            Intent intent = new Intent(DialogsActivity.this, ChatActivity.class);
+                            intent.putExtra("dialog_name", text);
+                            startActivity(intent);
+                        }
+                    });
                     recyclerView.setAdapter(dialogAdapter);
 
                     Toast toast = Toast.makeText(getApplicationContext(),
@@ -109,14 +119,34 @@ public class DialogsActivity extends AppCompatActivity {
                 toast.show();
             }
         });
-
-//        ArrayList<String> arrayList = new ArrayList<String>();
-//        arrayList.add("Денис");
-//        arrayList.add("Тимофей");
-//        arrayList.add("Никита");
-//        dialogAdapter = new DialogAdapter(profilesNames.size(), profilesNames);
-//        recyclerView.setAdapter(dialogAdapter);
-
+        // конец
+        // Оффлайн отображение диалогов, так как бэкэндер ничего не делает
+        // Список с именами пользователей
+        ArrayList<String> arrayListNames = new ArrayList<String>();
+        arrayListNames.add("Денис");
+        arrayListNames.add("Тимофей");
+        arrayListNames.add("Никита");
+        // Список с их автарками
+        ArrayList<Bitmap> arrayListAvatars = new ArrayList<Bitmap>();
+        Bitmap bitmapAvatar = BitmapFactory.decodeResource(getResources(), R.drawable.newbasephoto);
+        for (int i=0; i<=arrayListNames.size(); i++){
+            arrayListAvatars.add(bitmapAvatar);
+        }
+        dialogAdapter = new DialogAdapter(arrayListNames.size(), arrayListNames, arrayListAvatars, new DialogAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position, View view) {
+                TextView textViewName = view.findViewById(R.id.dialog_name);
+                String text = textViewName.getText().toString();
+                Intent intent = new Intent(DialogsActivity.this, ChatActivity.class);
+                intent.putExtra("dialog_name", text);
+                startActivity(intent);
+            }
+        });
+        recyclerView.setAdapter(dialogAdapter);
+        // конец
+        // тоже для корректного взаимодействия с серверной стороной
+        //dialogAdapter = new DialogAdapter(profilesNames.size(), profilesNames);
+        // конец
 
 //        listView = findViewById(R.id.lv);
 //        ArrayList<String> arrayList = new ArrayList<String>();
@@ -126,5 +156,10 @@ public class DialogsActivity extends AppCompatActivity {
 //
 //        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item, arrayList);
 //        listView.setAdapter(adapter);
+    }
+    public void onClickGoToChat(View view) {
+
+        Intent intent = new Intent(this, ChatActivity.class);
+        startActivity(intent);
     }
 }

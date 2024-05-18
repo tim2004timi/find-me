@@ -8,12 +8,27 @@
     android:background="@color/base_background"
     tools:context=".dialogs.DialogsActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/rv"
-        />
+        android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/textViewDialogs"
+            android:layout_width="match_parent"
+            android:layout_height="59dp"
+            android:gravity="center"
+            android:textSize="29dp"
+            android:background="#5C58C5"
+            android:textColor="@color/white"
+            android:text="Сообщения" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="8dp"
+            android:id="@+id/rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
 
 </LinearLayout>
