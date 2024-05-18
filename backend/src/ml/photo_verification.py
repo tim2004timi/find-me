@@ -5,7 +5,7 @@ from io import BytesIO
 from .photo_handler import ImageHandler, handler
 
 
-async def photo_verification(
+def photo_verification(
     profile_photo_base64: str, photo_in_base64: str
 ) -> bool:
     profile_photo_jpg = Image.open(

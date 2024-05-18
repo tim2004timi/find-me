@@ -19,10 +19,10 @@ class ImageHandler:
     def authentication(self, image_true, image_now):
         image_true_embed = self.checking_face_on_image(image_true, mess='true_img')
         if image_true_embed is None:
-            return None
+            return False
         image_now_embed = self.checking_face_on_image(image_now, mess='now_img')
         if image_now_embed is None:
-            return None
+            return False
 
         dist = cosine_similarity(image_true_embed.detach(), image_now_embed.detach())
         if dist > 0.7:

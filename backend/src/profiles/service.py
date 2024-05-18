@@ -91,7 +91,7 @@ async def verify_profile(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Профиль не найден"
         )
-    is_verified = await photo_verification(
+    is_verified = photo_verification(
         profile_photo_base64=profile.photo_base64,
         photo_in_base64=photo.photo_base64,
     )
