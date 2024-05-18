@@ -11,7 +11,7 @@ class UserMatcher:
         self.users_df = pd.read_csv(db_path)
         
     def mean_pooling(self, model_output, attention_mask):
-        token_embeddings = model_output[0]  # First element of model_output contains all token embeddings
+        token_embeddings = model_output[0]
         input_mask_expanded = attention_mask.unsqueeze(-1).expand(token_embeddings.size()).float()
         return torch.sum(token_embeddings * input_mask_expanded, 1) / torch.clamp(input_mask_expanded.sum(1), min=1e-9)
 
@@ -34,17 +34,13 @@ class UserMatcher:
         return st[:-1]
 
     def find_best_matches(self, current_user):
-        # Фильтрация по противоположному полу
         opposite_sex_users = self.users_df[self.users_df['пол'] != current_user['пол']]
         
-        # Сортировка по возрасту и выбор первых 10
         opposite_sex_users['age_diff'] = (opposite_sex_users['возраст'] - int(current_user['возраст'])).abs()
         closest_age_users = opposite_sex_users.sort_values('age_diff').head(10)
         
-        # Получение эмбеддинга текущего пользователя
         current_user_embedding = self.get_embedding(self.get_string_user_info(current_user))
         
-        # Рассчет косинусного сходства и ранжирование
         closest_age_users['similarity'] = [cosine_similarity(current_user_embedding, self.get_embedding(self.get_string_user_info(closest_age_users.iloc[i, :-1])))[0][0] for i in range(closest_age_users.shape[0])]
         ranked_users = closest_age_users.sort_values('similarity', ascending=False)
         
@@ -61,12 +57,10 @@ if __name__ == "__main__":
         
     })
     
-    # Загрузка данных
-    # Предполагается, что база данных в файле 'users.csv'
+
     matcher = UserMatcher('users.csv')
     
     # Поиск лучших совпадений
     matches = matcher.find_best_matches(current_user)
     
-    # Вывод результата
-answer = matches[['о себе', 'возраст', 'пол', 'хобби', 'similarity']]
+    ranked = matches[['о себе', 'возраст', 'пол', 'хобби', 'similarity']]
