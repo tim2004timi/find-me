@@ -1,9 +1,10 @@
-package com.example.mobileproject;
+package com.example.mobileproject.Chat;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,10 +15,13 @@ import androidx.core.view.WindowInsetsCompat;
 import java.io.IOException;
 import java.util.ArrayList;
 import com.example.mobileproject.Chat.Message;
+import com.example.mobileproject.Chat.MessageAdapter;
+import com.example.mobileproject.R;
 
 public class ChatActivity extends AppCompatActivity {
     ListView listView;
     EditText editText;
+    TextView contactName;
 
     // Этот массив состоит из сообщений (юзер/сообщение/дата_в_формате_лонг)
     // Сюда можно из бека передавать массив всей переписки:
@@ -34,13 +38,20 @@ public class ChatActivity extends AppCompatActivity {
             return insets;
         });
 
+        // Поулчение имени собеседника
+        String dialogName = getIntent().getStringExtra("dialog_name");
+        contactName = findViewById(R.id.ContactName);
+        contactName.setText(dialogName);
+
         listView = findViewById(R.id.MessagesList);
 
-        messages.add(new Message("Sobesednik", "Привет!", 86400));
+        messages.add(new Message(dialogName, "Привет!", 86400));
         messages.add(new Message("Ya", "Привет, как дела?", 106400));
 
         MessageAdapter adapter = new MessageAdapter(this, messages);
         listView.setAdapter(adapter);
+
+
     }
 
     public void onClickSend(View view) throws IOException {

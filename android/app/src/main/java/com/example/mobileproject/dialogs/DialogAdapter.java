@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,12 +24,14 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.DialogView
     private int numberItems;
     private ArrayList<String> profilesNames;
     private ArrayList<Bitmap> profilesAvatars;
+    private OnItemClickListener listener;
 
-    public DialogAdapter(int numberItems, ArrayList<String> profilesNames, ArrayList<Bitmap> profilesAvatars) {
+    public DialogAdapter(int numberItems, ArrayList<String> profilesNames, ArrayList<Bitmap> profilesAvatars, OnItemClickListener listener) {
         this.numberItems = numberItems;
         viewHolderCount = 0;
         this.profilesNames = profilesNames;
         this.profilesAvatars = profilesAvatars;
+        this.listener = listener;
     }
 
     @NonNull
@@ -42,11 +45,11 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.DialogView
         View view = inflater.inflate(layoutIdForDialogItem, parent, false);
 
         DialogViewHolder viewHolder = new DialogViewHolder(view);
-        viewHolder.textViewIndex.setText("Index: " + viewHolderCount);
-        viewHolder.textViewName.setText(profilesNames.get(0));
-        viewHolder.circleImageView.setImageBitmap(profilesAvatars.get(0));
+        // viewHolder.textViewIndex.setText("Index: " + viewHolderCount);
+//        viewHolder.textViewName.setText(profilesNames.get(0));
+//        viewHolder.circleImageView.setImageBitmap(profilesAvatars.get(0));
 
-        viewHolderCount++;
+//        viewHolderCount++;
 
         return viewHolder;
     }
@@ -73,15 +76,29 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.DialogView
             textViewIndex = itemView.findViewById(R.id.tv_view_holder_number);
             circleImageView = itemView.findViewById(R.id.avatar);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position, view);
+                        }
+                    }
+                }
+            });
         }
-
         void bind(int listIndex) {
             for (int i=0; i <= listIndex; i++)
             {
-                textViewName.setText(profilesNames.get(i));
-                circleImageView.setImageBitmap(profilesAvatars.get(i));
+                textViewName.setText(profilesNames.get(listIndex));
+                circleImageView.setImageBitmap(profilesAvatars.get(listIndex));
+                textViewIndex.setText(Integer.toString(listIndex));
             }
 
         }
+    }
+    public interface OnItemClickListener {
+        void onItemClick(int position, View view);
     }
 }

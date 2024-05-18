@@ -27,7 +27,7 @@
             android:name=".dialogs.DialogsActivity"
             android:exported="false" />
         <activity
-            android:name=".ChatActivity"
+            android:name=".Chat.ChatActivity"
             android:exported="false" />
         <activity
             android:name=".Verification"
