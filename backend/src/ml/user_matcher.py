@@ -31,8 +31,6 @@ class UserMatcher:
             except:
                 st += str(key)+': '+str(value) + '. '
         st = st.replace('..', '.')
-        print(st)
-        print('----------------------------------')
         return st[:-1]
 
     def find_best_matches(self, current_user):
