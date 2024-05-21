@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                                 "Неверные данные",
                                 Toast.LENGTH_SHORT);
                         toast.show();
-                        test.setText(response.toString());
+                        //test.setText(response.toString());
                     }
                 }
 

@@ -1,5 +1,7 @@
 package com.example.mobileproject;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,6 +9,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -22,6 +26,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.mobileproject.dialogs.DialogsActivity;
 import com.example.mobileproject.profiles.Profile;
 import com.example.mobileproject.requests.CreateProfile;
 import com.example.mobileproject.spinners.CustomSpinnerAdapter;
@@ -287,6 +292,34 @@ public class EditProfileActivity extends AppCompatActivity {
                     .into(avatar);
         }
     }
+
+    Button InfoButton = findViewById(R.id.InfoButton);
+    public void onClickInfo(View view) {
+        LayoutInflater inflater = LayoutInflater.from(EditProfileActivity.this);
+        View dialogView = inflater.inflate(R.layout.dialog_layout, null);
+        EditText editText = dialogView.findViewById(R.id.editText);
+
+        // Создаем AlertDialog
+        AlertDialog dialog = new AlertDialog.Builder(EditProfileActivity.this)
+                .setTitle("Расскажите о себе:")
+                .setView(dialogView)
+                .setPositiveButton("Закрыть", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Действия при нажатии "Закрыть"
+                        String inputText = editText.getText().toString();
+                        // Тут можно использовать inputText, например, выводим в лог
+                        Log.d("AlertDialog", "Введенный текст: " + inputText);
+                    }
+                })
+                .setNegativeButton("Отмена", null)
+                .create();
+
+        // Показываем AlertDialog
+        dialog.show();
+    }
+
+
 
     public void onClickSaveProfileButton(View view) throws IOException {
 

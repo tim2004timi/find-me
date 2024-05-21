@@ -47,14 +47,6 @@ public class MainMenu extends AppCompatActivity {
         finish();
     }
 
-    public void onClickTestDialog(View view) {
-
-
-        Intent intent = new Intent(this, ChatActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
     public void onClickMessenger(View view) {
         Intent intent = new Intent(this, DialogsActivity.class);
         startActivity(intent);

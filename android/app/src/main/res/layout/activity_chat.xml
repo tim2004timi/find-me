@@ -73,6 +73,21 @@
                 android:textAllCaps="false"
                 android:textColor="#E0BFF8"
                 android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/GeoPosButton"
+                android:layout_width="wrap_content"
+                android:layout_height="63dp"
+                android:backgroundTint="#E0BFF8"
+                android:freezesText="true"
+                android:onClick="onClickGeoPosButton"
+                android:translationX="-20dp"
+                android:translationY="6dp"
+                app:icon="@android:drawable/ic_dialog_map"
+                app:iconGravity="end"
+                app:iconSize="30sp"
+                app:iconTint="#7833E6" />
+
         </FrameLayout>
 
         <ListView

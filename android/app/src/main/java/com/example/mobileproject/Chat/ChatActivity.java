@@ -1,5 +1,6 @@
 package com.example.mobileproject.Chat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import com.example.mobileproject.Chat.Message;
 import com.example.mobileproject.Chat.MessageAdapter;
 import com.example.mobileproject.R;
+import com.example.mobileproject.Registration;
 
 public class ChatActivity extends AppCompatActivity {
     ListView listView;
@@ -46,7 +48,7 @@ public class ChatActivity extends AppCompatActivity {
         listView = findViewById(R.id.MessagesList);
 
         messages.add(new Message(dialogName, "Привет!", 86400));
-        messages.add(new Message("Ya", "Привет, как дела?", 106400));
+        messages.add(new Message("Я", "Привет, как дела?", 106400));
 
         MessageAdapter adapter = new MessageAdapter(this, messages);
         listView.setAdapter(adapter);
@@ -57,11 +59,20 @@ public class ChatActivity extends AppCompatActivity {
     public void onClickSend(View view) throws IOException {
         editText = findViewById(R.id.inputMessageBlock);
 
-        messages.add(new Message("Ya", editText.getText().toString(), editText.getDrawingTime()));
+        messages.add(new Message("Я", editText.getText().toString(), editText.getDrawingTime()));
         MessageAdapter adapter = new MessageAdapter(this, messages);
         listView.setAdapter(adapter);
 
         editText.setText("");
+    }
 
+    public void onClickGeoPosButton(View view) {
+        TextView textViewName = findViewById(R.id.ContactName);
+        String text = textViewName.getText().toString();
+
+        Intent intent = new Intent(this, GeoLocationActivity.class);
+        intent.putExtra("contact_name", text);
+
+        startActivity(intent);
     }
 }
