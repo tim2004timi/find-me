@@ -14,7 +14,7 @@ nltk.download('punkt')
 nltk.download('stopwords')
 
 class DialogAnalisis:
-    def __init__(self, df=pd.read_csv('/content/labeled.csv', sep=','), tfidf_name='/content/Tfidf_vectorizer.sav', logreg_name='/content/logReg_model.sav'):
+    def __init__(self, df=pd.read_csv('./src/ml/data/labeled.csv', sep=','), tfidf_name='./src/ml/data/Tfidf_vectorizer.sav', logreg_name='./src/ml/data/logReg_model.sav'):
         self.df = df
         self.train_df = None
         self.test_df = None
@@ -49,14 +49,14 @@ class DialogAnalisis:
         tokens = [snowball.stem(i) for i in tokens]
         return tokens
 
-    def learning_model(self):
-        self.prepare()
-        model_pipeline = Pipeline([
-            ("vectorizer", TfidfVectorizer(tokenizer=lambda x: tokenize_sentence(x, remove_stop_words=True))),
-            ("model", LogisticRegression(C=10, random_state=0))
-        ]
-        )
-        self.model_pipeline_c_10.fit(self.train_df["comment"], self.train_df["toxic"])
+    # def learning_model(self):
+    #     self.prepare()
+    #     model_pipeline = Pipeline([
+    #         ("vectorizer", TfidfVectorizer(tokenizer=lambda x: tokenize_sentence(x, remove_stop_words=True))),
+    #         ("model", LogisticRegression(C=10, random_state=0))
+    #     ]
+    #     )
+    #     self.model_pipeline_c_10.fit(self.train_df["comment"], self.train_df["toxic"])
 
     def get_metrics(self):
         precision = precision_score(y_true=self.test_df["toxic"],
@@ -69,3 +69,6 @@ class DialogAnalisis:
     def analis_chat(self, sentences):
         predict = self.model_pipeline_c_10.predict(sentences)
         return sum(predict)/len(predict)
+
+if __name__ == '__main__':
+    d = DialogAnalisis()

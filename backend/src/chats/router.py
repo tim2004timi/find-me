@@ -1,9 +1,10 @@
 from typing import List
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from . import service
+from .socketmanager import manager
 from ..auth import authenticate_dependency
 from ..users import User
 from ..database import db_manager
@@ -78,3 +79,18 @@ async def create_message(
     from_user_id = auth_user.id
     message = MessageCreate(**message.model_dump(), from_user_id=from_user_id)
     return await service.create_message(session=session, message=message)
+
+
+@router.websocket("/{chat_id}/{user_id}")
+async def websocket_endpoint(websocket: WebSocket, chat_id: int, user_id: int):
+    await manager.connect(websocket, user_id, chat_id)
+    print(user_id, "connected")
+    try:
+        while True:
+            data = await websocket.receive_text()
+            await manager.broadcast(data, chat_id, user_id)
+    except WebSocketDisconnect:
+        manager.disconnect(websocket, chat_id)
+        await manager.broadcast(f"User {user_id} left the chat.", chat_id, user_id)
+        print(user_id, "disconnected")
+

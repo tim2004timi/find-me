@@ -6,8 +6,9 @@ from sqlalchemy.orm import joinedload
 from starlette import status
 from starlette.exceptions import HTTPException
 
+from ..ml.user_matcher_sqlalch import get_ranked_users
 from ..ml.photo_verification import photo_verification
-from ..ml.vectorize import vectorize
+from ..ml.vectorize import vectorizer
 from ..users import User
 from .models import Profile
 from .schemas import (
@@ -23,6 +24,27 @@ async def get_profiles(session: AsyncSession) -> List[Profile]:
     result: Result = await session.execute(stmt)
     profiles = result.scalars().all()
     return list(profiles)
+
+
+async def get_ranked_profiles(session: AsyncSession, user_id: int) -> List[Profile]:
+    stmt = select(Profile)
+    result: Result = await session.execute(stmt)
+    profiles = list(result.scalars().all())
+
+    own_profile = None
+    for profile in profiles:
+        if profile.user_id == user_id:
+            own_profile = profile
+            break
+    profiles.remove(own_profile)
+
+    if own_profile is None:
+        raise HTTPException(
+            detail="Профиль не найден", status_code=status.HTTP_404_NOT_FOUND
+        )
+
+    ranked_profiles = get_ranked_users(users=profiles, target_user=own_profile)
+    return list(ranked_profiles)
 
 
 async def get_profile_by_id(
@@ -52,7 +74,7 @@ async def get_profile_by_username(
 async def create_profile(
     session: AsyncSession, profile_in: ProfileCreate
 ) -> Profile:
-    vector = vectorize(**profile_in.model_dump())
+    vector = vectorizer.vectorize(**profile_in.model_dump())
     profile = Profile(vector=vector, **profile_in.model_dump())
     session.add(profile)
     await session.commit()
@@ -71,7 +93,7 @@ async def update_profile(
     ).items():
         setattr(profile, name, value)
 
-    profile.vector = vectorize(**profile.__dict__)
+    profile.vector = vectorizer.vectorize(**profile.__dict__)
     await session.commit()
     return profile
 
