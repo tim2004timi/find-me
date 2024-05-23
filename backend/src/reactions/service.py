@@ -7,6 +7,9 @@ from ..users import User
 from .models import Reaction
 from .schemas import ReactionCreate
 
+from ..chats.service import create_chat
+from ..chats.schemas import ChatCreate
+
 
 async def get_gotten_reactions(
     session: AsyncSession, user: User
@@ -40,11 +43,14 @@ async def create_reactions(
     reaction_model = Reaction(**reaction.model_dump())
     session.add(reaction_model)
     await session.commit()
-    # await session.refresh()
+    await session.refresh(reaction_model)
 
     if await check_mutual_like(session=session, reaction=reaction):
-        # TODO: make mutual chat
-        pass
+        chat = ChatCreate(
+            first_user_id=reaction_model.from_user_id,
+            second_user_id=reaction_model.to_user_id,
+        )
+        await create_chat(session=session, chat=chat)
 
     return reaction_model
 

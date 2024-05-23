@@ -65,7 +65,7 @@ async def get_profiles(
     session: AsyncSession = Depends(db_manager.session_dependency),
     auth_user: User = Depends(authenticate_dependency),
 ):
-    return await service.get_profiles(session=session)
+    return await service.get_ranked_profiles(session=session, user_id=auth_user.id)
 
 
 @router.post(

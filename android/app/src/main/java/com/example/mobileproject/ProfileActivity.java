@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.mobileproject.profiles.Profile;
+import com.example.mobileproject.verification.Verification;
 
 import retrofit2.Call;
 import retrofit2.Callback;
