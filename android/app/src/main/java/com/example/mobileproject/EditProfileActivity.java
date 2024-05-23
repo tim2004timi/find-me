@@ -63,12 +63,16 @@ public class EditProfileActivity extends AppCompatActivity {
     String selectedHobby1;
     String selectedHobby2;
     String selectedHobby3;
+
+    String textAbout;
     User userContext = UserContext.getInstance().getUser();
     ImageView avatar;
     boolean profileIsReceived = false;
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private Uri mImageUri;
+
+    public Profile profile = new Profile();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -226,7 +230,7 @@ public class EditProfileActivity extends AppCompatActivity {
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://176.123.167.173:8080/")
+                .baseUrl("http://176.109.99.70:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -239,7 +243,7 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onResponse(Call<Profile> call, Response<Profile> response) {
                 if (response.isSuccessful()) {
                     profileIsReceived = true;
-                    Profile profile = response.body();
+                    profile = response.body();
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "УСПЕШНО",
                             Toast.LENGTH_SHORT);
@@ -293,7 +297,7 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 
-    Button InfoButton = findViewById(R.id.InfoButton);
+    //Button InfoButton = findViewById(R.id.InfoButton);
     public void onClickInfo(View view) {
         LayoutInflater inflater = LayoutInflater.from(EditProfileActivity.this);
         View dialogView = inflater.inflate(R.layout.dialog_layout, null);
@@ -303,13 +307,14 @@ public class EditProfileActivity extends AppCompatActivity {
         AlertDialog dialog = new AlertDialog.Builder(EditProfileActivity.this)
                 .setTitle("Расскажите о себе:")
                 .setView(dialogView)
-                .setPositiveButton("Закрыть", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Сохранить", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Действия при нажатии "Закрыть"
-                        String inputText = editText.getText().toString();
+                        // Действия при нажатии "Сохранить"
+                        textAbout = editText.getText().toString();
+
                         // Тут можно использовать inputText, например, выводим в лог
-                        Log.d("AlertDialog", "Введенный текст: " + inputText);
+                        Log.d("AlertDialog", "Введенный текст: " + textAbout);
                     }
                 })
                 .setNegativeButton("Отмена", null)
@@ -352,11 +357,13 @@ public class EditProfileActivity extends AppCompatActivity {
         profile.setSex(spinnerSex.getSelectedItem().toString());
         profile.setCity(editTextCity.getText().toString());
         profile.setStatus(spinnerStatus.getSelectedItem().toString());
+        profile.setAbout(textAbout);
         List<String> hobbies = new ArrayList<>();
         hobbies.add(hobbySpinner1.getSelectedItem().toString());
         hobbies.add(hobbySpinner2.getSelectedItem().toString());
         hobbies.add(hobbySpinner3.getSelectedItem().toString());
         profile.setHobbies(hobbies);
+
 
         profile.setPhoto(encodedAvatar);
 
@@ -364,7 +371,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://176.123.167.173:8080/")
+                .baseUrl("http://176.109.99.70:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

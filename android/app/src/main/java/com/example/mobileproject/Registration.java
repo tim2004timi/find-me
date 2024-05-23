@@ -46,7 +46,7 @@ public class Registration extends AppCompatActivity {
         String passwordRepeat = editTextPasswordRepeat.getText().toString();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://176.123.167.173:8080/")
+                .baseUrl("http://176.109.99.70:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

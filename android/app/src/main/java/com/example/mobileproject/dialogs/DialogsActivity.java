@@ -64,7 +64,7 @@ public class DialogsActivity extends AppCompatActivity {
         ArrayList<Bitmap> profilesAvatars = new ArrayList<Bitmap>();
         // получение аватарок и имен с севрера, но бэкэндер ничего не делает
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://176.123.167.173:8080/")
+                .baseUrl("http://176.109.99.70:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -119,19 +119,19 @@ public class DialogsActivity extends AppCompatActivity {
                 toast.show();
             }
         });
-        // конец
-        // Оффлайн отображение диалогов, так как бэкэндер ничего не делает
-        // Список с именами пользователей
+
         ArrayList<String> arrayListNames = new ArrayList<String>();
         arrayListNames.add("Денис");
         arrayListNames.add("Тимофей");
         arrayListNames.add("Никита");
+        arrayListNames.add("Александр");
         // Список с их автарками
         ArrayList<Bitmap> arrayListAvatars = new ArrayList<Bitmap>();
         Bitmap bitmapAvatar = BitmapFactory.decodeResource(getResources(), R.drawable.newbasephoto);
         for (int i=0; i<=arrayListNames.size(); i++){
             arrayListAvatars.add(bitmapAvatar);
         }
+
         dialogAdapter = new DialogAdapter(arrayListNames.size(), arrayListNames, arrayListAvatars, new DialogAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, View view) {

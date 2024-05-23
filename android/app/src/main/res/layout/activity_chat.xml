@@ -28,24 +28,26 @@
 
             <EditText
                 android:id="@+id/inputMessageBlock"
-                android:layout_width="345dp"
+                android:layout_width="338dp"
                 android:layout_height="55dp"
                 android:ems="10"
                 android:gravity="left"
                 android:hint="Введите сообщение..."
                 android:inputType="text"
                 android:textAlignment="viewStart"
-                android:textColorHint="#E0BFF8" />
+                android:textColorHint="#E0BFF8"
+                android:translationX="5dp" />
 
             <Button
                 android:id="@+id/SendButton"
-                android:layout_width="72dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="6dp"
                 android:layout_marginBottom="6dp"
                 android:layout_weight="1"
                 android:gravity="center|top"
                 android:onClick="onClickSend"
+                android:translationX="0dp"
                 app:icon="@android:drawable/ic_menu_send"
                 app:iconGravity="textEnd"
                 app:iconPadding="12dp"
@@ -67,18 +69,18 @@
                 android:id="@+id/ContactName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fontFamily="@font/varela"
+                android:fontFamily="@font/alata"
                 android:gravity="center"
                 android:text="Sobesednik"
                 android:textAllCaps="false"
-                android:textColor="#E0BFF8"
-                android:textSize="24sp" />
+                android:textColor="#FFFFFF"
+                android:textSize="28sp" />
 
             <Button
                 android:id="@+id/GeoPosButton"
                 android:layout_width="wrap_content"
                 android:layout_height="63dp"
-                android:backgroundTint="#E0BFF8"
+                android:backgroundTint="#D5BEE6"
                 android:freezesText="true"
                 android:onClick="onClickGeoPosButton"
                 android:translationX="-20dp"
