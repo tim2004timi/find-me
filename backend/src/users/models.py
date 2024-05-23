@@ -30,3 +30,20 @@ class User(Base):
             back_populates="to_user",
             foreign_keys="Reaction.to_user_id",
         )
+
+    @declared_attr
+    def chats(cls):
+        return relationship(
+            "Chat",
+            primaryjoin="or_(User.id==Chat.first_user_id, User.id==Chat.second_user_id)",
+            back_populates="first_user",
+            foreign_keys="[Chat.first_user_id, Chat.second_user_id]",
+            overlaps="first_user, second_user"
+        )
+
+    @declared_attr
+    def messages(cls):
+        return relationship(
+            "Message",
+            back_populates="user"
+        )
