@@ -113,7 +113,7 @@ public class Verification extends AppCompatActivity {
         VerifyPhoto verifyPhoto = new VerifyPhoto(photo, userContext);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://176.123.167.173:8080/")
+                .baseUrl("http://176.109.99.70:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -130,7 +130,7 @@ public class Verification extends AppCompatActivity {
                     toast.show();
                 } else {
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            "Ошибка",
+                            response.toString(),
                             Toast.LENGTH_SHORT);
                     toast.show();
                 }

@@ -6,8 +6,8 @@ import com.example.mobileproject.verification.Photo;
 public class VerifyPhoto {
     public User auth_user;
     public Photo photo;
-    public VerifyPhoto(Photo photo_base64, User authUser) {
-        this.photo = photo_base64;
+    public VerifyPhoto(Photo photo, User authUser) {
+        this.photo = photo;
         this.auth_user = authUser;
     }
 }
