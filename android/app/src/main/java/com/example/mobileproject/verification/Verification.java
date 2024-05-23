@@ -1,4 +1,4 @@
-package com.example.mobileproject;
+package com.example.mobileproject.verification;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,6 +9,7 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,13 +19,26 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.mobileproject.ApiService;
+import com.example.mobileproject.R;
+import com.example.mobileproject.User;
+import com.example.mobileproject.UserContext;
+
 import java.io.ByteArrayOutputStream;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Verification extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_PERMISSION = 2;
     private ImageView imageView;
+    User userContext = UserContext.getInstance().getUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +105,44 @@ public class Verification extends AppCompatActivity {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmapAvatar.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
+
         String encodedAvatar = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        Photo photo = new Photo();
+        photo.setPhoto_base64(encodedAvatar);
+
+        VerifyPhoto verifyPhoto = new VerifyPhoto(photo, userContext);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://176.123.167.173:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        ApiService apiService = retrofit.create(ApiService.class);
+
+        Call<ResponseBody> call = apiService.verifyPhoto(verifyPhoto);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()) {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Успешно",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Ошибка",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Failure",
+                        Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
     }
 }
