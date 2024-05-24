@@ -5,7 +5,7 @@ from sqlalchemy import select, Result, desc
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
-from sqlalchemy.sql.operators import or_
+from sqlalchemy.sql.operators import or_, and_
 from starlette import status
 
 from ..users import User
@@ -109,6 +109,28 @@ async def get_chats(session: AsyncSession) -> List[ChatFullSchema]:
 
 async def create_chat(session: AsyncSession, chat: ChatCreate) -> Chat | None:
     chat_model = Chat(**chat.model_dump())
+
+    # Проверка на наличие уже существующего чата
+    query = select(Chat).filter(
+        or_(
+            and_(
+                Chat.first_user_id == chat_model.first_user_id,
+                Chat.second_user_id == chat_model.second_user_id,
+            ),
+            and_(
+                Chat.first_user_id == chat_model.second_user_id,
+                Chat.second_user_id == chat_model.first_user_id,
+            ),
+        )
+    )
+    result: Result = await session.execute(query)
+    chats_count = len(result.scalars().all())
+    if chats_count >= 1:
+        raise HTTPException(
+            detail="Чат с этим пользователем уже существует",
+            status_code=status.HTTP_404_NOT_FOUND,
+        )
+
     session.add(chat_model)
     await session.commit()
     await session.refresh(chat_model)

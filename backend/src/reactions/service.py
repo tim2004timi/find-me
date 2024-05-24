@@ -1,5 +1,6 @@
 from typing import List
 
+from fastapi import HTTPException
 from sqlalchemy import select, Result, desc, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -50,7 +51,10 @@ async def create_reactions(
             first_user_id=reaction_model.from_user_id,
             second_user_id=reaction_model.to_user_id,
         )
-        await create_chat(session=session, chat=chat)
+        try:
+            await create_chat(session=session, chat=chat)
+        except HTTPException:
+            pass
 
     return reaction_model
 

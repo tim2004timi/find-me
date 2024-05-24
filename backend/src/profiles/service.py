@@ -26,24 +26,41 @@ async def get_profiles(session: AsyncSession) -> List[Profile]:
     return list(profiles)
 
 
-async def get_ranked_profiles(session: AsyncSession, user_id: int) -> List[Profile]:
-    stmt = select(Profile)
+async def get_ranked_profiles(
+    session: AsyncSession, user_id: int
+) -> List[Profile]:
+    stmt = select(Profile).options(
+        joinedload(Profile.user).joinedload(User.posted_reactions)
+    )
     result: Result = await session.execute(stmt)
-    profiles = list(result.scalars().all())
+    profiles = list(result.unique().scalars().all())
 
+    #  Достаем собственный профиль
     own_profile = None
     for profile in profiles:
         if profile.user_id == user_id:
             own_profile = profile
             break
-    profiles.remove(own_profile)
-
     if own_profile is None:
         raise HTTPException(
             detail="Профиль не найден", status_code=status.HTTP_404_NOT_FOUND
         )
+    profiles.remove(own_profile)
 
-    ranked_profiles = get_ranked_users(users=profiles, target_user=own_profile)
+    #  Фильтруем профили, которые уже лайкнули
+    user_ids_posted_reactions = []
+    for reaction in own_profile.user.posted_reactions:
+        if reaction.type == "like":
+            user_ids_posted_reactions.append(reaction.to_user_id)
+
+    result_profiles = []
+    for profile in profiles:
+        if profile.user_id not in user_ids_posted_reactions:
+            result_profiles.append(profile)
+
+    ranked_profiles = get_ranked_users(
+        users=result_profiles, target_user=own_profile
+    )
     return list(ranked_profiles)
 
 
