@@ -15,6 +15,7 @@ from .schemas import (
     MessageCreate,
     MessageIn,
     ChatOwn,
+    MessageOut,
 )
 
 router = APIRouter(tags=["Chats"])
@@ -59,7 +60,7 @@ async def get_messages(
 
 @router.post(
     "/messages/",
-    response_model=List[Message],
+    response_model=List[MessageOut],
     description="Get messages by chat id",
 )
 async def get_messages_by_chat_id(

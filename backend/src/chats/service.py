@@ -8,6 +8,7 @@ from sqlalchemy.orm import joinedload
 from sqlalchemy.sql.operators import or_, and_
 from starlette import status
 
+from ..ml.SelectingInt import dialog_analysis
 from ..users import User
 from .models import Chat, Message
 from .schemas import (
@@ -15,6 +16,7 @@ from .schemas import (
     MessageCreate,
     ChatFull as ChatFullSchema,
     ChatOwn as ChatOwnSchema,
+    MessageOut,
 )
 
 
@@ -66,6 +68,16 @@ def serialize_chat(
         username=second_user.username,
         photo_base64=second_user.profile.photo_base64,
         user_adequacy=user_adequacy,
+    )
+
+
+def serialize_message(message) -> MessageOut:
+    return MessageOut(
+        id=message.id,
+        chat_id=message.chat_id,
+        text=message.text,
+        from_username=message.user.username,
+        created_at=message.created_at,
     )
 
 
@@ -147,24 +159,30 @@ async def get_messages(session: AsyncSession) -> List[Chat]:
 
 async def get_messages_by_chat_id(
     session: AsyncSession, chat_id: int, user_id: int
-) -> List[Chat]:
+) -> List[MessageOut]:
     chat = await session.get(Chat, chat_id)
     if chat.first_user_id != user_id and chat.second_user_id != user_id:
         raise HTTPException(
             detail="Нет доступа к чату",
             status_code=status.HTTP_404_NOT_FOUND,
         )
-    query = select(Message).filter(Message.chat_id == chat_id)
+    query = (
+        select(Message)
+        .options(joinedload(Message.user))
+        .filter(Message.chat_id == chat_id)
+        .order_by(Message.created_at)
+    )
     result: Result = await session.execute(query)
     messages = result.scalars().all()
-    return list(messages)
+    messages = [serialize_message(message) for message in messages]
+    return messages
 
 
 async def create_message(
     session: AsyncSession, message: MessageCreate
 ) -> Message | None:
 
-    adequacy = 1.0  # TODO: Change adequacy
+    adequacy = dialog_analysis.analis_chat(message.text)
     user_id = message.from_user_id
 
     message_model = Message(adequacy=adequacy, **message.model_dump())
