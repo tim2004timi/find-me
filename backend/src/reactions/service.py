@@ -66,17 +66,13 @@ async def create_reactions(
 async def check_mutual_like(
     session: AsyncSession, reaction: ReactionCreate
 ) -> bool:
-    query = (
-        select(func.count())
-        .select_from(Reaction)
-        .filter(
-            and_(
-                Reaction.from_user_id == reaction.to_user_id,
-                Reaction.to_user_id == reaction.from_user_id,
-                Reaction.type == "like",
-            )
-        )
+    query = select(Reaction).filter(
+        Reaction.from_user_id == reaction.to_user_id,
+        Reaction.to_user_id == reaction.from_user_id,
+        Reaction.type == "like",
     )
     result: Result = await session.execute(query)
-    count = result.scalar()
-    return count > 0
+    reactions = result.scalars().all()
+    for reaction in reactions:
+        print(reaction.type, reaction.from_user_id, reaction.to_user_id)
+    return len(reactions) > 0
