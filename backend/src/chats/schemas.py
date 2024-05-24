@@ -12,13 +12,27 @@ class ChatCreate(ChatBase):
     pass
 
 
-class Chat(ChatBase):
+class ChatFull(ChatBase):
     id: int
 
-    first_user_messages_amount: int
-    second_user_messages_amount: int
-    first_user_adequacy_sum: float
-    second_user_adequacy_sum: float
+    first_username: str
+    second_username: str
+
+    first_photo_base64: str
+    second_photo_base64: str
+
+    first_user_adequacy: float
+    second_user_adequacy: float
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class ChatOwn(ChatBase):
+    id: int
+
+    username: str
+    photo_base64: str
+    user_adequacy: float
 
     model_config = ConfigDict(from_attributes=True)
 

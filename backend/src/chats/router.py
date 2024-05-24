@@ -8,14 +8,21 @@ from .socketmanager import manager
 from ..auth import authenticate_dependency
 from ..users import User
 from ..database import db_manager
-from .schemas import Chat, ChatCreate, Message, MessageCreate, MessageIn
+from .schemas import (
+    ChatFull,
+    ChatCreate,
+    Message,
+    MessageCreate,
+    MessageIn,
+    ChatOwn,
+)
 
 router = APIRouter(tags=["Chats"])
 
 
 @router.get(
     "/",
-    response_model=List[Chat],
+    response_model=List[ChatFull],
     description="Get all chats",
 )
 async def get_chats(
@@ -27,7 +34,7 @@ async def get_chats(
 
 @router.post(
     "/own/",
-    response_model=List[Chat],
+    response_model=List[ChatOwn],
     description="Get own chats",
 )
 async def get_chats_by_user(
@@ -91,6 +98,7 @@ async def websocket_endpoint(websocket: WebSocket, chat_id: int, user_id: int):
             await manager.broadcast(data, chat_id, user_id)
     except WebSocketDisconnect:
         manager.disconnect(websocket, chat_id)
-        await manager.broadcast(f"User {user_id} left the chat.", chat_id, user_id)
+        await manager.broadcast(
+            f"User {user_id} left the chat.", chat_id, user_id
+        )
         print(user_id, "disconnected")
-

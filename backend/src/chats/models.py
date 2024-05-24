@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import List
 
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import Mapped, mapped_column, relationship, declared_attr
 from sqlalchemy import ForeignKey, DateTime
 
@@ -45,6 +46,31 @@ class Chat(Base):
             "User",
             foreign_keys=[cls.second_user_id],
             back_populates="chats",
+        )
+
+    @hybrid_property
+    def first_username(self):
+        return self.first_user.username if self.first_user else None
+
+    @hybrid_property
+    def second_username(self):
+        return self.second_user.username if self.second_user else None
+
+    # Гибридные свойства для извлечения photo_base64 из профиля пользователя
+    @hybrid_property
+    def first_photo_base64(self):
+        return (
+            self.first_user.profile.photo_base64
+            if self.first_user and self.first_user.profile
+            else None
+        )
+
+    @hybrid_property
+    def second_photo_base64(self):
+        return (
+            self.second_user.profile.photo_base64
+            if self.second_user and self.second_user.profile
+            else None
         )
 
 
