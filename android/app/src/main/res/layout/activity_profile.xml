@@ -12,11 +12,12 @@
         android:id="@+id/imageView3"
         android:layout_width="259dp"
         android:layout_height="297dp"
-        android:layout_marginTop="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.513"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.082"
         app:srcCompat="@drawable/newbasephoto"
         tools:srcCompat="@drawable/newbasephoto" />
 
@@ -258,5 +259,18 @@
         app:layout_constraintStart_toEndOf="@+id/editProfileButton"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout6"
         app:layout_constraintVertical_bias="0.693" />
+
+    <ImageView
+        android:id="@+id/verifyDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.831"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.452"
+        app:srcCompat="@drawable/verification_50" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

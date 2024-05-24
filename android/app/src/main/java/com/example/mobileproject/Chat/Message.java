@@ -1,11 +1,45 @@
 package com.example.mobileproject.Chat;
 
+import com.google.gson.annotations.SerializedName;
+
+
 import java.util.Date;
 
 public class Message {
     public String username;
     public String textMessage;
     private long messageTime;
+
+//            "chat_id": 0,
+//            "text": "string",
+//            "id": 0,
+//            "from_user_id": 0,
+//            "adequacy": 0,
+//            "created_at": "2024-05-24T11:13:40.966Z"
+//            "username"
+
+    @SerializedName("chat_id")
+    private int chatId;
+
+    @SerializedName("text")
+    private String messageText;
+
+    @SerializedName("id")
+    private int id;
+
+    @SerializedName("from_user_id")
+    private int fromUserId;
+
+    @SerializedName("adequacy")
+    private float adequacy;
+
+    @SerializedName("created_at")
+    private String createdTime;
+
+    @SerializedName("username")
+    private String userNickname;
+
+
 
     public Message(String userName, String messageText, long messageTime) {
         this.username = userName;

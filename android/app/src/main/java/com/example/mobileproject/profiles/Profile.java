@@ -26,6 +26,7 @@ public class Profile {
 
     @SerializedName("user_id")
     private int userId;
+    @SerializedName("is_verified")
     private boolean isVerified;
 
     public int getId() {
@@ -44,11 +45,11 @@ public class Profile {
         this.userId = userId;
     }
 
-    public boolean isVerified() {
+    public boolean getIsVerified() {
         return isVerified;
     }
 
-    public void setVerified(boolean verified) {
+    public void setIsVerified(boolean verified) {
         isVerified = verified;
     }
 

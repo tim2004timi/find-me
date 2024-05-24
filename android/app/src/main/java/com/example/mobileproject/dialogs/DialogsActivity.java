@@ -125,7 +125,6 @@ public class DialogsActivity extends AppCompatActivity {
         arrayListNames.add("Тимофей");
         arrayListNames.add("Никита");
         arrayListNames.add("Александр");
-
         // Список с их автарками
         ArrayList<Bitmap> arrayListAvatars = new ArrayList<Bitmap>();
         Bitmap bitmapAvatar = BitmapFactory.decodeResource(getResources(), R.drawable.newbasephoto);

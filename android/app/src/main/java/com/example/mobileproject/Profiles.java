@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Profiles {
     public List<Profile> profileList = new ArrayList<>();
-    public int currentUserIndex = 0;
+    public int currentUserIndex = -1;
     public FindActivity findActivity;
 
 //    public Profiles(FindActivity findActivity) {
@@ -17,13 +17,14 @@ public class Profiles {
         return profileList.get(currentUserIndex).getUserId();
     }
     public Profile next() {
+        currentUserIndex += 1;
 //        checkIsEmpty();
         if (currentUserIndex >= profileList.size()) {
             currentUserIndex = 0;
         }
 
         Profile profile = profileList.get(currentUserIndex);
-        currentUserIndex += 1;
+
         return profile;
     }
 
@@ -47,8 +48,6 @@ public class Profiles {
     }
 
     public void deleteProfile(Profile profile) {
-        if (profileList.size() != 1) {
-            profileList.remove(profile);
-        }
+        profileList.remove(profile);
     }
 }

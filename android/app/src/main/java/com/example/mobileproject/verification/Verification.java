@@ -125,7 +125,7 @@ public class Verification extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if(response.isSuccessful()) {
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            "Успешно",
+                            "Отправлено на верификацию",
                             Toast.LENGTH_SHORT);
                     toast.show();
                 } else {

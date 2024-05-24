@@ -1,5 +1,6 @@
 package com.example.mobileproject;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.mobileproject.Chat.ChatActivity;
 import com.example.mobileproject.profiles.Profile;
 import com.example.mobileproject.requests.CreateReaction;
 
@@ -79,10 +81,10 @@ public class FindActivity extends AppCompatActivity {
                 if(response.isSuccessful()) {
                     profilesList = response.body();
                     profiles.setProfileList(profilesList);
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            profiles.getProfilesInfo(),
-                            Toast.LENGTH_SHORT);
-                    toast.show();
+//                    Toast toast = Toast.makeText(getApplicationContext(),
+//                            profiles.getProfilesInfo(),
+//                            Toast.LENGTH_SHORT);
+//                    toast.show();
                     profile = profiles.next();
                     setInfo(profile);
 
@@ -138,8 +140,18 @@ public class FindActivity extends AppCompatActivity {
         });
 
         profiles.deleteProfile(profile);
-        profile = profiles.next();
-        setInfo(profile);
+        if (profiles.profileList.size() <= 0){
+            Intent intent = new Intent(this, MainMenu.class);
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Анкеты закончились!",
+                    Toast.LENGTH_SHORT);
+            toast.show();
+            startActivity(intent);
+        }
+        else {
+            profile = profiles.next();
+            setInfo(profile);
+        }
     }
 
     public void onClickDislike(View view) {

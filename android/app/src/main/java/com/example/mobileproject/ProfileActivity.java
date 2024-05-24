@@ -27,6 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ProfileActivity extends AppCompatActivity {
     User userContext = UserContext.getInstance().getUser();
     TextView userName;
+    ImageView verifDone;
     TextView status;
     TextView gender;
     TextView age;
@@ -56,6 +57,8 @@ public class ProfileActivity extends AppCompatActivity {
         tag1 = findViewById(R.id.tag1);
         tag2 = findViewById(R.id.tag2);
         tag3 = findViewById(R.id.tag3);
+        verifDone = findViewById(R.id.verifyDone);
+
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://176.109.99.70:8080/")
@@ -83,6 +86,11 @@ public class ProfileActivity extends AppCompatActivity {
                     tag1.setText(profile.getHobbies().get(0));
                     tag2.setText(profile.getHobbies().get(1));
                     tag3.setText(profile.getHobbies().get(2));
+
+
+                    if (profile.getIsVerified()){
+                        verifDone.setVisibility(View.VISIBLE);
+                    }
 
                     // Обработка изображения
                     codedAvatar = profile.getPhoto();
