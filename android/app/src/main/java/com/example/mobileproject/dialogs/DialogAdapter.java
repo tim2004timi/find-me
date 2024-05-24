@@ -25,11 +25,13 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.DialogView
     private ArrayList<String> profilesNames;
     private ArrayList<Bitmap> profilesAvatars;
     private OnItemClickListener listener;
+    private ArrayList<Double> profilesAdequacy;
 
-    public DialogAdapter(int numberItems, ArrayList<String> profilesNames, ArrayList<Bitmap> profilesAvatars, OnItemClickListener listener) {
+    public DialogAdapter(int numberItems, ArrayList<String> profilesNames, ArrayList<Bitmap> profilesAvatars, ArrayList<Double> profilesAdequacy, OnItemClickListener listener) {
         this.numberItems = numberItems;
         viewHolderCount = 0;
         this.profilesNames = profilesNames;
+        this.profilesAdequacy = profilesAdequacy;
         this.profilesAvatars = profilesAvatars;
         this.listener = listener;
     }
@@ -67,13 +69,13 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.DialogView
     class DialogViewHolder extends RecyclerView.ViewHolder {
 
         TextView textViewName;
-        TextView textViewIndex;
+        TextView indexAdequacy;
         CircleImageView circleImageView;
 
         public DialogViewHolder(View itemView) {
             super(itemView);
             textViewName = itemView.findViewById(R.id.dialog_name);
-            textViewIndex = itemView.findViewById(R.id.tv_view_holder_number);
+            indexAdequacy = itemView.findViewById(R.id.tv_view_holder_number);
             circleImageView = itemView.findViewById(R.id.avatar);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -93,9 +95,10 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.DialogView
             {
                 textViewName.setText(profilesNames.get(listIndex));
                 circleImageView.setImageBitmap(profilesAvatars.get(listIndex));
-                textViewIndex.setText(Integer.toString(listIndex));
+                Double adequacyPercent = new Double(profilesAdequacy.get(listIndex));;
+                adequacyPercent *= 100.0;
+                indexAdequacy.setText(String.valueOf(adequacyPercent.intValue())+"%");
             }
-
         }
     }
     public interface OnItemClickListener {

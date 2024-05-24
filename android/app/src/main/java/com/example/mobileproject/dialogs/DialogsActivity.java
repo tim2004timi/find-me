@@ -39,8 +39,10 @@ public class DialogsActivity extends AppCompatActivity {
     ListView listView;
     RecyclerView recyclerView;
     DialogAdapter dialogAdapter;
+
+
     Profile profile;
-    List<Profile> profilesList;
+    List<Chat> chatsList;
     User userContext = UserContext.getInstance().getUser();
     Profiles profiles = new Profiles();
 
@@ -61,6 +63,7 @@ public class DialogsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         ArrayList<String> profilesNames = new ArrayList<String>();
+        ArrayList<Double> profileAdequacy = new ArrayList<Double>();
         ArrayList<Bitmap> profilesAvatars = new ArrayList<Bitmap>();
         // получение аватарок и имен с севрера, но бэкэндер ничего не делает
         Retrofit retrofit = new Retrofit.Builder()
@@ -70,22 +73,23 @@ public class DialogsActivity extends AppCompatActivity {
 
         ApiService apiService = retrofit.create(ApiService.class);
 
-        Call<List<Profile>> call = apiService.getProfiles(userContext);
-        call.enqueue(new Callback<List<Profile>>() {
+        Call<List<Chat>> call = apiService.getOwnChats(userContext);
+        call.enqueue(new Callback<List<Chat>>() {
             @Override
-            public void onResponse(Call<List<Profile>> call, Response<List<Profile>> response) {
+            public void onResponse(Call<List<Chat>> call, Response<List<Chat>> response) {
                 if(response.isSuccessful()) {
-                    profilesList = response.body();
-                    for (int i=0; i<profilesList.size(); i++) {
-                        profilesNames.add(profilesList.get(i).getName());
+                    chatsList = response.body();
+                    for (int i = 0; i< chatsList.size(); i++) {
+                        profilesNames.add(chatsList.get(i).getUsername());
+                        profileAdequacy.add(chatsList.get(i).getUserAdequacy());
 
-                        String stringAvatar = profilesList.get(i).getPhoto();
+                        String stringAvatar = chatsList.get(i).getPhotoBase64();
                         byte[] decodedString = Base64.decode(stringAvatar, Base64.DEFAULT);
                         Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                         profilesAvatars.add(decodedBitmap);
                     }
 
-                    dialogAdapter = new DialogAdapter(profilesNames.size(), profilesNames, profilesAvatars, new DialogAdapter.OnItemClickListener() {
+                    dialogAdapter = new DialogAdapter(profilesNames.size(), profilesNames, profilesAvatars, profileAdequacy, new DialogAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(int position, View view) {
                             TextView textViewName = view.findViewById(R.id.dialog_name);
@@ -97,11 +101,6 @@ public class DialogsActivity extends AppCompatActivity {
                     });
                     recyclerView.setAdapter(dialogAdapter);
 
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            profilesNames.toString(),
-                            Toast.LENGTH_SHORT);
-                    toast.show();
-
                 } else {
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "Не саксес",
@@ -112,7 +111,7 @@ public class DialogsActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<Profile>> call, Throwable t) {
+            public void onFailure(Call<List<Chat>> call, Throwable t) {
                 Toast toast = Toast.makeText(getApplicationContext(),
                         "Фейлур",
                         Toast.LENGTH_SHORT);
@@ -120,29 +119,29 @@ public class DialogsActivity extends AppCompatActivity {
             }
         });
 
-        ArrayList<String> arrayListNames = new ArrayList<String>();
-        arrayListNames.add("Денис");
-        arrayListNames.add("Тимофей");
-        arrayListNames.add("Никита");
-        arrayListNames.add("Александр");
-        // Список с их автарками
-        ArrayList<Bitmap> arrayListAvatars = new ArrayList<Bitmap>();
-        Bitmap bitmapAvatar = BitmapFactory.decodeResource(getResources(), R.drawable.newbasephoto);
-        for (int i=0; i<=arrayListNames.size(); i++){
-            arrayListAvatars.add(bitmapAvatar);
-        }
+//        ArrayList<String> arrayListNames = new ArrayList<String>();
+//        arrayListNames.add("Денис");
+//        arrayListNames.add("Тимофей");
+//        arrayListNames.add("Никита");
+//        arrayListNames.add("Александр");
+//        // Список с их автарками
+//        ArrayList<Bitmap> arrayListAvatars = new ArrayList<Bitmap>();
+//        Bitmap bitmapAvatar = BitmapFactory.decodeResource(getResources(), R.drawable.newbasephoto);
+//        for (int i=0; i<=arrayListNames.size(); i++){
+//            arrayListAvatars.add(bitmapAvatar);
+//        }
 
-        dialogAdapter = new DialogAdapter(arrayListNames.size(), arrayListNames, arrayListAvatars, new DialogAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position, View view) {
-                TextView textViewName = view.findViewById(R.id.dialog_name);
-                String text = textViewName.getText().toString();
-                Intent intent = new Intent(DialogsActivity.this, ChatActivity.class);
-                intent.putExtra("dialog_name", text);
-                startActivity(intent);
-            }
-        });
-        recyclerView.setAdapter(dialogAdapter);
+//        dialogAdapter = new DialogAdapter(arrayListNames.size(), arrayListNames, arrayListAvatars, new DialogAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(int position, View view) {
+//                TextView textViewName = view.findViewById(R.id.dialog_name);
+//                String text = textViewName.getText().toString();
+//                Intent intent = new Intent(DialogsActivity.this, ChatActivity.class);
+//                intent.putExtra("dialog_name", text);
+//                startActivity(intent);
+//            }
+//        });
+//        recyclerView.setAdapter(dialogAdapter);
         // конец
         // тоже для корректного взаимодействия с серверной стороной
         //dialogAdapter = new DialogAdapter(profilesNames.size(), profilesNames);
@@ -158,7 +157,6 @@ public class DialogsActivity extends AppCompatActivity {
 //        listView.setAdapter(adapter);
     }
     public void onClickGoToChat(View view) {
-
         Intent intent = new Intent(this, ChatActivity.class);
         startActivity(intent);
     }

@@ -19,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.mobileproject.Chat.ChatActivity;
 import com.example.mobileproject.profiles.Profile;
 import com.example.mobileproject.requests.CreateReaction;
+import com.example.mobileproject.verification.Verification;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FindActivity extends AppCompatActivity {
 
+    ImageView galo4ka;
     List<Profile> profilesList;
     User userContext = UserContext.getInstance().getUser();
     TextView userName;
@@ -57,6 +59,7 @@ public class FindActivity extends AppCompatActivity {
             return insets;
         });
 
+        galo4ka = findViewById(R.id.galo4ka);
         userName = findViewById(R.id.textViewUsername);
         age = findViewById(R.id.textViewAge);
         status = findViewById(R.id.textViewStatus);
@@ -86,6 +89,10 @@ public class FindActivity extends AppCompatActivity {
 //                            Toast.LENGTH_SHORT);
 //                    toast.show();
                     profile = profiles.next();
+
+                    if (profile.getIsVerified()){
+                        galo4ka.setVisibility(View.VISIBLE);
+                    }
                     setInfo(profile);
 
                 } else {
@@ -155,6 +162,7 @@ public class FindActivity extends AppCompatActivity {
     }
 
     public void onClickDislike(View view) {
+        galo4ka.setVisibility(View.INVISIBLE);
         Reaction reaction = new Reaction(profiles.getCurrentUserId(), "dislike");
         CreateReaction createReaction = new CreateReaction(reaction, userContext);
         Toast toast = Toast.makeText(getApplicationContext(),
@@ -174,7 +182,11 @@ public class FindActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if(response.isSuccessful()) {
                     profile = profiles.next();
+                    if (profile.getIsVerified()){
+                        galo4ka.setVisibility(View.VISIBLE);
+                    }
                     setInfo(profile);
+
                 } else {
                     Toast toast = Toast.makeText(getApplicationContext(),
                             response.toString(),

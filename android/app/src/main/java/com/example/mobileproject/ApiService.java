@@ -1,4 +1,5 @@
 package com.example.mobileproject;
+import com.example.mobileproject.dialogs.Chat;
 import com.example.mobileproject.profiles.Profile;
 import com.example.mobileproject.requests.CreateProfile;
 import com.example.mobileproject.requests.CreateReaction;
@@ -36,4 +37,8 @@ public interface ApiService {
 
     @POST("profiles/verify_photo/")
     Call<ResponseBody> verifyPhoto(@Body VerifyPhoto verifyPhoto);
+
+    @POST("chats/own/")
+    Call<List<Chat>> getOwnChats(@Body User user);
+
 }

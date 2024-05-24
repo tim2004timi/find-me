@@ -10,13 +10,6 @@ public class Message {
     public String textMessage;
     private long messageTime;
 
-//            "chat_id": 0,
-//            "text": "string",
-//            "id": 0,
-//            "from_user_id": 0,
-//            "adequacy": 0,
-//            "created_at": "2024-05-24T11:13:40.966Z"
-//            "username"
 
     @SerializedName("chat_id")
     private int chatId;
