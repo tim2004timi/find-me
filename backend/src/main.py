@@ -25,7 +25,7 @@ class LogPostPatchRequestsMiddleware(BaseHTTPMiddleware):
             # Логирование заголовков и тела
             headers = dict(request.headers)
             body_text = body.decode('utf-8')  # Декодируем тело запроса из байтов в строку
-            print("POST Request:")
+            print("POST Request:") if request.method == "POST" else print("PATCH Request:")
             print("Headers:", json.dumps(headers, indent=4))
             try:
                 # Попытка интерпретировать тело как JSON и вывод его
