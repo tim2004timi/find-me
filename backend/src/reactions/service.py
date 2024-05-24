@@ -3,6 +3,7 @@ from typing import List
 from fastapi import HTTPException
 from sqlalchemy import select, Result, desc, func
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.sql.operators import and_
 
 from ..users import User
 from .models import Reaction
@@ -69,9 +70,11 @@ async def check_mutual_like(
         select(func.count())
         .select_from(Reaction)
         .filter(
-            Reaction.from_user_id == reaction.to_user_id,
-            Reaction.to_user_id == reaction.from_user_id,
-            Reaction.type == "like",
+            and_(
+                Reaction.from_user_id == reaction.to_user_id,
+                Reaction.to_user_id == reaction.from_user_id,
+                Reaction.type == "like",
+            )
         )
     )
     result: Result = await session.execute(query)
