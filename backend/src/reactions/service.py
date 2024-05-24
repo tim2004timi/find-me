@@ -44,7 +44,7 @@ async def create_reactions(
 ) -> Reaction | None:
     reaction_model = Reaction(**reaction.model_dump())
 
-    if reaction_model.type == "like" and check_mutual_like(
+    if reaction_model.type == "like" and await check_mutual_like(
         session=session, reaction=reaction
     ):
         chat = ChatCreate(
