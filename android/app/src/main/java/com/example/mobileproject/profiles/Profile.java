@@ -14,6 +14,16 @@ public class Profile {
     private String status;
     private String photo_base64;
     private int id;
+
+    public String getAbout() {
+        return about;
+    }
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
+    private String about;
+
     @SerializedName("user_id")
     private int userId;
     private boolean isVerified;

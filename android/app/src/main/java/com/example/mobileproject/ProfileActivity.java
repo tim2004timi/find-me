@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.mobileproject.profiles.Profile;
+import com.example.mobileproject.verification.Verification;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,9 +25,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ProfileActivity extends AppCompatActivity {
-
     User userContext = UserContext.getInstance().getUser();
-
     TextView userName;
     TextView status;
     TextView gender;
@@ -59,7 +58,7 @@ public class ProfileActivity extends AppCompatActivity {
         tag3 = findViewById(R.id.tag3);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://176.123.167.173:8080/")
+                .baseUrl("http://176.109.99.70:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -107,14 +106,14 @@ public class ProfileActivity extends AppCompatActivity {
                         "ОШИБКА",
                         Toast.LENGTH_SHORT);
                 toast.show();
-                userName.setText("Имя_Тест");
-                status.setText("Статус_Тест");
-                gender.setText("Пол_Тест");
+                userName.setText("ИмяТест");
+                status.setText("Свободен");
+                gender.setText("Мужской");
                 age.setText(Integer.toString(99));
-                city.setText("Город_Тест");
-                tag1.setText("Хобби1");
-                tag2.setText("Хобби2");
-                tag3.setText("Хобби3");
+                city.setText("ГородТест");
+                tag1.setText("Видеоигры");
+                tag2.setText("Рыбалка");
+                tag3.setText("Спорт");
             }
         });
     }

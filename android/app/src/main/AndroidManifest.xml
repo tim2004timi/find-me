@@ -38,7 +38,7 @@
             android:name=".Chat.ChatActivity"
             android:exported="false" />
         <activity
-            android:name=".Verification"
+            android:name=".verification.Verification"
             android:exported="false" />
         <activity
             android:name=".FindActivity"
