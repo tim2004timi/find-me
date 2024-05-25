@@ -96,7 +96,7 @@ async def get_chats_by_user(
         .order_by(desc(Chat.id))
     )
     result: Result = await session.execute(query)
-    chats = result.scalars().all()
+    chats = result.scalars().unique().all()
 
     result_chats: List[ChatOwnSchema] = []
     for chat in chats:
