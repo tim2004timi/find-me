@@ -53,14 +53,14 @@ public class ChatActivity extends AppCompatActivity {
     User userContext = UserContext.getInstance().getUser();
 
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_chat);
+        contactName = findViewById(R.id.ContactName);
+
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -70,6 +70,7 @@ public class ChatActivity extends AppCompatActivity {
         // Поулчение имени собеседника
         dialogName = getIntent().getStringExtra("dialog_name");
         String chatID = getIntent().getStringExtra("user_id");
+        contactName.setText(dialogName);
         intChatId = Integer.parseInt(chatID);
 
         listView = findViewById(R.id.MessagesList);
