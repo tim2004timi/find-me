@@ -244,10 +244,6 @@ public class EditProfileActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     profileIsReceived = true;
                     profile = response.body();
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            "УСПЕШНО",
-                            Toast.LENGTH_SHORT);
-                    toast.show();
                     // Обработка изображения
                     String codedAvatar = profile.getPhoto();
                     byte[] decodedString = Base64.decode(codedAvatar, Base64.DEFAULT);
@@ -258,7 +254,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 } else {
                     profileIsReceived = false;
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            "Данные не были получены",
+                            "Профиль не получен",
                             Toast.LENGTH_SHORT);
                     toast.show();
                 }
@@ -268,7 +264,7 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onFailure(Call<Profile> call, Throwable t) {
                 profileIsReceived = false;
                 Toast toast = Toast.makeText(getApplicationContext(),
-                        "ОШИБКА",
+                        "Что-то пошло не так...",
                         Toast.LENGTH_SHORT);
                 toast.show();
             }
@@ -383,15 +379,11 @@ public class EditProfileActivity extends AppCompatActivity {
                 public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                     if (response.isSuccessful()) {
                         Intent intent = new Intent(EditProfileActivity.this, MainMenu.class);
-                        Toast toast = Toast.makeText(getApplicationContext(),
-                                "Успешно",
-                                Toast.LENGTH_SHORT);
-                        toast.show();
                         startActivity(intent);
                         finish();
                     } else {
                         Toast toast = Toast.makeText(getApplicationContext(),
-                                response.toString(),
+                                "Профиль не отправлен",
                                 Toast.LENGTH_SHORT);
                         toast.show();
                     }
@@ -400,7 +392,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            "Ошибка соединения",
+                            "Что-то пошло не так...",
                             Toast.LENGTH_SHORT);
                     toast.show();
                 }
@@ -411,15 +403,11 @@ public class EditProfileActivity extends AppCompatActivity {
                 public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                     if (response.isSuccessful()) {
                         Intent intent = new Intent(EditProfileActivity.this, MainMenu.class);
-                        Toast toast = Toast.makeText(getApplicationContext(),
-                                "Успешно",
-                                Toast.LENGTH_SHORT);
-                        toast.show();
                         startActivity(intent);
                         finish();
                     } else {
                         Toast toast = Toast.makeText(getApplicationContext(),
-                                response.toString(),
+                                "Профиль не отправлен",
                                 Toast.LENGTH_SHORT);
                         toast.show();
                     }
@@ -428,23 +416,11 @@ public class EditProfileActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            "Ошибка соединения",
+                            "Что-то пошло не так...",
                             Toast.LENGTH_SHORT);
                     toast.show();
                 }
             });
         }
-
-
-//            Intent intent = new Intent(this, ProfileActivity.class);
-//            startActivity(intent);
-//            finish();
-        //}
-//        else{
-//            Toast toast = Toast.makeText(getApplicationContext(),
-//                    "Возраст не может быть ниже 16",
-//                    Toast.LENGTH_SHORT);
-//            toast.show();
-        //}
     }
 }

@@ -84,10 +84,11 @@ public class FindActivity extends AppCompatActivity {
                 if(response.isSuccessful()) {
                     profilesList = response.body();
                     profiles.setProfileList(profilesList);
-//                    Toast toast = Toast.makeText(getApplicationContext(),
-//                            profiles.getProfilesInfo(),
-//                            Toast.LENGTH_SHORT);
-//                    toast.show();
+                    if (profiles.profileList.size() == 0){
+                        goToMainMenu("Нет интересных анкет!");
+                        return;
+                    }
+
                     profile = profiles.next();
 
                     if (profile.getIsVerified()){
@@ -97,7 +98,7 @@ public class FindActivity extends AppCompatActivity {
 
                 } else {
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            "Не саксес",
+                            "Профили не получены",
                             Toast.LENGTH_SHORT);
                     toast.show();
                 }
@@ -107,14 +108,24 @@ public class FindActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<Profile>> call, Throwable t) {
                 Toast toast = Toast.makeText(getApplicationContext(),
-                        "Фейлур",
+                        "Что-то пошло не так...",
                         Toast.LENGTH_SHORT);
                 toast.show();
             }
         });
     }
 
+    public void goToMainMenu(String text){
+        Intent intent = new Intent(this, MainMenu.class);
+        Toast toast = Toast.makeText(getApplicationContext(),
+                text,
+                Toast.LENGTH_SHORT);
+        toast.show();
+        startActivity(intent);
+    }
+
     public void onClickLike(View view){
+        galo4ka.setVisibility(View.INVISIBLE);        
         // Отдать бэку лайк
         Reaction reaction = new Reaction(profiles.getCurrentUserId(), "like");
         CreateReaction createReaction = new CreateReaction(reaction, userContext);
@@ -130,7 +141,7 @@ public class FindActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if(response.isSuccessful()) {
-
+                    galo4ka.setVisibility(View.VISIBLE);
                 } else {
 
                 }
@@ -148,12 +159,7 @@ public class FindActivity extends AppCompatActivity {
 
         profiles.deleteProfile(profile);
         if (profiles.profileList.size() <= 0){
-            Intent intent = new Intent(this, MainMenu.class);
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "Анкеты закончились!",
-                    Toast.LENGTH_SHORT);
-            toast.show();
-            startActivity(intent);
+            goToMainMenu("Анкеты закончились");
         }
         else {
             profile = profiles.next();
@@ -165,10 +171,6 @@ public class FindActivity extends AppCompatActivity {
         galo4ka.setVisibility(View.INVISIBLE);
         Reaction reaction = new Reaction(profiles.getCurrentUserId(), "dislike");
         CreateReaction createReaction = new CreateReaction(reaction, userContext);
-        Toast toast = Toast.makeText(getApplicationContext(),
-                        Integer.toString(createReaction.reaction.to_user_id),
-                        Toast.LENGTH_SHORT);
-                toast.show();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://176.109.99.70:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -189,7 +191,7 @@ public class FindActivity extends AppCompatActivity {
 
                 } else {
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            response.toString(),
+                            "Что-то пошло не так...",
                             Toast.LENGTH_SHORT);
                     toast.show();
                 }
@@ -204,8 +206,6 @@ public class FindActivity extends AppCompatActivity {
             }
         });
 
-//        profile = profiles.next();
-//        setInfo(profile);
     }
 
     public void setInfo (Profile profile) {

@@ -26,13 +26,15 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.DialogView
     private ArrayList<Bitmap> profilesAvatars;
     private OnItemClickListener listener;
     private ArrayList<Double> profilesAdequacy;
+    private ArrayList<String> profileID;
 
-    public DialogAdapter(int numberItems, ArrayList<String> profilesNames, ArrayList<Bitmap> profilesAvatars, ArrayList<Double> profilesAdequacy, OnItemClickListener listener) {
+    public DialogAdapter(int numberItems, ArrayList<String> profilesNames, ArrayList<String> profileID, ArrayList<Bitmap> profilesAvatars, ArrayList<Double> profilesAdequacy, OnItemClickListener listener) {
         this.numberItems = numberItems;
         viewHolderCount = 0;
         this.profilesNames = profilesNames;
         this.profilesAdequacy = profilesAdequacy;
         this.profilesAvatars = profilesAvatars;
+        this.profileID = profileID;
         this.listener = listener;
     }
 
@@ -70,6 +72,7 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.DialogView
 
         TextView textViewName;
         TextView indexAdequacy;
+        TextView userId;
         CircleImageView circleImageView;
 
         public DialogViewHolder(View itemView) {
@@ -77,7 +80,7 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.DialogView
             textViewName = itemView.findViewById(R.id.dialog_name);
             indexAdequacy = itemView.findViewById(R.id.tv_view_holder_number);
             circleImageView = itemView.findViewById(R.id.avatar);
-
+            userId = itemView.findViewById(R.id.userId);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -98,6 +101,10 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.DialogView
                 Double adequacyPercent = new Double(profilesAdequacy.get(listIndex));;
                 adequacyPercent *= 100.0;
                 indexAdequacy.setText(String.valueOf(adequacyPercent.intValue())+"%");
+
+                userId.setText(profileID.get(listIndex));
+
+
             }
         }
     }

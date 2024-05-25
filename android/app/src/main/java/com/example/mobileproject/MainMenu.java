@@ -27,11 +27,6 @@ public class MainMenu extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        Toast toast = Toast.makeText(getApplicationContext(),
-                "Вы успешно вошли!",
-                Toast.LENGTH_SHORT);
-        toast.show();
     }
 
     public void onClickExit(View view) {

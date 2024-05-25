@@ -23,39 +23,52 @@
         <Button
             android:id="@+id/buttonFind"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="61dp"
             android:layout_marginTop="20dp"
             android:onClick="onClickButtonFind"
-            android:text="Найти собеседника" />
+            android:text="Просмотр анкет"
+            app:icon="@drawable/iconhandsfind"
+            app:iconGravity="textEnd"
+            app:iconSize="38sp"
+            app:iconTintMode="multiply" />
 
         <Button
             android:id="@+id/Messenger"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="61dp"
             android:layout_marginTop="20dp"
             android:onClick="onClickMessenger"
-            android:text="Сообщения" />
+            android:text="Чаты"
+            app:icon="@android:drawable/sym_action_chat"
+            app:iconGravity="textEnd"
+            app:iconSize="22sp" />
 
         <Button
             android:id="@+id/profileButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="61dp"
             android:layout_marginTop="20dp"
             android:onClick="onClickProfileButton"
-            android:text="Профиль" />
+            android:text="Профиль"
+            app:icon="@drawable/ic_stat_name"
+            app:iconGravity="textEnd"
+            app:iconSize="26sp" />
 
     </LinearLayout>
 
     <Button
         android:id="@+id/button6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Выйти"
+        android:layout_width="151dp"
+        android:layout_height="46dp"
+        android:layout_marginBottom="25dp"
         android:onClick="onClickExit"
+        android:text="Выйти"
+        app:icon="@drawable/iconoutput"
+        app:iconGravity="textEnd"
+        app:iconSize="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="25dp"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/imageView2"

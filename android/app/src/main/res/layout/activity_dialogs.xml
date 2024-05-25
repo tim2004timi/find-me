@@ -17,17 +17,23 @@
             android:id="@+id/textViewDialogs"
             android:layout_width="match_parent"
             android:layout_height="59dp"
-            android:gravity="center"
-            android:textSize="29dp"
             android:background="#5C58C5"
+            android:gravity="center"
+            android:text="Чаты"
             android:textColor="@color/white"
-            android:text="Сообщения" />
+            android:textSize="29dp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="8dp" />
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
 
 

@@ -73,10 +73,6 @@ public class ProfileActivity extends AppCompatActivity {
             public void onResponse(Call<Profile> call, Response<Profile> response) {
                 if (response.isSuccessful()) {
                     Profile profile = response.body();
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            "УСПЕШНО",
-                            Toast.LENGTH_SHORT);
-                    toast.show();
                     // ЗАПОЛНИТЬ ПОЛЯ ГЕТТЕРАМИ profile
                     userName.setText(profile.getName());
                     status.setText(profile.getStatus());
@@ -111,7 +107,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Profile> call, Throwable t) {
                 Toast toast = Toast.makeText(getApplicationContext(),
-                        "ОШИБКА",
+                        "Что-то пошло не так...",
                         Toast.LENGTH_SHORT);
                 toast.show();
                 userName.setText("ИмяТест");
@@ -137,8 +133,6 @@ public class ProfileActivity extends AppCompatActivity {
         intent.putExtra("tag2", tag2.getText().toString());
         intent.putExtra("tag3", tag3.getText().toString());
 
-//        Bitmap bitmap = ((BitmapDrawable)avatar.getDrawable()).getBitmap();
-//        intent.putExtra("avatar", bitmap);
         startActivity(intent);
     }
 

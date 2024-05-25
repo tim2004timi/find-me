@@ -17,6 +17,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.mobileproject.ApiService;
 import com.example.mobileproject.Chat.ChatActivity;
@@ -39,7 +40,7 @@ public class DialogsActivity extends AppCompatActivity {
     ListView listView;
     RecyclerView recyclerView;
     DialogAdapter dialogAdapter;
-
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     Profile profile;
     List<Chat> chatsList;
@@ -58,14 +59,28 @@ public class DialogsActivity extends AppCompatActivity {
         });
 
         recyclerView = findViewById(R.id.rv);
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshData();
+            }
+        });
+
+        fetchData();
+    }
+
+    private void fetchData() {
         ArrayList<String> profilesNames = new ArrayList<String>();
         ArrayList<Double> profileAdequacy = new ArrayList<Double>();
         ArrayList<Bitmap> profilesAvatars = new ArrayList<Bitmap>();
-        // получение аватарок и имен с севрера, но бэкэндер ничего не делает
+        ArrayList<String> profileID = new ArrayList<String>();
+
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://176.109.99.70:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -77,11 +92,13 @@ public class DialogsActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<Chat>>() {
             @Override
             public void onResponse(Call<List<Chat>> call, Response<List<Chat>> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     chatsList = response.body();
-                    for (int i = 0; i< chatsList.size(); i++) {
+                    for (int i = 0; i < chatsList.size(); i++) {
                         profilesNames.add(chatsList.get(i).getUsername());
                         profileAdequacy.add(chatsList.get(i).getUserAdequacy());
+                        profileID.add(String.valueOf(chatsList.get(i).getId()));
+
 
                         String stringAvatar = chatsList.get(i).getPhotoBase64();
                         byte[] decodedString = Base64.decode(stringAvatar, Base64.DEFAULT);
@@ -89,75 +106,51 @@ public class DialogsActivity extends AppCompatActivity {
                         profilesAvatars.add(decodedBitmap);
                     }
 
-                    dialogAdapter = new DialogAdapter(profilesNames.size(), profilesNames, profilesAvatars, profileAdequacy, new DialogAdapter.OnItemClickListener() {
+                    dialogAdapter = new DialogAdapter(profilesNames.size(), profilesNames, profileID, profilesAvatars, profileAdequacy, new DialogAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(int position, View view) {
                             TextView textViewName = view.findViewById(R.id.dialog_name);
+                            TextView textID = view.findViewById(R.id.userId);
                             String text = textViewName.getText().toString();
+                            String idText = textID.getText().toString();
+                            //Integer intID = Integer.parseInt(idText);
+
+
                             Intent intent = new Intent(DialogsActivity.this, ChatActivity.class);
                             intent.putExtra("dialog_name", text);
+                            intent.putExtra("user_id", idText);
                             startActivity(intent);
                         }
                     });
                     recyclerView.setAdapter(dialogAdapter);
-
                 } else {
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            "Не саксес",
+                            "Чаты не получены",
                             Toast.LENGTH_SHORT);
                     toast.show();
                 }
-
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<List<Chat>> call, Throwable t) {
                 Toast toast = Toast.makeText(getApplicationContext(),
-                        "Фейлур",
+                        "Что-то пошло не так...",
                         Toast.LENGTH_SHORT);
                 toast.show();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
-
-//        ArrayList<String> arrayListNames = new ArrayList<String>();
-//        arrayListNames.add("Денис");
-//        arrayListNames.add("Тимофей");
-//        arrayListNames.add("Никита");
-//        arrayListNames.add("Александр");
-//        // Список с их автарками
-//        ArrayList<Bitmap> arrayListAvatars = new ArrayList<Bitmap>();
-//        Bitmap bitmapAvatar = BitmapFactory.decodeResource(getResources(), R.drawable.newbasephoto);
-//        for (int i=0; i<=arrayListNames.size(); i++){
-//            arrayListAvatars.add(bitmapAvatar);
-//        }
-
-//        dialogAdapter = new DialogAdapter(arrayListNames.size(), arrayListNames, arrayListAvatars, new DialogAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(int position, View view) {
-//                TextView textViewName = view.findViewById(R.id.dialog_name);
-//                String text = textViewName.getText().toString();
-//                Intent intent = new Intent(DialogsActivity.this, ChatActivity.class);
-//                intent.putExtra("dialog_name", text);
-//                startActivity(intent);
-//            }
-//        });
-//        recyclerView.setAdapter(dialogAdapter);
-        // конец
-        // тоже для корректного взаимодействия с серверной стороной
-        //dialogAdapter = new DialogAdapter(profilesNames.size(), profilesNames);
-        // конец
-
-//        listView = findViewById(R.id.lv);
-//        ArrayList<String> arrayList = new ArrayList<String>();
-//        arrayList.add("Денис");
-//        arrayList.add("Тимофей");
-//        arrayList.add("Никита");
-//
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item, arrayList);
-//        listView.setAdapter(adapter);
     }
+
+    private void refreshData() {
+        swipeRefreshLayout.setRefreshing(true);
+        fetchData();
+    }
+
     public void onClickGoToChat(View view) {
         Intent intent = new Intent(this, ChatActivity.class);
         startActivity(intent);
     }
 }
+// 10 4 6 8

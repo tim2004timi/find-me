@@ -130,7 +130,7 @@ public class Verification extends AppCompatActivity {
                     toast.show();
                 } else {
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            response.toString(),
+                            "Фото не отправлено",
                             Toast.LENGTH_SHORT);
                     toast.show();
                 }
@@ -139,7 +139,7 @@ public class Verification extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Toast toast = Toast.makeText(getApplicationContext(),
-                        "Failure",
+                        "Что-то пошло не так...",
                         Toast.LENGTH_SHORT);
                 toast.show();
             }

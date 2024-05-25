@@ -22,10 +22,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
-
     EditText editTextLogin;
     EditText editTextPassword;
-    TextView test;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
                             "Неверные данные",
                             Toast.LENGTH_SHORT);
                     toast.show();
-                    test.setText(response.toString());
                 }
             }
 
