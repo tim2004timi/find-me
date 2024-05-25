@@ -20,7 +20,7 @@ class Profile(Base):
     is_verified: Mapped[bool] = mapped_column(nullable=False, default=False)
     vector: Mapped[list[float]] = mapped_column(ARRAY(Float), nullable=False)
 
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), unique=True)
 
     @declared_attr
     def user(cls):
