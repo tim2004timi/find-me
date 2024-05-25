@@ -10,22 +10,28 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import precision_score, recall_score
 import pickle
-nltk.download('punkt')
-nltk.download('stopwords')
+
+nltk.download("punkt")
+nltk.download("stopwords")
+
 
 class DialogAnalisis:
-    def __init__(self, df=pd.read_csv('./src/ml/data/labeled.csv', sep=','), tfidf_name='./src/ml/data/Tfidf_vectorizer.sav', logreg_name='./src/ml/data/logReg_model.sav'):
+    def __init__(
+        self,
+        df=pd.read_csv("./src/ml/data/labeled.csv", sep=","),
+        tfidf_name="./src/ml/data/Tfidf_vectorizer.sav",
+        logreg_name="./src/ml/data/logReg_model.sav",
+    ):
         self.df = df
         self.train_df = None
         self.test_df = None
-        self.tf_idf = pickle.load(open(tfidf_name, 'rb'))
+        self.tf_idf = pickle.load(open(tfidf_name, "rb"))
         self.tf_idf.tokenizer = lambda x: self.tokenize_sentence(x)
-        self.logReg = pickle.load(open(logreg_name, 'rb'))
+        self.logReg = pickle.load(open(logreg_name, "rb"))
         self.thresholds_c_10 = 0.3205092817191188
-        self.model_pipeline_c_10 = Pipeline([
-            ("vectorizer", self.tf_idf),
-            ("model", self.logReg)
-        ])
+        self.model_pipeline_c_10 = Pipeline(
+            [("vectorizer", self.tf_idf), ("model", self.logReg)]
+        )
 
     def _prepare(self):
         self.df["toxic"] = self.df["toxic"].apply(int)
@@ -35,7 +41,7 @@ class DialogAnalisis:
         snowball = SnowballStemmer(language="russian")
         russian_stop_words = stopwords.words("russian")
         tokens_ = word_tokenize(sentence, language="russian")
-        
+
         tokens = []
         for i in tokens_:
             if i not in string.punctuation:
@@ -59,16 +65,45 @@ class DialogAnalisis:
     #     self.model_pipeline_c_10.fit(self.train_df["comment"], self.train_df["toxic"])
 
     def get_metrics(self):
-        precision = precision_score(y_true=self.test_df["toxic"],
-                        y_pred=self.model_pipeline_c_10.predict_proba(self.test_df["comment"])[:, 1] > self.thresholds_c_10)
-        recall = recall_score(y_true=self.test_df["toxic"],
-                        y_pred=self.model_pipeline_c_10.predict_proba(self.test_df["comment"])[:, 1] > self.thresholds_c_10)
+        precision = precision_score(
+            y_true=self.test_df["toxic"],
+            y_pred=self.model_pipeline_c_10.predict_proba(
+                self.test_df["comment"]
+            )[:, 1]
+            > self.thresholds_c_10,
+        )
+        recall = recall_score(
+            y_true=self.test_df["toxic"],
+            y_pred=self.model_pipeline_c_10.predict_proba(
+                self.test_df["comment"]
+            )[:, 1]
+            > self.thresholds_c_10,
+        )
 
-        return {'precision': precision, 'recall': recall}
+        return {"precision": precision, "recall": recall}
 
     def analis_chat(self, sentences):
-        predict = self.model_pipeline_c_10.predict(sentences)
-        return sum(predict)/len(predict)
+        predict = self.model_pipeline_c_10.predict_proba([sentences])
+        return predict[0][0]
 
-if __name__ == '__main__':
-    d = DialogAnalisis()
+
+dialog_analysis = DialogAnalisis()
+
+
+if __name__ == "__main__":
+    print(
+        dialog_analysis.analis_chat(
+            "Машинное обучение - это интересная область."
+        )
+    )
+    print(
+        dialog_analysis.analis_chat(
+            "Обучение с учителем - ключевой аспект машинного обучения."
+        )
+    )
+    print(
+        dialog_analysis.analis_chat(
+            "Область NLP также связана с машинным обучением."
+        )
+    )
+    print(dialog_analysis.analis_chat("Привет как дела"))
